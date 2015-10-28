@@ -4,6 +4,18 @@ Using :
 Read this :
 - https://github.com/cxxr/better-java
 
+Building:
+
+```
+gradle build
+```
+
+Running:
+
+``` 
+gradle run
+```
+
 # Libraries to look at:
 - Gson
 - Java tuples
