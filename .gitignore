@@ -1,3 +1,26 @@
-build
-.idea
+.DS_Strore
 
+tmp/
+
+*.tmp
+*.bak
+*.swp
+
+.gradle/
+build/
+
+*.class
+*.jar
+*.war
+*.ear
+
+# Intellij
+.idea
+/out/
+*.iml
+
+# Eclipse
+.settings/
+.loadpath
+.project
+.classpath
