@@ -16,7 +16,17 @@ dependencies {
     // Javaslang http://javaslang.com/
     compile 'com.javaslang:javaslang:2.0.0-RC1'
 
-    // Guava
+    // rethinkdb
+    // http://rethinkdb.com/docs/install-drivers/java/
+    // http://rethinkdb.com/docs/guide/java/
+    compile 'com.rethinkdb:rethinkdb-driver:2.2-beta-1'
+
+    // Githu client (if this one doesn't satisfy you)
+    // http://github-api.kohsuke.org/
+    compile 'org.kohsuke:github-api:1.72'
+    // http://github.jcabi.com/
+    // compile 'com.jcabi:jcabi-github:0.23'
+
     // compile 'com.google.guava:guava:18.0'
 
     // Apache Commons
@@ -27,6 +37,13 @@ dependencies {
     // compile 'com.google.inject:guice:4.0'
     // compile 'com.squareup.dagger:dagger:1.2.2'
     // compile 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+    // Http clients
+    // http://square.github.io/okhttp/
+    // compile 'com.google.http-client:google-http-client:1.21.0'
+    // compile 'com.google.http-client:google-http-client-gson:1.21.0'
+    // compile 'org.apache.httpcomponents:httpcomponents-core:4.4.4'
+    // compile 'org.apache.httpcomponents:httpcomponents-client:4.5.1'
 
     // Google's Gson
     // compile 'com.google.code.gson:gson:2.4'

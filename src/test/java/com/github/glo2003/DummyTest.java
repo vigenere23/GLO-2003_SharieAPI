@@ -7,7 +7,7 @@ import static com.google.common.truth.Truth.*;
 
 import org.junit.Test;
 
-public class HelloWorldTest
+public class DummyTest
 {
     @Test
     public void aDumbTest()

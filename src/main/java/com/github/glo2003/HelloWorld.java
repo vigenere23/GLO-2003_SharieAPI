@@ -12,7 +12,7 @@ public class HelloWorld {
 
         port(portNumber);
 
-        get("/", (req, res) -> "We're way ahead of ya");
-        webSocket("/websocket", EchoWebSocket.class);
+        get("/", (req,
+                  res) -> "Project dashboard api");
     }
 }
