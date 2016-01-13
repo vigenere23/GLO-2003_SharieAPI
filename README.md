@@ -35,4 +35,4 @@ in the [build.gradle](/build.gradle) file.
 For testing 
 
 - [Junit](http://junit.org/)
-- [Truth](google.github.io/truth/)
+- [Truth](https://google.github.io/truth/)
