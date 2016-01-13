@@ -1,13 +1,16 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = "com.github.glo2003.HelloWorld"
+mainClassName = "com.github.glo2003.DashboardAPIServer"
 
 sourceCompatibility = 1.8
 version = '0.0.0'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'http://repo.jenkins-ci.org/public/'
+    }
 }
 
 dependencies {
@@ -23,7 +26,8 @@ dependencies {
 
     // Githu client (if this one doesn't satisfy you)
     // http://github-api.kohsuke.org/
-    compile 'org.kohsuke:github-api:1.72'
+    compile 'org.kohsuke:github-api:1.71'
+
     // http://github.jcabi.com/
     // compile 'com.jcabi:jcabi-github:0.23'
 
@@ -45,7 +49,7 @@ dependencies {
     // compile 'org.apache.httpcomponents:httpcomponents-core:4.4.4'
     // compile 'org.apache.httpcomponents:httpcomponents-client:4.5.1'
 
-    // Google's Gson
+    // Google's Gson in case you don't like jackson
     // compile 'com.google.code.gson:gson:2.4'
 
     // Lombok

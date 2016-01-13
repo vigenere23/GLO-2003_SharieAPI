@@ -22,3 +22,17 @@ in the [build.gradle](/build.gradle) file.
 ```bash
 ./gradlew run
 ```
+
+## Dependencies and interesing doc:
+
+- [Jackson](http://wiki.fasterxml.com/JacksonHome)
+- [Jackson-annotations](https://github.com/FasterXML/jackson-annotations)
+- [SparkJava](http://sparkjava.com)
+- [Javaslang](http://javaslang.com/) - better java 8 (this is really useful)
+- [github-api](https://github.com/kohsuke/github-api)
+- [rethinkdb-driver](http://rethinkdb.com/docs/guide/java/)
+
+For testing 
+
+- [Junit](http://junit.org/)
+- [Truth](google.github.io/truth/)
