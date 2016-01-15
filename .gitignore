@@ -6,7 +6,6 @@ tmp/
 *.bak
 *.swp
 
-.gradle/
 build/
 
 *.class
