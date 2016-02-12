@@ -5,7 +5,6 @@ import static spark.Spark.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.glo2003.handlers.ProjectHandler;
 
-import javaslang.collection.List;
 import javaslang.control.Option;
 import javaslang.control.Try;
 
@@ -45,13 +44,13 @@ public class DashboardAPIServer
 
         get("/projects", new ProjectHandler(), jsonObjectMapper::writeValueAsString);
 
-        options("/", (request, response) -> "");
+        options("*", (request,
+                      response) -> "");
 
         before((req, resp) -> {
-            resp.header("Access-Control-Allow-Origin", "*");
-            resp.header("Access-Control-Request-Method", req.requestMethod());
-            resp.header("Access-Control-Allow-Headers",
-                        List.ofAll(req.headers()).reduceLeft((s,l) -> (s.isEmpty() ? "": s + ", ")+ l));
+            resp.header("Access-Control-Allow-Origin", req.headers("Origin"));
+            resp.header("Access-Control-Request-Method", req.headers("Access-Control-Request-Method"));
+            resp.header("Access-Control-Allow-Headers", req.headers("Access-Control-Allow-Headers"));
         });
     }
 
