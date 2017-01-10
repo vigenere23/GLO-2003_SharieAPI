@@ -3,16 +3,16 @@ package com.github.glo2003;
 import static spark.Spark.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.glo2003.handlers.ProjectHandler;
+import com.github.glo2003.handlers.PizzaMenuHandler;
 
 import javaslang.control.Option;
 import javaslang.control.Try;
 
-public class DashboardAPIServer
+public class PizzeriaAPIServer
 {
     private static ObjectMapper jsonObjectMapper = new ObjectMapper();
 
-    public DashboardAPIServer()
+    public PizzeriaAPIServer()
     {
 
     }
@@ -29,11 +29,6 @@ public class DashboardAPIServer
             System.err.println("You need to pass the GITHUB_TOKEN env var to query private repositories");
         }
 
-        String rethinkURI = Option.of(System.getenv("RETHINKDB")).orElse("");
-        if (rethinkURI.isEmpty()) {
-            System.err.println("You need to pass the RETHINKDB env var to store data");
-        }
-
         port(portNumber);
 
         get("/", (req,
@@ -42,16 +37,10 @@ public class DashboardAPIServer
         get("/ping", (req,
                       res) -> "pong");
 
-        get("/projects", new ProjectHandler(), jsonObjectMapper::writeValueAsString);
+        get("/menu/pizzas", new PizzaMenuHandler(), jsonObjectMapper::writeValueAsString);
 
         options("*", (request,
                       response) -> "");
-
-        before((req, resp) -> {
-            resp.header("Access-Control-Allow-Origin", req.headers("Origin"));
-            resp.header("Access-Control-Request-Method", req.headers("Access-Control-Request-Method"));
-            resp.header("Access-Control-Allow-Headers", req.headers("Access-Control-Allow-Headers"));
-        });
     }
 
 }

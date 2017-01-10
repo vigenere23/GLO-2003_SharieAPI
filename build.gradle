@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = "com.github.glo2003.DashboardAPIServer"
+mainClassName = "com.github.glo2003.PizzeriaAPIServer"
 
 sourceCompatibility = 1.8
 version = '0.0.0'
@@ -19,12 +19,7 @@ dependencies {
     // Javaslang http://javaslang.com/
     compile 'com.javaslang:javaslang:2.0.0-RC1'
 
-    // rethinkdb
-    // http://rethinkdb.com/docs/install-drivers/java/
-    // http://rethinkdb.com/docs/guide/java/
-    compile 'com.rethinkdb:rethinkdb-driver:2.2-beta-1'
-
-    // Githu client (if this one doesn't satisfy you)
+    // Github client (if this one doesn't satisfy you)
     // http://github-api.kohsuke.org/
     compile 'org.kohsuke:github-api:1.71'
 

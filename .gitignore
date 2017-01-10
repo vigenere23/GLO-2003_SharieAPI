@@ -25,3 +25,5 @@ build/
 .loadpath
 .project
 .classpath
+
+.gradle/
