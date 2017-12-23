@@ -1,11 +1,12 @@
 package com.github.glo2003.response;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Pizza
+public class Schedule 
 {
-    @JsonProperty("id")
-    public String id;
+    @JsonProperty("days")
+    public List days = new ArrayList();
 }
