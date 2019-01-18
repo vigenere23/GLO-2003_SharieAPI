@@ -11,16 +11,28 @@ Starting at java is not easy: [better-java](https://github.com/cxxr/better-java)
 Some nice libraries have been added to help you start and do things way faster and more easily. Have a look at them
 in the [build.gradle](/build.gradle) file.
 
-## Building:
+## Building with gradle
 
 ```bash
 ./gradlew build
 ```
 
-## Running:
+## Running with gradle
 
 ```bash
 ./gradlew run
+```
+
+## Building with maven
+
+```bash
+mvn clean install
+```
+
+## Running with maven
+
+```bash
+mvn exec:java
 ```
 
 ## Dependencies and interesing doc:
@@ -29,8 +41,6 @@ in the [build.gradle](/build.gradle) file.
 - [Jackson-annotations](https://github.com/FasterXML/jackson-annotations)
 - [SparkJava](http://sparkjava.com)
 - [Javaslang](http://javaslang.com/) - better java 8 (this is really useful)
-- [github-api](https://github.com/kohsuke/github-api)
-- [rethinkdb-driver](http://rethinkdb.com/docs/guide/java/)
 
 For testing 
 
