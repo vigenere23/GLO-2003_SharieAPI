@@ -3,7 +3,6 @@ package com.github.glo2003;
 import static spark.Spark.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.glo2003.handlers.ScheduleHandler;
 
 import javaslang.control.Option;
 import javaslang.control.Try;
@@ -19,17 +18,15 @@ public class APIServer
     public static void main(String[] args)
     {
         Integer portNumber = Try.of(() -> Integer.valueOf(System.getenv("PORT"))).orElseGet((t) -> {
-            System.err.println("There was an error retrieving PORT env var using the default one (1357)");
-            return 1357;
+            System.out.println("WARNING: The server port could not be found with 'PORT' env var. Using the default one (9090)");
+            return 9090;
         });
 
         port(portNumber);
 
-        get("/", (req, res) -> "Project dashboard api");
+        get("/", (req, res) -> "Sharie API");
 
         get("/ping", (req, res) -> "pong");
-
-        get("/schedules/:startOfWeek", new ScheduleHandler(), jsonObjectMapper::writeValueAsString);
 
         options("*", (request, response) -> "");
         before((request, response) -> {
