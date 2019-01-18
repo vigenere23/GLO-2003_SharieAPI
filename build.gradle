@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'maven'
 
 mainClassName = "com.github.glo2003.APIServer"
 
@@ -14,17 +15,12 @@ repositories {
 }
 
 dependencies {
+    compile 'com.fasterxml.jackson.core:jackson-core:2.9.8'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
     compile 'com.sparkjava:spark-core:2.3'
 
     // Javaslang http://javaslang.com/
     compile 'com.javaslang:javaslang:2.0.0-RC1'
-
-    // Github client (if this one doesn't satisfy you)
-    // http://github-api.kohsuke.org/
-    compile 'org.kohsuke:github-api:1.71'
-
-    // http://github.jcabi.com/
-    // compile 'com.jcabi:jcabi-github:0.23'
 
     // compile 'com.google.guava:guava:18.0'
 
@@ -59,7 +55,7 @@ dependencies {
     testCompile 'junit:junit:4.+'
     // Better asserts: AssertJ or Truth
     // http://google.github.io/truth
-    testCompile 'com.google.truth:truth:0.27'
+    testCompile 'com.google.truth:truth:0.42'
 }
 
 task wrapper(type: Wrapper) {
