@@ -45,6 +45,12 @@ then press Browse Directory and select the folder named jdk1.8.#_###(use path of
 <br />7.2 In the same terminal type : mvn exec:java
 <br />7.3 The server is started you can now use a web browser with the url localhost:9090 ans see the following: Sharie API
 
+8. User Interface (Optional)
+<br />8.1 Download Elm from here and install it : https://guide.elm-lang.org/install.html
+<br />8.2 From UI folder use the following command : elm reactor
+<br />8.3 The UI is started you can now use a web browser with the url localhost:8000/src/Main.elm ans see the UI for this project.
+
+
 ## Building with gradle
 
 ```bash
