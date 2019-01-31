@@ -36,14 +36,21 @@ and Press Control + Shift before running a program and it'll run as admin
 <br />5.3 In Variable name type : JAVA_HOME
 then press Browse Directory and select the folder named jdk1.8.#_###(use path of step 3 for Java SDK 1.8), then Ok
 
-6. Open the cloned project(https://github.com/glo2003/glo-2003-h19-equipe-16) in IntelliJ to configure it
-<br />6.1 In IntelliJ press Ctrl + Shift + Alt + s
-<br />6.2 In the SDK's menu press the + then +JDK and add the folder named jdk1.6.#_###(use path of step 3 for Java SDK 1.6), then Ok
+6. Clone the project with this command : git clone --recursive https://github.com/glo2003/glo-2003-h19-equipe-16
+<br />6.1 Open the cloned project in IntelliJ
+<br />6.2 In IntelliJ press Ctrl + Shift + Alt + s
+<br />6.3 In the SDK's menu press the + then +JDK and add the folder named jdk1.6.#_###(use path of step 3 for Java SDK 1.6), then Ok
 
 7. Test the installation
 <br />7.1 In IntelliJ use the terminal with the following command : mvn clean install
 <br />7.2 In the same terminal type : mvn exec:java
 <br />7.3 The server is started you can now use a web browser with the url localhost:9090 ans see the following: Sharie API
+
+8. User Interface (Optional)
+<br />8.1 Download Elm from here and install it : https://guide.elm-lang.org/install.html
+<br />8.2 From UI folder use the following command : elm reactor
+<br />8.3 The UI is started you can now use a web browser with the url localhost:8000/src/Main.elm ans see the UI for this project.
+
 
 ## Building with gradle
 
