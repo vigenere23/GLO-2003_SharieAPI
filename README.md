@@ -31,7 +31,7 @@ and Press Control + Shift before running a program and it'll run as admin
 <br />4.5 In the edit environment variable window click browse and select the file from where you extracted Maven, then Ok
 
 5. Add JAVA_HOME environment variable(Maven needs it)
-<br />5.1 If the environment variable window is close restart step 4.2.1 and 4.2.2
+<br />5.1 If the environment variable window is close restart step 4.2 and 4.3
 <br />5.2 Press New under the system variables list
 <br />5.3 In Variable name type : JAVA_HOME
 then press Browse Directory and select the folder named jdk1.8.#_###(use path of step 3 for Java SDK 1.8), then Ok
