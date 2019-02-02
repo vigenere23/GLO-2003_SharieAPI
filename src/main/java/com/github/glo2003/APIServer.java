@@ -4,7 +4,6 @@ import static spark.Spark.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javaslang.control.Option;
 import javaslang.control.Try;
 
 import com.github.glo2003.controllers.*;
