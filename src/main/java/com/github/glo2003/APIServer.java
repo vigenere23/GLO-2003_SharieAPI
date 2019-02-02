@@ -42,8 +42,6 @@ public class APIServer
         get("/", (req, res) -> "Sharie API");
         get("/ping", (req, res) -> "pong");
 
-        // TODO use path() to better separate routes
-        //get("/listings", ListingsController.getAllListings);
         post("/listings", (req, res) -> ListingsController.addListing(req, res));
         get("/listings/:id", (req, res) -> ListingsController.getListing(req, res));
     }

@@ -20,14 +20,11 @@ public class ListingsController {
       //TODO: handle exception
     }
     
-    // TODO send listingsDAO.get(id) in a json format with correct flags
     return listingsDAO.get(id);
   }
 
-  /*TODO change to void and use res.send instead?*/
   public static int addListing(Request req, Response res) {
     Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
     return listingsDAO.save(listing);
-    // TODO send listingsDAO.save(listing) in a json format with corretc flags
   }
 }
