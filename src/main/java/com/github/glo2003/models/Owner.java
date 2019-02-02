@@ -22,24 +22,21 @@ public class Owner {
     setEmail(email);
   }
 
-  public static Owner create(Object params /*TODO really an Object here?*/) {
+  public static Owner create(Object params) {
     return new Owner(/*TODO parse params, call the private constructor*/);
   }
 
   /****** SETTERS ******/
 
   public void setName(String name) {
-    // Some validation/filtering
     _name = name;
   }
 
   public void setPhoneNumber(String phoneNumber) {
-    // Some validation/filtering
     _phoneNumber = phoneNumber;
   }
 
   public void setEmail(String email) {
-    // Some validation/filtering
     _email = email;
   }
 
