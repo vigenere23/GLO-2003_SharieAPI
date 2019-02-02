@@ -47,3 +47,4 @@ public class ListingsController {
     res.status(201);
     return "";
   }
+}
