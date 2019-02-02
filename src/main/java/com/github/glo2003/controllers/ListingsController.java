@@ -23,7 +23,6 @@ public class ListingsController {
       return "";
     }
     
-    // TODO send listingsDAO.get(id) in a json format with correct flags
     Listing listing = listingsDAO.get(id);
 
     if (listing == null) {
@@ -41,7 +40,6 @@ public class ListingsController {
     }
   }
 
-  /*TODO change to void and use res.send instead?*/
   public static String addListing(Request req, Response res) {
     Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
     int id = listingsDAO.save(listing);
@@ -49,4 +47,3 @@ public class ListingsController {
     res.status(201);
     return "";
   }
-}
