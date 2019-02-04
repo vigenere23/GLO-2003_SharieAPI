@@ -1,11 +1,9 @@
 post listing (json)
 
 
-Quand nous voulons rajouter des offres, il faut appeler
-à la fonction de POST. Après avoir rentrer les 
-informations dans les différents champs et appuyer sur
-le bouton 'Rajouter', les informations sont envoiées par
-JSON.
+Quand nous voulons rajouter une offre, il faut appeler
+Ã  l'url /listing via un post. Les donnÃ©es du post doivent
+Ãªtre envoyÃ©es sous forme d'objet Json.
 
 Un exemple de POST:
 { id : String
@@ -15,7 +13,7 @@ Un exemple de POST:
     , email : String
     , availabilities : List Time.Posix
     }
-Où Owner est:
+OÃ¹ Owner est:
 { name : String, 
 	phoneNumber : String, 
 	email : String 
