@@ -1,7 +1,4 @@
-post listing (json)
-
-
-Quand nous voulons rajouter une offre, il faut appeler
+﻿Quand nous voulons rajouter une offre, il faut appeler
 à l'url /listing via un post. Les données du post doivent
 être envoyées sous forme d'objet Json.
 
@@ -18,3 +15,7 @@ Où Owner est:
 	phoneNumber : String, 
 	email : String 
 	}
+Aussi, lorsqu'un /listing ce fait, l'API retourne l'header
+201 CREATED, avec /listing/<id>. L'id va nous permettre de
+retrouver la demande.
+En cas d'échec, l'header 500 est retourné.
