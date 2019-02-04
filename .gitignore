@@ -1,43 +1,33 @@
+### General ###
 .DS_Store
 
 tmp/
 bin/
 
-target
-
 *.tmp
 *.bak
 *.swp
 
-build/
-
-
-*.class
-*.jar
-*.war
-*.ear
-
 !gradle/**/*.jar
 
-# Intellij
-/out/
-*.iml
 
-# Eclipse
+### Eclipse ###
 .settings/
 .loadpath
 .project
 .classpath
 
-.gradle/
 
+### Visual Studio Code ###
 .vscode/
 
+
+### IntelliJ, Java, Gradle, Maven ###
 
 # Created by https://www.gitignore.io/api/java,maven,gradle,intellij
 # Edit at https://www.gitignore.io/?templates=java,maven,gradle,intellij
 
-### Intellij ###
+### IntelliJ ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
