@@ -1,0 +1,22 @@
+post listing (json)
+
+
+Quand nous voulons rajouter des offres, il faut appeler
+à la fonction de POST. Après avoir rentrer les 
+informations dans les différents champs et appuyer sur
+le bouton 'Rajouter', les informations sont envoiées par
+JSON.
+
+Un exemple de POST:
+{ id : String
+    , title : String
+    , owner : Owner
+    , description : String
+    , email : String
+    , availabilities : List Time.Posix
+    }
+Où Owner est:
+{ name : String, 
+	phoneNumber : String, 
+	email : String 
+	}
