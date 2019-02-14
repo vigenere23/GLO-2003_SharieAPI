@@ -11,6 +11,10 @@ bin/
 !gradle/**/*.jar
 
 
+### Node ###
+node_modules/
+
+
 ### Eclipse ###
 .settings/
 .loadpath

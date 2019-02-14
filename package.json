@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "doc": "apidoc -i ./src/ -o ./apidoc/ -f .java && firefox ./apidoc/index.html"
+  },
+  "devDependencies": {
+    "apidoc": "^0.17.7"
+  }
+}

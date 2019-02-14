@@ -12,6 +12,13 @@ public class ListingsController {
 
   private static ObjectMapper jsonObjectMapper = new ObjectMapper();
 
+  /**
+   * @api {get} /listings/:id Get single listing
+   * @apiName getListing
+   * @apiGroup Listings
+   * 
+   * @apiParam {String} id Listing's ID
+   */
   public static String getListing(Request req, Response res) {
     int id = 0;
     try {
@@ -40,6 +47,36 @@ public class ListingsController {
     }
   }
 
+  /**
+   * @api {post} /listings Add a new listing
+   * @apiName addListing
+   * @apiGroup Listings
+   * 
+   * @apiDescription No body is returned, only the header `Location`.
+   * 
+   * @apiParam {String} title Listing's title.
+   * @apiParam {String} description Listing's description.
+   * @apiParam {Object} owner Listing's owner
+   * @apiParam {String} owner.name Owner's name.
+   * @apiParam {String} owner.phoneNumber Owner's phone number.
+   * @apiParam {String} owner.email Owner's email.
+   * 
+   * @apiParamExample Params example:
+   *    {
+   *      title: "Fresh new Honda Civic ONLY 3000$",
+   *      description: "Just buy it, i'll be worth it!",
+   *      owner: {
+   *        name: "Frank Desjose",
+   *        phoneNumber: "123 456-7890",
+   *        email: "frankito.deslato@myman.com"
+   *      }
+   *    }
+   * 
+   * @apiSuccess (Created 201) {Number} id ID of the newly created listing
+   * @apiSuccessExample Success Example:
+   *    HTTP 201 CREATED
+   *    Location: /listings/:id
+   */
   public static String addListing(Request req, Response res) {
     Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
     int id = listingsDAO.save(listing);
