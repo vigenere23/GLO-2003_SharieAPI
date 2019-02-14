@@ -8,7 +8,8 @@ Built with [spark](http://sparkjava.com/) framework for simplicity
 
 Starting at java is not easy: [better-java](https://github.com/cxxr/better-java) gives you modern best practices.
 
-## Installation (working with IntelliJ on Windows)
+## Installation (IntelliJ with Maven on Windows)
+
 1. Download the following
     * IntelliJ : https://www.jetbrains.com/idea/download/#section=windows
     * Java SDK 1.6 : https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html
@@ -31,11 +32,18 @@ and Press Control + Shift before running a program and it'll run as admin
     1. Open the cloned project in IntelliJ
     2. In IntelliJ press Ctrl + Shift + Alt + s
     3. In the SDK's menu press the + then +JDK and add the folder named jdk1.6.#_###(use path of step 3 for Java SDK 1.6), then Ok
-7. Test the installation
+7. Install the Maven Plugin from IntelliJ and setup configuration
+   1. Restart the IDE
+   2. Click on "Enable auto-imports" and wait
+   3. Click on Add Configuration
+   4. Click on "+" and select "maven"
+   5. Write "exec:java" as the command line
+   6. **You will need to always compile before running, otherwise you won't see your changes.**
+8. Test the installation
     1. In IntelliJ use the terminal with the following command : mvn clean install
     2. In the same terminal type : mvn exec:java
     3. The server is started you can now use a web browser with the url localhost:9090 ans see the following: Sharie API
-8. User Interface (Optional)
+9.  User Interface (Optional)
     1. Download Elm from here and install it : https://guide.elm-lang.org/install.html
     2. From UI folder use the following command : elm reactor
     3. The UI is started you can now use a web browser with the url localhost:8000/src/Main.elm ans see the UI for this project.
