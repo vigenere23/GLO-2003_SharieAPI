@@ -1,13 +1,11 @@
 package com.github.glo2003;
 
-import static spark.Spark.*;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.github.glo2003.controllers.ListingsController;
+import com.github.glo2003.daos.ListingsDAO;
 import javaslang.control.Try;
 
-import com.github.glo2003.controllers.*;
-import com.github.glo2003.daos.*;
+import static spark.Spark.*;
 
 public class APIServer
 {
