@@ -1,6 +1,5 @@
 {
   "name": "Listings API",
   "description": "An API for listings",
-  "version": "0.2.0",
-  "url" : "localhost:9090"
+  "version": "0.2.0"
 }
