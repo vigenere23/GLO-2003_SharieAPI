@@ -10,6 +10,8 @@ bin/
 
 !gradle/**/*.jar
 
+### APIDOC ###
+apidoc/
 
 ### Node ###
 node_modules/

@@ -62,10 +62,9 @@ mvn exec:java
 
 ## Generating the documentation
 
-1. Install Node and Yarn
-2. Run `yarn global add apidoc`
-3. cd to project directory and run `yarn install`
-4. To generate the documentation, simply run `yarn doc`
+1. Install [Node](https://nodejs.org) and [Yarn](https://yarnpkg.com)
+2. cd to project directory and run `yarn install`
+3. To generate and open the documentation, simply run `yarn doc`
 
 ## Dependencies and interesing doc:
 

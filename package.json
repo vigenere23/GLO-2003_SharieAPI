@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "doc": "apidoc -i ./src/ -o ./apidoc/ -f .java && firefox ./apidoc/index.html"
+    "doc": "node ./scripts/generateDoc.js"
   },
   "devDependencies": {
-    "apidoc": "^0.17.7"
+    "apidoc": "^0.17.7",
+    "opn": "^5.4.0"
   }
 }
