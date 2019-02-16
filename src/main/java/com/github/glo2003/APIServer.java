@@ -1,6 +1,5 @@
 package com.github.glo2003;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.glo2003.controllers.ListingsController;
 import com.github.glo2003.daos.ListingsDAO;
 import com.github.glo2003.helpers.ResponseHelper;
@@ -12,11 +11,7 @@ public class APIServer
 {
     public static ListingsDAO listingsDAO;
 
-    private static ObjectMapper jsonObjectMapper = new ObjectMapper();
-
-    public APIServer()
-    {
-    }
+    public APIServer() {}
 
     public static void main(String[] args)
     {
