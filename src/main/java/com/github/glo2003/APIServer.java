@@ -3,6 +3,7 @@ package com.github.glo2003;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.glo2003.controllers.ListingsController;
 import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.helpers.ResponseHelper;
 import javaslang.control.Try;
 
 import static spark.Spark.*;
@@ -39,8 +40,13 @@ public class APIServer
         get("/", (req, res) -> "Sharie API");
         get("/ping", (req, res) -> "pong");
 
-        post("/listings", (req, res) -> ListingsController.addListing(req, res));
-        get("/listings/:id", (req, res) -> ListingsController.getListing(req, res));
+        post("/listings", ListingsController::addListing);
+        get("/listings/:id", ListingsController::getListing, ResponseHelper::parseToJson);
+
+        exception(Exception.class, (exception, request, response) -> {
+            response.status(500);
+            exception.printStackTrace();
+        });
     }
 
     private static void enableCORS(final String origin, final String methods, final String headers) {

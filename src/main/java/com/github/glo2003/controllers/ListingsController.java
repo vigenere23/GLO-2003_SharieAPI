@@ -1,6 +1,6 @@
 package com.github.glo2003.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Listing;
 import spark.Request;
 import spark.Response;
@@ -9,51 +9,35 @@ import static com.github.glo2003.APIServer.listingsDAO;
 
 public class ListingsController {
 
-    private static ObjectMapper jsonObjectMapper = new ObjectMapper();
-
-    public static String getListing(Request req, Response res) {
-        int id = 0;
+    public static Object getListing(Request req, Response res) {
+        String stringId = req.params(":id");
+        long id;
         try {
-            String stringId = req.params(":id");
-            id = Integer.parseInt(stringId);
+            id = Long.parseLong(stringId);
         }
         catch (Exception e) {
-            System.out.println(String.format("Unable to convert id %s to int", id));
-            return "";
+            return new ResponseHelper.ResponseError(String.format("Id '%s' should be of type 'long'", stringId));
         }
 
         Listing listing = listingsDAO.get(id);
-
-        if (listing == null) {
-            System.out.println(String.format("Unable to find listing with id %d", id));
-            return "";
-        }
-
-        try {
-            System.out.println("Sending response...");
-            return jsonObjectMapper.writeValueAsString(listing);
-        }
-        catch (Exception e) {
-            System.out.println("Unable to parse Listing as json");
-            return "";
-        }
+        return ResponseHelper.returnNotNullObjectOrError(res, listing, String.format("No listing found with id '%d'", id));
     }
 
-    public static String getAllListings(Request req, Response res) {
+    public static Object getAllListings(Request req, Response res) {
         // TODO
-        return "";
+        return ResponseHelper.EMPTY_RESPONSE;
     }
 
     public static String addListing(Request req, Response res) {
         Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
-        int id = listingsDAO.save(listing);
+        long id = listingsDAO.save(listing);
         res.header("Location", String.format("/listings/%d", id));
         res.status(201);
-        return "";
+        return ResponseHelper.EMPTY_RESPONSE;
     }
 
-    public static String bookListing(Request req, Response res) {
+    public static Object bookListing(Request req, Response res) {
         // TODO
-        return null;
+        return ResponseHelper.EMPTY_RESPONSE;
     }
 }
