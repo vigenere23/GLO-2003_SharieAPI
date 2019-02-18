@@ -35,7 +35,7 @@ public class APIServer
         get("/", (req, res) -> "Sharie API");
         get("/ping", (req, res) -> "pong");
 
-        post("/listings", ListingsController::addListing);
+        post("/listings", ListingsController::addListing, ResponseHelper::parseToJson);
         get("/listings/:id", ListingsController::getListing, ResponseHelper::parseToJson);
 
         exception(Exception.class, (exception, request, response) -> {

@@ -26,6 +26,7 @@ public class ResponseHelper {
     }
 
     public static String parseToJson(Object object) throws JsonProcessingException {
+        if (object == null || object == "") return "";
         return jsonObjectMapper.writeValueAsString(object);
     }
 }
