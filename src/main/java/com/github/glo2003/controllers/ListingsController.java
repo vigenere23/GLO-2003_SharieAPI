@@ -20,7 +20,9 @@ public class ListingsController {
         }
 
         Listing listing = listingsDAO.get(id);
-        return ResponseHelper.returnNotNullObjectOrError(res, listing, String.format("No listing found with id '%d'", id));
+        return ResponseHelper.returnNotNullObjectOrError(
+                res, listing, 404,
+                String.format("No listing found with id '%d'", id));
     }
 
     public static Object getAllListings(Request req, Response res) {

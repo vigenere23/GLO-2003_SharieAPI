@@ -17,9 +17,9 @@ public class ResponseHelper {
         }
     }
 
-    public static Object returnNotNullObjectOrError(Response res, Object object, String errorMessage) {
+    public static Object returnNotNullObjectOrError(Response res, Object object, int statusCode, String errorMessage) {
         if (object == null) {
-            res.status(404);
+            res.status(statusCode);
             return new ResponseError(errorMessage);
         }
         return object;
