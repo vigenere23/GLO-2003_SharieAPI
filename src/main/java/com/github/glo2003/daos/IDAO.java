@@ -1,8 +1,10 @@
 package com.github.glo2003.daos;
 
+import java.util.List;
+
 public interface IDAO<T> {
   T get(long id);
-  // List<T> getAll();
+  List<T> getAll();
 
   long save(T t);
   // void update(T t, T newT);
