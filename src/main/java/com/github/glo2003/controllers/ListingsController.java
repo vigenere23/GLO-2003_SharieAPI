@@ -31,6 +31,9 @@ public class ListingsController {
     }
 
     public static String addListing(Request req, Response res) {
+        //TEST USEFULL POUR MONTRER COMMENT TESTER UN OBJET RECU
+        // String test = "{  \"title\": \"\",  \"description\": \"\",  \"owner\": {  \"name\": \"\",  \"phoneNumber\": \"\",  \"email\": \"\"  }}";
+        // Object TestedObject = ResponseHelper.isParameterValid(test, Listing.class);
         Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
         long id = listingsDAO.save(listing);
         res.header("Location", String.format("/listings/%d", id));
