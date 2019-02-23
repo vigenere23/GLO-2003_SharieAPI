@@ -29,4 +29,14 @@ public class ResponseHelper {
         if (object == null || object == "") return "";
         return jsonObjectMapper.writeValueAsString(object);
     }
+
+    public static <T> Object isParameterValid(String parameter, Class<T> validationObjectType){
+        Object parsedObject = null;
+        try {
+            parsedObject = jsonObjectMapper.readValue(parameter, validationObjectType);
+        } catch (java.io.IOException e) {
+
+        }
+        return parsedObject;
+    }
 }
