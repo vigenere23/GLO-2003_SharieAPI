@@ -2,9 +2,9 @@ package com.github.glo2003.models;
 
 public class Owner {
 
-  private String _name;
-  private String _phoneNumber;
-  private String _email;
+  private String name;
+  private String phoneNumber;
+  private String email;
 
   public Owner() {
     setName("");
@@ -29,28 +29,28 @@ public class Owner {
   /****** SETTERS ******/
 
   public void setName(String name) {
-    _name = name;
+    name = name;
   }
 
   public void setPhoneNumber(String phoneNumber) {
-    _phoneNumber = phoneNumber;
+    phoneNumber = phoneNumber;
   }
 
   public void setEmail(String email) {
-    _email = email;
+    email = email;
   }
 
   /****** GETTERS ******/
 
   public String getName() {
-    return _name;
+    return name;
   }
 
   public String getPhoneNumber() {
-    return _phoneNumber;
+    return phoneNumber;
   }
 
   public String getEmail() {
-    return _email;
+    return email;
   }
 }
