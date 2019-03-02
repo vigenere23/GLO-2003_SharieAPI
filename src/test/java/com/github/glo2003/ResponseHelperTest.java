@@ -1,8 +1,7 @@
 package com.github.glo2003;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.glo2003.helpers.ResponseHelper;
-import com.github.glo2003.models.Listing;
-import com.github.glo2003.models.Owner;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,41 +11,80 @@ import static com.google.common.truth.Truth.assertThat;
 
 public class ResponseHelperTest {
 
-    private final String validOwnerName = "Test";
-    private final String validOwnerPhoneNumber = "8191112222";
-    private final String validOwnerEmail = "test@test.com";
-    private final String validListingTitle = "New listing";
-    private final String validListingDescription = "This is a new listing WOW";
-    private Owner validOwner;
-    private Listing validListing;
+    private final String exampleString = "Lorem Ispum Eusdi Correcta";
+    private final int exampleInteger = 200;
+    private final double exampleDecimal = 152.648819;
+
+    private String validJsonSimpleObject;
+    private String validJsonNestedObject;
+
+    private SimpleObject simpleObject;
+    private NestedObject nestedObject;
 
     @Before
-    public void setupValidVariables() {
-        validOwner = new Owner(validOwnerName, validOwnerPhoneNumber, validOwnerEmail);
-        validListing = new Listing(validListingTitle, validListingDescription, validOwner);
+    public void setup() {
+        simpleObject = new SimpleObject(exampleString, exampleInteger, exampleDecimal);
+        nestedObject = new NestedObject(exampleString, exampleInteger, exampleDecimal, simpleObject);
+        validJsonSimpleObject = String.format(
+                "{\"string\":\"%s\",\"integer\":%d,\"decimal\":%f}",
+                exampleString, exampleInteger, exampleDecimal);
+        validJsonNestedObject = String.format(
+                "{\"string\":\"%s\",\"integer\":%d,\"decimal\":%f,\"simpleObject\":%s}",
+                exampleString, exampleInteger, exampleDecimal, validJsonSimpleObject);
     }
 
     @Test
-    public void validJsonOwnerString_parseToOwner() throws IOException {
-        String jsonOwner = "{\"name\":\"" + validOwnerName + "\",\"phoneNumber\":\"" + validOwnerPhoneNumber + "\",\"email\":\"" + validOwnerEmail + "\"}";
-        Owner owner = ResponseHelper.isParameterValid(jsonOwner, Owner.class);
-        assertThat(owner).isNotNull();
-        assertThat(owner.getName()).isEqualTo(validOwnerName);
-        assertThat(owner.getPhoneNumber()).isEqualTo(validOwnerPhoneNumber);
-        assertThat(owner.getEmail()).isEqualTo(validOwnerEmail);
+    public void givenSimpleObject_parseToJsonCorrectly() throws JsonProcessingException {
+        String jsonSimpleObject = ResponseHelper.parseToJson(simpleObject);
+        assertThat(jsonSimpleObject).isEqualTo(validJsonSimpleObject);
     }
 
     @Test
-    public void validJsonListingString_parseToListing() throws IOException {
-        String jsonOwner = "{\"name\":\"" + validOwnerName + "\",\"phoneNumber\":\"" + validOwnerPhoneNumber + "\",\"email\":\"" + validOwnerEmail + "\"}";
-        String jsonListing = "{\"title\":\"" + validListingTitle + "\",\"description\":\"" + validListingDescription + "\",\"owner\":" + jsonOwner + "}";
-        Listing listing = ResponseHelper.isParameterValid(jsonListing, Listing.class);
-        assertThat(listing).isNotNull();
-        assertThat(listing.getOwner()).isNotNull();
-        assertThat(listing.getTitle()).isEqualTo(validListingTitle);
-        assertThat(listing.getDescription()).isEqualTo(validListingDescription);
-        assertThat(listing.getOwner().getName()).isEqualTo(validOwnerName);
-        assertThat(listing.getOwner().getPhoneNumber()).isEqualTo(validOwnerPhoneNumber);
-        assertThat(listing.getOwner().getEmail()).isEqualTo(validOwnerEmail);
+    public void givenNestedObjects_parseToJsonCorrectly() throws JsonProcessingException {
+        String jsonNestedObject = ResponseHelper.parseToJson(nestedObject);
+        assertThat(jsonNestedObject).isEqualTo(validJsonNestedObject);
+    }
+
+    @Test
+    public void givenJsonSimpleObject_deserializeToSimpleObjectNotNull() throws IOException {
+        SimpleObject deserializedSimpleObject = ResponseHelper.deserializeJsonToObject(validJsonSimpleObject, SimpleObject.class);
+        assertThat(deserializedSimpleObject).isNotNull();
+    }
+
+    @Test
+    public void givenJsonSimpleObject_deserializeToNestedObjectNotNull() throws IOException {
+        NestedObject deserializedNestedObject = ResponseHelper.deserializeJsonToObject(validJsonNestedObject, NestedObject.class);
+        assertThat(deserializedNestedObject).isNotNull();
+    }
+
+    @Test
+    public void givenJsonSimpleObject_deserializeToSimpleObjectWithCorrectParams() throws IOException {
+        SimpleObject deserializedSimpleObject = ResponseHelper.deserializeJsonToObject(validJsonSimpleObject, SimpleObject.class);
+        assertThat(deserializedSimpleObject.getString()).isEqualTo(exampleString);
+        assertThat(deserializedSimpleObject.getInteger()).isEqualTo(exampleInteger);
+        assertThat(deserializedSimpleObject.getDecimal()).isEqualTo(exampleDecimal);
+    }
+
+    @Test
+    public void givenJsonSimpleObject_deserializeToNestedObjectWithCorrectParams() throws IOException {
+        NestedObject deserializedNestedObject = ResponseHelper.deserializeJsonToObject(validJsonNestedObject, NestedObject.class);
+        assertThat(deserializedNestedObject.getString()).isEqualTo(exampleString);
+        assertThat(deserializedNestedObject.getInteger()).isEqualTo(exampleInteger);
+        assertThat(deserializedNestedObject.getDecimal()).isEqualTo(exampleDecimal);
+    }
+
+    @Test
+    public void givenJsonSimpleObject_deserializeToNestedObjectWithNestedObjectNotNull() throws IOException {
+        NestedObject deserializedNestedObject = ResponseHelper.deserializeJsonToObject(validJsonNestedObject, NestedObject.class);
+        assertThat(deserializedNestedObject.getSimpleObject()).isNotNull();
+    }
+
+    @Test
+    public void givenJsonSimpleObject_deserializeToNestedObjectWithCorrectNestedObjectParams() throws IOException {
+        NestedObject deserializedNestedObject = ResponseHelper.deserializeJsonToObject(validJsonNestedObject, NestedObject.class);
+        SimpleObject deserializedSimpleObject = deserializedNestedObject.getSimpleObject();
+        assertThat(deserializedSimpleObject.getString()).isEqualTo(exampleString);
+        assertThat(deserializedSimpleObject.getInteger()).isEqualTo(exampleInteger);
+        assertThat(deserializedSimpleObject.getDecimal()).isEqualTo(exampleDecimal);
     }
 }

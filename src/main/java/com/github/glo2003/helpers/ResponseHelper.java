@@ -21,7 +21,7 @@ public class ResponseHelper {
         else return jsonObjectMapper.writeValueAsString(object);
     }
 
-    public static <T> T isParameterValid(String parameters, Class<T> validationObjectType) throws IOException {
+    public static <T> T deserializeJsonToObject(String parameters, Class<T> validationObjectType) throws IOException {
         return jsonObjectMapper.readValue(parameters, validationObjectType);
     }
 }

@@ -40,7 +40,7 @@ public class ListingsController {
 
     public static Object addListing(Request req, Response res) {
         try {
-            Listing listing = ResponseHelper.isParameterValid(req.body(), Listing.class);
+            Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
             long id = listingsDAO.save(listing);
             res.header("Location", String.format("/listings/%d", id));
             res.status(201);
