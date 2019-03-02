@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import spark.Response;
 
+import java.io.IOException;
+
 public class ResponseHelper {
 
     private static ObjectMapper jsonObjectMapper = new ObjectMapper();
@@ -30,13 +32,7 @@ public class ResponseHelper {
         return jsonObjectMapper.writeValueAsString(object);
     }
 
-    public static <T> Object isParameterValid(String parameter, Class<T> validationObjectType){
-        Object parsedObject = null;
-        try {
-            parsedObject = jsonObjectMapper.readValue(parameter, validationObjectType);
-        } catch (java.io.IOException e) {
-
-        }
-        return parsedObject;
+    public static <T> T isParameterValid(String parameters, Class<T> validationObjectType) throws IOException {
+        return jsonObjectMapper.readValue(parameters, validationObjectType);
     }
 }

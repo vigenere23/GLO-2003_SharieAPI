@@ -12,7 +12,7 @@ public class Owner {
     setEmail("");
   }
 
-  private Owner(
+  public Owner(
     String name,
     String phoneNumber,
     String email
@@ -22,22 +22,18 @@ public class Owner {
     setEmail(email);
   }
 
-  public static Owner create(Object params) {
-    return new Owner(/*TODO parse params, call the private constructor*/);
-  }
-
   /****** SETTERS ******/
 
   public void setName(String name) {
-    name = name;
+    this.name = name;
   }
 
   public void setPhoneNumber(String phoneNumber) {
-    phoneNumber = phoneNumber;
+    this.phoneNumber = phoneNumber;
   }
 
   public void setEmail(String email) {
-    email = email;
+    this.email = email;
   }
 
   /****** GETTERS ******/
