@@ -15,7 +15,7 @@ public class ResponseHelper {
         return "{\"error\":\"" + message + "\"}";
     }
 
-    public static String parseToJson(Object object) throws JsonProcessingException {
+    public static String serializeObjectToJson(Object object) throws JsonProcessingException {
         if (object == null) return "";
         else if (object instanceof String) return (String)object;
         else return jsonObjectMapper.writeValueAsString(object);

@@ -17,6 +17,7 @@ public class ResponseHelperTest {
 
     private String validJsonSimpleObject;
     private String validJsonNestedObject;
+    public String validJsonError;
 
     private SimpleObject simpleObject;
     private NestedObject nestedObject;
@@ -31,17 +32,33 @@ public class ResponseHelperTest {
         validJsonNestedObject = String.format(
                 "{\"string\":\"%s\",\"integer\":%d,\"decimal\":%f,\"simpleObject\":%s}",
                 exampleString, exampleInteger, exampleDecimal, validJsonSimpleObject);
+        validJsonError = String.format("{\"error\":\"%s\"}", exampleString);
+    }
+
+    @Test
+    public void jsonError_shouldParseToValidJsonError() {
+        assertThat(ResponseHelper.errorAsJson(exampleString)).isEqualTo(validJsonError);
+    }
+
+    @Test
+    public void givenNull_parseToJson_shouldGiveEmptyString() throws JsonProcessingException {
+        assertThat(ResponseHelper.serializeObjectToJson(null)).isEqualTo("");
+    }
+
+    @Test
+    public void givenString_parseToJson_shouldGiveSameString() throws JsonProcessingException {
+        assertThat(ResponseHelper.serializeObjectToJson(exampleString)).isEqualTo(exampleString);
     }
 
     @Test
     public void givenSimpleObject_parseToJsonCorrectly() throws JsonProcessingException {
-        String jsonSimpleObject = ResponseHelper.parseToJson(simpleObject);
+        String jsonSimpleObject = ResponseHelper.serializeObjectToJson(simpleObject);
         assertThat(jsonSimpleObject).isEqualTo(validJsonSimpleObject);
     }
 
     @Test
     public void givenNestedObjects_parseToJsonCorrectly() throws JsonProcessingException {
-        String jsonNestedObject = ResponseHelper.parseToJson(nestedObject);
+        String jsonNestedObject = ResponseHelper.serializeObjectToJson(nestedObject);
         assertThat(jsonNestedObject).isEqualTo(validJsonNestedObject);
     }
 
