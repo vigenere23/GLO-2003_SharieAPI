@@ -1,59 +1,61 @@
 package com.github.glo2003.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Listing;
 import spark.Request;
 import spark.Response;
+
+import java.io.IOException;
 
 import static com.github.glo2003.APIServer.listingsDAO;
 
 public class ListingsController {
 
-    private static ObjectMapper jsonObjectMapper = new ObjectMapper();
-
-    public static String getListing(Request req, Response res) {
-        int id = 0;
+    public static Object getListing(Request req, Response res) {
+        String stringId = req.params(":id");
+        long id;
         try {
-            String stringId = req.params(":id");
-            id = Integer.parseInt(stringId);
+            id = Long.parseLong(stringId);
         }
         catch (Exception e) {
-            System.out.println(String.format("Unable to convert id %s to int", id));
-            return "";
+            return new ResponseHelper.ResponseError(String.format("Id '%s' should be of type 'long'", stringId));
         }
 
         Listing listing = listingsDAO.get(id);
+        return ResponseHelper.returnNotNullObjectOrError(
+                res, listing, 404,
+                String.format("No listing found with id '%d'", id));
+    }
 
-        if (listing == null) {
-            System.out.println(String.format("Unable to find listing with id %d", id));
-            return "";
-        }
+    public static Object getAllListings(Request req, Response res) {
+        // TODO
+        return ResponseHelper.EMPTY_RESPONSE;
+    }
 
+    public static Object addListing(Request req, Response res) {
+        //TEST USEFULL POUR MONTRER COMMENT TESTER UN OBJET RECU
+        // String test = "{  \"title\": \"\",  \"description\": \"\",  \"owner\": {  \"name\": \"\",  \"phoneNumber\": \"\",  \"email\": \"\"  }}";
+        // Object TestedObject = ResponseHelper.isParameterValid(test, Listing.class);
+        //Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
         try {
-            System.out.println("Sending response...");
-            return jsonObjectMapper.writeValueAsString(listing);
+            Listing listing = ResponseHelper.isParameterValid(req.body(), Listing.class);
+            long id = listingsDAO.save(listing);
+            res.header("Location", String.format("/listings/%d", id));
+            res.status(201);
+            return ResponseHelper.EMPTY_RESPONSE;
+        }
+        catch (IOException e) {
+            res.status(400);
+            return new ResponseHelper.ResponseError("Les paramêtres ne sont pas valides pour un objet Listing");
         }
         catch (Exception e) {
-            System.out.println("Unable to parse Listing as json");
-            return "";
+            res.status(400);
+            return new ResponseHelper.ResponseError("Le format de la requête est invalide");
         }
     }
 
-    public static String getAllListings(Request req, Response res) {
+    public static Object bookListing(Request req, Response res) {
         // TODO
-        return "";
-    }
-
-    public static String addListing(Request req, Response res) {
-        Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
-        int id = listingsDAO.save(listing);
-        res.header("Location", String.format("/listings/%d", id));
-        res.status(201);
-        return "";
-    }
-
-    public static String bookListing(Request req, Response res) {
-        // TODO
-        return null;
+        return ResponseHelper.EMPTY_RESPONSE;
     }
 }

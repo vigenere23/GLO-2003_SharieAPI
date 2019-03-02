@@ -12,18 +12,14 @@ public class Listing {
     setOwner(new Owner());
   }
 
-  private Listing(
-    String title,
-    String description,
-    Owner owner
-  ) {
+  public Listing(String title, String description, Owner owner) {
     setTitle(title);
     setDescription(description);
     setOwner(owner);
   }
 
-  public static Listing create(Object params) {
-    return new Listing(/*TODO parse params, call private constructor*/);
+  public Listing(String title, String description, String ownerName, String ownerPhoneNumber, String ownerEmail) {
+    this(title, description, new Owner(ownerName, ownerPhoneNumber, ownerEmail));
   }
 
   /***** SETTERS ******/
