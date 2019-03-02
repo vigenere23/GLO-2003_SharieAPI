@@ -1,5 +1,7 @@
 package com.github.glo2003.controllers;
 
+import com.github.glo2003.helpers.ItemAlreadyExistsException;
+import com.github.glo2003.helpers.ItemNotFoundException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Listing;
 import spark.Request;
@@ -18,13 +20,17 @@ public class ListingsController {
             id = Long.parseLong(stringId);
         }
         catch (Exception e) {
-            return new ResponseHelper.ResponseError(String.format("Id '%s' should be of type 'long'", stringId));
+            res.status(400);
+            return ResponseHelper.errorAsJson(String.format("Id '%s' should be of type 'long'", stringId));
         }
 
-        Listing listing = listingsDAO.get(id);
-        return ResponseHelper.returnNotNullObjectOrError(
-                res, listing, 404,
-                String.format("No listing found with id '%d'", id));
+        try {
+            return listingsDAO.get(id);
+        }
+        catch (ItemNotFoundException e) {
+            res.status(404);
+            return ResponseHelper.errorAsJson(e.getMessage());
+        }
     }
 
     public static Object getAllListings(Request req, Response res) {
@@ -33,10 +39,6 @@ public class ListingsController {
     }
 
     public static Object addListing(Request req, Response res) {
-        //TEST USEFULL POUR MONTRER COMMENT TESTER UN OBJET RECU
-        // String test = "{  \"title\": \"\",  \"description\": \"\",  \"owner\": {  \"name\": \"\",  \"phoneNumber\": \"\",  \"email\": \"\"  }}";
-        // Object TestedObject = ResponseHelper.isParameterValid(test, Listing.class);
-        //Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
         try {
             Listing listing = ResponseHelper.isParameterValid(req.body(), Listing.class);
             long id = listingsDAO.save(listing);
@@ -44,13 +46,17 @@ public class ListingsController {
             res.status(201);
             return ResponseHelper.EMPTY_RESPONSE;
         }
+        catch (ItemAlreadyExistsException e) {
+            res.status(400);
+            return ResponseHelper.errorAsJson(e.getMessage());
+        }
         catch (IOException e) {
             res.status(400);
-            return new ResponseHelper.ResponseError("Les paramêtres ne sont pas valides pour un objet Listing");
+            return ResponseHelper.errorAsJson("Parameters are not valid for creating an object 'Listing'");
         }
         catch (Exception e) {
             res.status(400);
-            return new ResponseHelper.ResponseError("Le format de la requête est invalide");
+            return ResponseHelper.errorAsJson("Request format was not valid");
         }
     }
 

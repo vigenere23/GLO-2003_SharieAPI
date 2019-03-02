@@ -40,6 +40,7 @@ public class APIServer
 
         exception(Exception.class, (exception, request, response) -> {
             response.status(500);
+            response.body(ResponseHelper.errorAsJson(exception.getMessage()));
             exception.printStackTrace();
         });
     }
