@@ -63,6 +63,21 @@ public class APIServerTest {
     }
 
     @Test
+    public void givenNewServer_GETAllListings_shouldReturnStatus200() throws HttpClientException {
+        GetMethod getAllListings = testServer.get("/listings", false);
+        HttpResponse httpResponse = testServer.execute(getAllListings);
+        assertThat(httpResponse.code()).isEqualTo(200);
+    }
+
+    @Test
+    public void givenNewServer_GETAllListings_shouldReturnDefaultListingNestedInListings() throws HttpClientException {
+        GetMethod getAllListings = testServer.get("/listings", false);
+        HttpResponse httpResponse = testServer.execute(getAllListings);
+        String expectedResponseBody = "{\"listings\":[" + validListingsPost + "]}";
+        assertThat(new String(httpResponse.body())).isEqualTo(expectedResponseBody);
+    }
+
+    @Test
     public void givenPostValidListing_GETListingWithReturnedId_shouldReturnSameJsonAsBody() throws HttpClientException {
         PostMethod postListing = testServer.post("/listings", validListingsPost, false);
         HttpResponse httpPostResponse = testServer.execute(postListing);

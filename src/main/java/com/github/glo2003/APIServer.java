@@ -36,6 +36,7 @@ public class APIServer
         get("/ping", (req, res) -> "pong");
 
         post("/listings", ListingsController::addListing, ResponseHelper::serializeObjectToJson);
+        get("/listings", ListingsController::getAllListings, ResponseHelper::serializeObjectToJson);
         get("/listings/:id", ListingsController::getListing, ResponseHelper::serializeObjectToJson);
 
         exception(Exception.class, (exception, request, response) -> {

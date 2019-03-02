@@ -4,6 +4,7 @@ import com.github.glo2003.helpers.ItemAlreadyExistsException;
 import com.github.glo2003.helpers.ItemNotFoundException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Listing;
+import com.github.glo2003.models.ListingsList;
 import spark.Request;
 import spark.Response;
 
@@ -34,8 +35,7 @@ public class ListingsController {
     }
 
     public static Object getAllListings(Request req, Response res) {
-        // TODO
-        return ResponseHelper.EMPTY_RESPONSE;
+        return new ListingsList(listingsDAO.getAll());
     }
 
     public static Object addListing(Request req, Response res) {

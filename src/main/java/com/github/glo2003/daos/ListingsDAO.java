@@ -5,7 +5,9 @@ import com.github.glo2003.helpers.ItemNotFoundException;
 import com.github.glo2003.helpers.MathHelper;
 import com.github.glo2003.models.Listing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ListingsDAO implements IDAO<Listing> {
@@ -19,6 +21,11 @@ public class ListingsDAO implements IDAO<Listing> {
       throw new ItemNotFoundException(String.format("No listing with id '%d' was found", id));
     }
     return listing;
+  }
+
+  @Override
+  public List<Listing> getAll() {
+    return new ArrayList<>(listings.values());
   }
 
   @Override
