@@ -12,6 +12,7 @@ import spark.Response;
 import java.io.IOException;
 
 import static spark.Spark.get;
+import static spark.Spark.path;
 import static spark.Spark.post;
 
 public class ListingsController {
@@ -28,6 +29,8 @@ public class ListingsController {
 
         post("/listings", this::addListing, ResponseHelper::serializeObjectToJson);
         get("/listings/:id", this::getListing, ResponseHelper::serializeObjectToJson);
+
+        post("/listing/:id/book", this::bookListing, ResponseHelper::serializeObjectToJson);
     }
 
     public Object getListing(Request req, Response res) {
@@ -77,7 +80,24 @@ public class ListingsController {
     }
 
     public Object bookListing(Request req, Response res) {
-        // TODO
-        return ResponseHelper.EMPTY_RESPONSE;
+        // TODO : Get le listing correspondant au ID
+        // TODO : Ajouter la/les dates dans le champ "Bookings"
+        // TODO : 2 options : Soit modifier le truc direct dans la map ou l'écraser
+
+        try {
+            Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
+            // thing = new booking
+
+            res.status(204);
+            return ResponseHelper.EMPTY_RESPONSE;
+        }
+        catch (IOException e) {
+            res.status(400);
+            return ResponseHelper.errorAsJson("Parameters are not valid for creating an object 'Listing'");
+        }
+        catch (Exception e) {
+            res.status(400);
+            return ResponseHelper.errorAsJson("Request format was not valid");
+        }
     }
 }
