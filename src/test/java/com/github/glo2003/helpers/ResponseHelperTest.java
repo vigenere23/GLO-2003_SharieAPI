@@ -1,7 +1,8 @@
-package com.github.glo2003;
+package com.github.glo2003.helpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.glo2003.helpers.ResponseHelper;
+import com.github.glo2003.stubs.NestedObject;
+import com.github.glo2003.stubs.SimpleObject;
 import org.junit.Before;
 import org.junit.Test;
 

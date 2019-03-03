@@ -1,4 +1,4 @@
-package com.github.glo2003;
+package com.github.glo2003.stubs;
 
 public class NestedObject {
     private String string;

@@ -1,10 +1,11 @@
-package com.github.glo2003;
+package com.github.glo2003.controllers;
 
 import com.despegar.http.client.GetMethod;
 import com.despegar.http.client.HttpClientException;
 import com.despegar.http.client.HttpResponse;
 import com.despegar.http.client.PostMethod;
 import com.despegar.sparkjava.test.SparkServer;
+import com.github.glo2003.APIServer;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -13,20 +14,18 @@ import spark.servlet.SparkApplication;
 import static com.google.common.truth.Truth.assertThat;
 /*https://github.com/despegar/spark-test*/
 
-public class APIServerTest {
+public class ListingsControllerTest {
 
     private final String validListingsPost = "{\"title\":\"New listing\",\"description\":\"Just a new listing\",\"owner\":{\"name\":\"John Smith\",\"phoneNumber\":\"8191112222\",\"email\":\"test@test.com\"}}";
     private final String validListingsPost2 = "{\"title\":\"Another listing\",\"description\":\"Just another listing\",\"owner\":{\"name\":\"Mary Smith\",\"phoneNumber\":\"4186669999\",\"email\":\"name@email.com\"}}";
 
-    public static class APIServerTestSparkApplication implements SparkApplication {
+    public static class ListingsControllerTestSparkApplication implements SparkApplication {
         @Override
-        public void init() {
-            APIServer.main(null);
-        }
+        public void init() { com.github.glo2003.APIServer.main(null); }
     }
 
     @ClassRule
-    public static SparkServer<APIServerTestSparkApplication> testServer = new SparkServer<>(APIServerTestSparkApplication.class, 9090);
+    public static SparkServer<ListingsControllerTestSparkApplication> testServer = new SparkServer<>(ListingsControllerTestSparkApplication.class, 9090);
 
     @Before
     public void beforeSetup() {
