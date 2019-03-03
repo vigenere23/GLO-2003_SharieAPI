@@ -41,4 +41,8 @@ public class ListingsDAO implements IDAO<Listing> {
     listings.put(id, listing);
     return id;
   }
+
+  public void clear() {
+    listings = new HashMap<>();
+  }
 }
