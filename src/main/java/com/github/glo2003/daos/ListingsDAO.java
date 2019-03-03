@@ -1,5 +1,7 @@
 package com.github.glo2003.daos;
 
+import com.github.glo2003.helpers.ItemAlreadyExistsException;
+import com.github.glo2003.helpers.ItemNotFoundException;
 import com.github.glo2003.helpers.MathHelper;
 import com.github.glo2003.models.Listing;
 
@@ -13,14 +15,23 @@ public class ListingsDAO implements IDAO<Listing> {
   private Map<Long, Listing> listings = new HashMap<>();
 
   @Override
-  public Listing get(long id) {
-    return listings.get(id);
+  public Listing get(long id) throws ItemNotFoundException {
+    Listing listing = listings.get(id);
+    if (listing == null) {
+      throw new ItemNotFoundException(String.format("No listing with id '%d' was found", id));
+    }
+    return listing;
   }
 
   @Override
-  public long save(Listing listing) {
+  public List<Listing> getAll() {
+    return new ArrayList<>(listings.values());
+  }
+
+  @Override
+  public long save(Listing listing) throws ItemAlreadyExistsException {
     if (listings.containsValue(listing)) {
-      // TODO return 0, the key or throw exception
+      throw new ItemAlreadyExistsException("The listing already exists");
     }
 
     long id = MathHelper.randomLong();
@@ -31,8 +42,7 @@ public class ListingsDAO implements IDAO<Listing> {
     return id;
   }
 
-  @Override
-  public List<Listing> getAll() {
-    return new ArrayList<>(listings.values());
+  public void clear() {
+    listings = new HashMap<>();
   }
 }

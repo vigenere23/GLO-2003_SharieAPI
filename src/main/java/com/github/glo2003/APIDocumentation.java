@@ -10,7 +10,7 @@ public class APIDocumentation {
      *
      * @apiSuccess {String[]} availabilities List of date in format [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601). By default, it should contain 7 dates, starting from today. The time is not important as it is ignored by the frontend.
      * @apiSuccessExample Response
-     * 200 HTTP Ok
+     * 200 HTTP OK
      * {
      *   "listings": [{
      *     "title": ""::string,
@@ -25,6 +25,20 @@ public class APIDocumentation {
      *   ...
      *   ]
      * }
+     *
+     * @apiError ListingNotFound The listing with `id` was not found.
+     * @apiErrorExample Listing not found
+     * 404 HTTP NOT FOUND
+     * {
+     *     "error" : "No listing with id '1224521054' was not found"
+     * }
+     *
+     * @apiError WrongParamters The given listing's id could not be parsed as `long` type
+     * @apiErrorExample Wrong id
+     * 400 HTTP BAD REQUEST
+     * {
+     *     "error": "Id '1234test5678' should be of type 'long'"
+     * }
      */
 
     /**
@@ -34,10 +48,7 @@ public class APIDocumentation {
      *
      * @apiSuccess {String[]} availabilities List of date in format [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601). By default, it should contain 7 dates, starting from today. The time is not important as it is ignored by the frontend.
      * @apiSuccessExample Response
-     * ###
-     *
-     * ```
-     * 200 HTTP Ok
+     * 200 HTTP OK
      * {
      *   "title": ""::string,
      *   "description": ""::string,
@@ -48,7 +59,6 @@ public class APIDocumentation {
      *     "email": ""::string,
      *   }
      * }
-     * ```
      */
 
     /**
@@ -74,6 +84,13 @@ public class APIDocumentation {
      * @apiSuccessExample Response
      *    HTTP 201 CREATED
      *    Location: /listings/:id
+     *
+     * @apiError WrongParameters The parameters sent to create a `Listing` don't match those of the listing's class or the body format is not valid JSON
+     * @apiErrorExample Wrong parameters
+     * 400 HTTP BAD REQUEST
+     * {
+     *     "error" : "Parameters are not valid for creating an object 'Listing'"
+     * }
      */
 
     /**
@@ -92,6 +109,6 @@ public class APIDocumentation {
      * }
      *
      * @apiSuccessExample Response
-     * 204 HTTP No Content
+     * 204 HTTP NO CONTENT
      */
 }

@@ -2,7 +2,8 @@ package com.github.glo2003.helpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import spark.Response;
+
+import java.io.IOException;
 
 public class ResponseHelper {
 
@@ -10,23 +11,17 @@ public class ResponseHelper {
 
     public final static String EMPTY_RESPONSE = "";
 
-    public static class ResponseError {
-        public String error;
-        public ResponseError(String error) {
-            this.error = error;
-        }
+    public static String errorAsJson(String message) {
+        return "{\"error\":\"" + message + "\"}";
     }
 
-    public static Object returnNotNullObjectOrError(Response res, Object object, int statusCode, String errorMessage) {
-        if (object == null) {
-            res.status(statusCode);
-            return new ResponseError(errorMessage);
-        }
-        return object;
+    public static String serializeObjectToJson(Object object) throws JsonProcessingException {
+        if (object == null) return "";
+        else if (object instanceof String) return (String)object;
+        else return jsonObjectMapper.writeValueAsString(object);
     }
 
-    public static String parseToJson(Object object) throws JsonProcessingException {
-        if (object == null || object == "") return "";
-        return jsonObjectMapper.writeValueAsString(object);
+    public static <T> T deserializeJsonToObject(String parameters, Class<T> validationObjectType) throws IOException {
+        return jsonObjectMapper.readValue(parameters, validationObjectType);
     }
 }

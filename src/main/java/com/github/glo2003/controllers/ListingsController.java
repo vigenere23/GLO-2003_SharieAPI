@@ -1,44 +1,82 @@
 package com.github.glo2003.controllers;
 
+import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.helpers.ItemAlreadyExistsException;
+import com.github.glo2003.helpers.ItemNotFoundException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Listing;
+import com.github.glo2003.models.ListingsList;
 import spark.Request;
 import spark.Response;
 
-import static com.github.glo2003.APIServer.listingsDAO;
+import java.io.IOException;
+
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 public class ListingsController {
 
-    public static Object getListing(Request req, Response res) {
+    public static ListingsDAO listingsDAO;
+
+    public ListingsController() {
+        setupRoutes();
+        listingsDAO = new ListingsDAO();
+    }
+
+    private void setupRoutes() {
+        get("/listings", this::getAllListings, ResponseHelper::serializeObjectToJson);
+
+        post("/listings", this::addListing, ResponseHelper::serializeObjectToJson);
+        get("/listings/:id", this::getListing, ResponseHelper::serializeObjectToJson);
+    }
+
+    public Object getListing(Request req, Response res) {
         String stringId = req.params(":id");
         long id;
         try {
             id = Long.parseLong(stringId);
         }
         catch (Exception e) {
-            return new ResponseHelper.ResponseError(String.format("Id '%s' should be of type 'long'", stringId));
+            res.status(400);
+            return ResponseHelper.errorAsJson(String.format("Id '%s' should be of type 'long'", stringId));
         }
 
-        Listing listing = listingsDAO.get(id);
-        return ResponseHelper.returnNotNullObjectOrError(
-                res, listing, 404,
-                String.format("No listing found with id '%d'", id));
+        try {
+            return listingsDAO.get(id);
+        }
+        catch (ItemNotFoundException e) {
+            res.status(404);
+            return ResponseHelper.errorAsJson(e.getMessage());
+        }
     }
 
-    public static Object getAllListings(Request req, Response res) {
-        // TODO
-        return ResponseHelper.EMPTY_RESPONSE;
+    public Object getAllListings(Request req, Response res) {
+        return new ListingsList(listingsDAO.getAll());
     }
 
-    public static String addListing(Request req, Response res) {
-        Listing listing = new Listing(/*TODO add post data as a Map or Object or...*/);
-        long id = listingsDAO.save(listing);
-        res.header("Location", String.format("/listings/%d", id));
-        res.status(201);
-        return ResponseHelper.EMPTY_RESPONSE;
+    public Object addListing(Request req, Response res) {
+        try {
+            Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
+            long id = listingsDAO.save(listing);
+            res.header("Location", String.format("/listings/%d", id));
+            res.status(201);
+            return ResponseHelper.EMPTY_RESPONSE;
+        }
+        catch (ItemAlreadyExistsException e) {
+            res.status(400);
+            return ResponseHelper.errorAsJson(e.getMessage());
+        }
+        catch (IOException e) {
+            res.status(400);
+            return ResponseHelper.errorAsJson("Parameters are not valid for creating an object 'Listing'");
+        }
+        catch (Exception e) {
+            res.status(400);
+            return ResponseHelper.errorAsJson("Request format was not valid");
+        }
     }
 
-    public static Object bookListing(Request req, Response res) {
+    public Object bookListing(Request req, Response res) {
         // TODO
         return ResponseHelper.EMPTY_RESPONSE;
     }

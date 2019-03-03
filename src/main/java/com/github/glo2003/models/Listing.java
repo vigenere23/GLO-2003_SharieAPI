@@ -2,9 +2,9 @@ package com.github.glo2003.models;
 
 public class Listing {
 
-  private String _title;
-  private String _description;
-  private Owner _owner;
+  private String title;
+  private String description;
+  private Owner owner;
 
   public Listing() {
     setTitle("");
@@ -12,45 +12,41 @@ public class Listing {
     setOwner(new Owner());
   }
 
-  private Listing(
-    String title,
-    String description,
-    Owner owner
-  ) {
+  public Listing(String title, String description, Owner owner) {
     setTitle(title);
     setDescription(description);
     setOwner(owner);
   }
 
-  public static Listing create(Object params) {
-    return new Listing(/*TODO parse params, call private constructor*/);
+  public Listing(String title, String description, String ownerName, String ownerPhoneNumber, String ownerEmail) {
+    this(title, description, new Owner(ownerName, ownerPhoneNumber, ownerEmail));
   }
 
   /***** SETTERS ******/
 
   public void setTitle(String title) {
-    _title = title;
+    this.title = title;
   }
 
   public void setDescription(String description) {
-    _description = description;
+    this.description = description;
   }
 
   public void setOwner(Owner owner) {
-    _owner = owner;
+    this.owner = owner;
   }
 
   /***** GETTERS ******/
 
   public String getTitle() {
-    return _title;
+    return title;
   }
 
   public String getDescription() {
-    return _description;
+    return description;
   }
 
   public Owner getOwner() {
-    return _owner;
+    return owner;
   }
 }
