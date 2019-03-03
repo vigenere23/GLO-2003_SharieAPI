@@ -1,5 +1,6 @@
 package com.github.glo2003.controllers;
 
+import com.github.glo2003.daos.ListingsDAO;
 import com.github.glo2003.helpers.ItemAlreadyExistsException;
 import com.github.glo2003.helpers.ItemNotFoundException;
 import com.github.glo2003.helpers.ResponseHelper;
@@ -10,11 +11,26 @@ import spark.Response;
 
 import java.io.IOException;
 
-import static com.github.glo2003.APIServer.listingsDAO;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 public class ListingsController {
 
-    public static Object getListing(Request req, Response res) {
+    public static ListingsDAO listingsDAO;
+
+    public ListingsController() {
+        setupRoutes();
+        listingsDAO = new ListingsDAO();
+    }
+
+    private void setupRoutes() {
+        get("/listings", this::getAllListings, ResponseHelper::serializeObjectToJson);
+
+        post("/listings", this::addListing, ResponseHelper::serializeObjectToJson);
+        get("/listings/:id", this::getListing, ResponseHelper::serializeObjectToJson);
+    }
+
+    public Object getListing(Request req, Response res) {
         String stringId = req.params(":id");
         long id;
         try {
@@ -34,11 +50,11 @@ public class ListingsController {
         }
     }
 
-    public static Object getAllListings(Request req, Response res) {
+    public Object getAllListings(Request req, Response res) {
         return new ListingsList(listingsDAO.getAll());
     }
 
-    public static Object addListing(Request req, Response res) {
+    public Object addListing(Request req, Response res) {
         try {
             Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
             long id = listingsDAO.save(listing);
@@ -60,7 +76,7 @@ public class ListingsController {
         }
     }
 
-    public static Object bookListing(Request req, Response res) {
+    public Object bookListing(Request req, Response res) {
         // TODO
         return ResponseHelper.EMPTY_RESPONSE;
     }

@@ -1,7 +1,7 @@
 package com.github.glo2003;
 
 import com.github.glo2003.controllers.ListingsController;
-import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.controllers.MainController;
 import com.github.glo2003.helpers.ResponseHelper;
 import javaslang.control.Try;
 
@@ -9,17 +9,19 @@ import static spark.Spark.*;
 
 public class APIServer
 {
-    public static ListingsDAO listingsDAO;
+    private static ListingsController listingsController;
+    private static MainController mainController;
 
     public APIServer() {}
 
     public static void main(String[] args)
     {
-        listingsDAO = new ListingsDAO();
-
         setupPort();
-        setupRoutes();
         enableCORS("*", "*", "*");
+        setupExceptionHandling();
+
+        mainController = new MainController();
+        listingsController = new ListingsController();
     }
 
     private static void setupPort() {
@@ -31,15 +33,7 @@ public class APIServer
         port(portNumber);
     }
 
-    private static void setupRoutes() {
-        get("/", (req, res) -> "Sharie API");
-        get("/ping", (req, res) -> "pong");
-
-        get("/listings", ListingsController::getAllListings, ResponseHelper::serializeObjectToJson);
-
-        post("/listings", ListingsController::addListing, ResponseHelper::serializeObjectToJson);
-        get("/listings/:id", ListingsController::getListing, ResponseHelper::serializeObjectToJson);
-
+    private static void setupExceptionHandling() {
         exception(Exception.class, (exception, request, response) -> {
             response.status(500);
             response.body(ResponseHelper.errorAsJson(exception.getMessage()));
@@ -48,7 +42,6 @@ public class APIServer
     }
 
     private static void enableCORS(final String origin, final String methods, final String headers) {
-
         options("/*", (request, response) -> {
 
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");

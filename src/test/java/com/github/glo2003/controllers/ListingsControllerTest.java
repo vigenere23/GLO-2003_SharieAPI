@@ -5,7 +5,7 @@ import com.despegar.http.client.HttpClientException;
 import com.despegar.http.client.HttpResponse;
 import com.despegar.http.client.PostMethod;
 import com.despegar.sparkjava.test.SparkServer;
-import com.github.glo2003.APIServer;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -21,15 +21,22 @@ public class ListingsControllerTest {
 
     public static class ListingsControllerTestSparkApplication implements SparkApplication {
         @Override
-        public void init() { com.github.glo2003.APIServer.main(null); }
+        public void init() {
+            new ListingsController();
+        }
     }
 
     @ClassRule
     public static SparkServer<ListingsControllerTestSparkApplication> testServer = new SparkServer<>(ListingsControllerTestSparkApplication.class, 9090);
 
+    @AfterClass
+    public static void stopServer() {
+
+    }
+
     @Before
-    public void beforeSetup() {
-        APIServer.listingsDAO.clear();
+    public void resetListingsDao() {
+        testServer.getApplication().init();
     }
 
     private HttpResponse getSingleListing(String id) throws HttpClientException {
