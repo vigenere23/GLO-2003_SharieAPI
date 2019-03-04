@@ -13,7 +13,13 @@ public class Listing {
   public Listing() {
     setTitle("");
     setDescription("");
-    setAvailabilities(new ArrayList<>());
+    setAvailabilities(new ArrayList<LocalDateTime>() {
+      {
+        for(int i = 0; i < 7; i++) {
+          add(LocalDateTime.now().plusDays(i));
+        }
+      }
+    });
     setOwner(new Owner());
   }
 
