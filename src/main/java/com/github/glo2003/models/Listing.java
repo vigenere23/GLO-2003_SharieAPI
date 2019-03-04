@@ -1,5 +1,8 @@
 package com.github.glo2003.models;
 
+import com.github.glo2003.helpers.ItemNotFoundException;
+
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -71,9 +74,11 @@ public class Listing {
   }
 
   public List<String> getAvailabilities() {
+
     //TODO Maybe LocalDateTime is not the best
     //TODO Instant is ISO-8601 based
     // But LocalDateTime works best for getting/setting days...
+
     List<String> ISO8601Dates = new ArrayList<>();
     for (Instant instant : availabilities) {
       ISO8601Dates.add(instant.toString());
@@ -85,8 +90,19 @@ public class Listing {
 
   /***** LOGIC *****/
 
-  public void book(List<LocalDateTime> bookings) {
+  public void book(List<LocalDateTime> bookings) throws ItemNotFoundException {
     //TODO remove date from availabilities
     //TODO throw exception if date not in availabilities
+
+    // On itère dans la liste booking et on recherche les entrées similaires
+    for(LocalDateTime localDateTime : bookings) {
+      if(availabilities.contains(localDateTime))
+        availabilities.remove(localDateTime);
+      else{
+        throw new ItemNotFoundException("One of the date is not available");
+      }
+    }
+
+
   }
 }

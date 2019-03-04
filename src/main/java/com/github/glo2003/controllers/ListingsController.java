@@ -82,9 +82,6 @@ public class ListingsController {
     }
 
     public Object bookListing(Request req, Response res) throws Exception {
-        // TODO : Get le array Booking
-        // TODO : Retirer la/les dates dans le champ "availabilities"
-        // TODO : Si une des dates n'est pas dans la liste, retourner une erreur
 
         // Get le id et le listing correspondant, possibilité d'utiliser getListing? (Faut prob ajouter qql truc à mth)
         String stringId = req.params(":id");
@@ -98,16 +95,19 @@ public class ListingsController {
             return ResponseHelper.errorAsJson(String.format("Id '%s' should be of type 'long'", stringId));
         }
 
+        // Get le array en LocalDateTime de Booking
         Bookings bookings = ResponseHelper.deserializeJsonToObject(req.body(), Bookings.class);
 
         try {
+            // On get le listing correspondant au ID
             Listing listing = listingsDAO.get(id);
             listing.book(bookings.getBookings());
+
             res.status(204);
             return ResponseHelper.EMPTY_RESPONSE;
         }
         catch (ItemNotFoundException e) {
-            res.status(404);
+            res.status(402);
             return ResponseHelper.errorAsJson(e.getMessage());
         }
     }

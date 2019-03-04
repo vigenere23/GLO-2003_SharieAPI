@@ -24,9 +24,4 @@ public class ResponseHelper {
     public static <T> T deserializeJsonToObject(String parameters, Class<T> validationObjectType) throws IOException {
         return jsonObjectMapper.readValue(parameters, validationObjectType);
     }
-
-    // TODO : Méthode pour désérializer seulement un array et pas un listing
-    public static <T> T deserializeJsonToArray(String parameters, Class<T> validationObjectType) throws IOException {
-        return jsonObjectMapper.readValue(parameters, validationObjectType);
-    }
 }
