@@ -5,9 +5,7 @@ import com.github.glo2003.helpers.ItemNotFoundException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 public class Listing {
 
@@ -44,13 +42,7 @@ public class Listing {
 
   public void initAvailabilities() {
     availabilities = new ArrayList<>();
-    Calendar now = Calendar.getInstance();
-    now.setTimeZone(TimeZone.getTimeZone("UTC"));
-    now.set(Calendar.HOUR_OF_DAY, 0);
-    now.set(Calendar.MINUTE, 0);
-    now.set(Calendar.SECOND, 0);
-    now.set(Calendar.MILLISECOND, 0);
-    Instant today = now.toInstant();
+    Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
 
     for(int i = 0; i < 7; i++) {
       availabilities.add(today.plus(i, ChronoUnit.DAYS));
@@ -71,18 +63,7 @@ public class Listing {
     return description;
   }
 
-  public List<String> getAvailabilities() {
-
-    //TODO Maybe LocalDateTime is not the best
-    //TODO Instant is ISO-8601 based
-    // But LocalDateTime works best for getting/setting days...
-
-    List<String> ISO8601Dates = new ArrayList<>();
-    for (Instant instant : availabilities) {
-      ISO8601Dates.add(instant.toString());
-    }
-    return ISO8601Dates;
-  }
+  public List<Instant> getAvailabilities() { return availabilities; }
 
   public Owner getOwner() { return owner; }
 

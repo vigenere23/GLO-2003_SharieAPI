@@ -1,12 +1,13 @@
 package com.github.glo2003.controllers;
 
 import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.dtos.ListingDTO;
+import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.helpers.ItemAlreadyExistsException;
 import com.github.glo2003.helpers.ItemNotFoundException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Bookings;
 import com.github.glo2003.models.Listing;
-import com.github.glo2003.models.ListingsList;
 import spark.Request;
 import spark.Response;
 
@@ -45,7 +46,8 @@ public class ListingsController {
         }
 
         try {
-            return listingsDAO.get(id);
+            Listing listing = listingsDAO.get(id);
+            return new ListingDTO(listing);
         }
         catch (ItemNotFoundException e) {
             res.status(404);
@@ -54,7 +56,7 @@ public class ListingsController {
     }
 
     public Object getAllListings(Request req, Response res) {
-        return new ListingsList(listingsDAO.getAll());
+        return new ListingDTOList(listingsDAO.getAll());
     }
 
     public Object addListing(Request req, Response res) {
