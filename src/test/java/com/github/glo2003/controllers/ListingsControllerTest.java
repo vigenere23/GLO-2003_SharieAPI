@@ -66,6 +66,12 @@ public class ListingsControllerTest {
     }
 
     @Test
+    public void givenNewServer_POSTValidListing_shouldReturnEmptyBody() throws HttpClientException {
+        HttpResponse httpResponse = postListing(validListingsPost);
+        assertThat(new String(httpResponse.body())).isEmpty();
+    }
+
+    @Test
     public void givenNewServer_POSTListingWithValidBody_shouldReturnCorrectHeaderLocation() throws HttpClientException {
         HttpResponse httpResponse = postListing(validListingsPost);
         assertThat(httpResponse.headers()).containsKey("Location");
