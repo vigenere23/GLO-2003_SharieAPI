@@ -91,6 +91,16 @@ public class ListingsControllerTest {
     }
 
     @Test
+    public void givenServerWithListing_GETSingleListingWithListingId_shouldReturnStatus200() throws HttpClientException {
+        HttpResponse httpResponse1 = postListing(validListingsPost);
+        String[] SlashSplittedHeaderLocation = httpResponse1.headers().get("Location").get(0).split("/");
+        String id = SlashSplittedHeaderLocation[SlashSplittedHeaderLocation.length-1];
+
+        HttpResponse httpResponse = getSingleListing(id);
+        assertThat(httpResponse.code()).isEqualTo(200);
+    }
+
+    @Test
     public void givenPostValidListing_GETSingleListing_shouldReturnSameJsonAsBody() throws HttpClientException {
         HttpResponse httpResponse = postListing(validListingsPost);
         String[] SlashSplittedHeaderLocation = httpResponse.headers().get("Location").get(0).split("/");
