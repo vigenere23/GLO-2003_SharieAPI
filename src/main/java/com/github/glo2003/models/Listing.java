@@ -7,30 +7,29 @@ public class Listing {
 
   private String title;
   private String description;
-  private ArrayList<LocalDateTime> availabilities;
+  private LocalDateTime[] availabilities;
   private Owner owner;
 
   public Listing() {
     setTitle("");
     setDescription("");
-    setAvailabilities(new ArrayList<LocalDateTime>() {
-      {
-        for(int i = 0; i < 7; i++) {
-          add(LocalDateTime.now().plusDays(i));
-        }
-      }
-    });
+
+    // TODO : Mettre le for à bonne place?
+    for(int i=0;i<7;i++)
+      availabilities[i] = LocalDateTime.now().plusDays(i);
+    setAvailabilities(availabilities);
+
     setOwner(new Owner());
   }
 
-  public Listing(String title, String description, ArrayList<LocalDateTime> availabilities, Owner owner) {
+  public Listing(String title, String description, LocalDateTime[] availabilities, Owner owner) {
     setTitle(title);
     setDescription(description);
     setAvailabilities(availabilities);
     setOwner(owner);
   }
 
-  public Listing(String title, String description, ArrayList<LocalDateTime> availabilities, String ownerName, String ownerPhoneNumber, String ownerEmail) {
+  public Listing(String title, String description, LocalDateTime[] availabilities, String ownerName, String ownerPhoneNumber, String ownerEmail) {
     this(title, description, availabilities, new Owner(ownerName, ownerPhoneNumber, ownerEmail));
   }
 
@@ -44,7 +43,7 @@ public class Listing {
     this.description = description;
   }
 
-  public void setAvailabilities(ArrayList<LocalDateTime> availabilities) {this.availabilities = availabilities;}
+  public void setAvailabilities(LocalDateTime[] availabilities) {this.availabilities = availabilities;}
 
   public void setOwner(Owner owner) {
     this.owner = owner;
@@ -60,7 +59,7 @@ public class Listing {
     return description;
   }
 
-  public ArrayList<LocalDateTime> getAvailabilities() { return availabilities;}
+  public LocalDateTime[] getAvailabilities() { return availabilities;}
 
   public Owner getOwner() {
     return owner;

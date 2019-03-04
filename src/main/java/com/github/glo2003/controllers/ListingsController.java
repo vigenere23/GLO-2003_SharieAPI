@@ -10,6 +10,7 @@ import spark.Request;
 import spark.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static spark.Spark.get;
 import static spark.Spark.path;
@@ -80,24 +81,30 @@ public class ListingsController {
     }
 
     public Object bookListing(Request req, Response res) {
-        // TODO : Get le listing correspondant au ID
+        // TODO : Get le array Booking
         // TODO : Retirer la/les dates dans le champ "availabilities"
         // TODO : Si une des dates n'est pas dans la liste, retourner une erreur
 
+        // Get le id et le listing correspondant, possibilité d'utiliser getListing? (Faut prob ajouter qql truc à mth)
+        String stringId = req.params(":id");
+        long id;
         try {
-            Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
-            // thing = new booking
-
-            res.status(204);
-            return ResponseHelper.EMPTY_RESPONSE;
-        }
-        catch (IOException e) {
-            res.status(400);
-            return ResponseHelper.errorAsJson("Parameters are not valid for creating an object 'Listing'");
+            id = Long.parseLong(stringId);
         }
         catch (Exception e) {
             res.status(400);
-            return ResponseHelper.errorAsJson("Request format was not valid");
+            return ResponseHelper.errorAsJson(String.format("Id '%s' should be of type 'long'", stringId));
         }
+        try {
+            listingsDAO.get(id);
+        }
+        catch (ItemNotFoundException e) {
+            res.status(404);
+            return ResponseHelper.errorAsJson(e.getMessage());
+        }
+
+
+
+        return ResponseHelper.EMPTY_RESPONSE;
     }
 }
