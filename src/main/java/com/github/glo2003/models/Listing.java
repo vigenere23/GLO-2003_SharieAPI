@@ -2,9 +2,7 @@ package com.github.glo2003.models;
 
 import com.github.glo2003.helpers.ItemNotFoundException;
 
-import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -90,19 +88,13 @@ public class Listing {
 
   /***** LOGIC *****/
 
-  public void book(List<LocalDateTime> bookings) throws ItemNotFoundException {
-    //TODO remove date from availabilities
-    //TODO throw exception if date not in availabilities
-
-    // On itère dans la liste booking et on recherche les entrées similaires
-    for(LocalDateTime localDateTime : bookings) {
-      if(availabilities.contains(localDateTime))
-        availabilities.remove(localDateTime);
-      else{
+  public void book(List<Instant> bookings) throws ItemNotFoundException {
+    for(Instant instant : bookings) {
+      if (availabilities.contains(instant))
+        availabilities.remove(instant);
+      else {
         throw new ItemNotFoundException("One of the date is not available");
       }
     }
-
-
   }
 }
