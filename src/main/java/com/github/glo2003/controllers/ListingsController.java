@@ -4,6 +4,7 @@ import com.github.glo2003.daos.ListingsDAO;
 import com.github.glo2003.helpers.ItemAlreadyExistsException;
 import com.github.glo2003.helpers.ItemNotFoundException;
 import com.github.glo2003.helpers.ResponseHelper;
+import com.github.glo2003.models.Bookings;
 import com.github.glo2003.models.Listing;
 import com.github.glo2003.models.ListingsList;
 import spark.Request;
@@ -25,9 +26,11 @@ public class ListingsController {
 
     private void setupRoutes() {
         get("/listings", this::getAllListings, ResponseHelper::serializeObjectToJson);
-
         post("/listings", this::addListing, ResponseHelper::serializeObjectToJson);
+
         get("/listings/:id", this::getListing, ResponseHelper::serializeObjectToJson);
+
+        post("/listings/:id/book", this::bookListing, ResponseHelper::serializeObjectToJson);
     }
 
     public Object getListing(Request req, Response res) {
@@ -68,16 +71,42 @@ public class ListingsController {
         }
         catch (IOException e) {
             res.status(400);
+            e.printStackTrace();
             return ResponseHelper.errorAsJson("Parameters are not valid for creating an object 'Listing'");
         }
         catch (Exception e) {
             res.status(400);
+            e.printStackTrace();
             return ResponseHelper.errorAsJson("Request format was not valid");
         }
     }
 
-    public Object bookListing(Request req, Response res) {
-        // TODO
-        return ResponseHelper.EMPTY_RESPONSE;
+    public Object bookListing(Request req, Response res) throws Exception {
+
+        // Get le id et le listing correspondant, possibilité d'utiliser getListing? (Faut prob ajouter qql truc à mth)
+        String stringId = req.params(":id");
+        long id;
+
+        try {
+            id = Long.parseLong(stringId);
+        }
+        catch (Exception e) {
+            res.status(400);
+            return ResponseHelper.errorAsJson(String.format("Id '%s' should be of type 'long'", stringId));
+        }
+
+        Bookings bookings = ResponseHelper.deserializeJsonToObject(req.body(), Bookings.class);
+
+        try {
+            Listing listing = listingsDAO.get(id);
+            listing.book(bookings.getBookings());
+
+            res.status(204);
+            return ResponseHelper.EMPTY_RESPONSE;
+        }
+        catch (ItemNotFoundException e) {
+            res.status(402);
+            return ResponseHelper.errorAsJson(e.getMessage());
+        }
     }
 }
