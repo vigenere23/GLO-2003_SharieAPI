@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Listing {
 
@@ -43,6 +44,7 @@ public class Listing {
   public void initAvailabilities() {
     availabilities = new ArrayList<>();
     Calendar now = Calendar.getInstance();
+    now.setTimeZone(TimeZone.getTimeZone("UTC"));
     now.set(Calendar.HOUR_OF_DAY, 0);
     now.set(Calendar.MINUTE, 0);
     now.set(Calendar.SECOND, 0);
