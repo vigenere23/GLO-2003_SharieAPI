@@ -13,7 +13,9 @@ public class Bookings {
 
     public List<Instant> getBookings() { return bookings; }
 
-    public void setBookings(List<Instant> bookings) {
-        this.bookings = bookings;
+    public void setBookings(List<String> bookings) {
+        for (String booking : bookings) {
+            this.bookings.add(Instant.parse(booking));
+        }
     }
 }

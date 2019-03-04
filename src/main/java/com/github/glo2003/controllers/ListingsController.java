@@ -30,7 +30,7 @@ public class ListingsController {
 
         get("/listings/:id", this::getListing, ResponseHelper::serializeObjectToJson);
 
-        post("/listing/:id/book", this::bookListing, ResponseHelper::serializeObjectToJson);
+        post("/listings/:id/book", this::bookListing, ResponseHelper::serializeObjectToJson);
     }
 
     public Object getListing(Request req, Response res) {
@@ -95,11 +95,9 @@ public class ListingsController {
             return ResponseHelper.errorAsJson(String.format("Id '%s' should be of type 'long'", stringId));
         }
 
-        // Get le array en LocalDateTime de Booking
         Bookings bookings = ResponseHelper.deserializeJsonToObject(req.body(), Bookings.class);
 
         try {
-            // On get le listing correspondant au ID
             Listing listing = listingsDAO.get(id);
             listing.book(bookings.getBookings());
 
