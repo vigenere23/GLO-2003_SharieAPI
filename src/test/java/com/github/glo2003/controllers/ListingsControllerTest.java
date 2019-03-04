@@ -36,7 +36,7 @@ public class ListingsControllerTest {
                 "\"email\":\"name@email.com\"" +
             "}" +
         "}";
-    private final String jsonListingRegex = "^\\{\"title\":\"[\\w\\s-]*\",\"description\":\"[\\w\\s-]*\",\"availabilities\":\\[(,?\"[0-9]{4}-[0-9]{2}-[0-9]{2}T00:00:00Z\"){7}\\],\"owner\":\\{\"name\":\"[\\w\\s-]*\",\"phoneNumber\":\"[0-9]*\",\"email\":\"[\\w\\s@\\.-]*\"\\}\\}$";
+    private final String jsonListingRegexFormatWithNumberOfAvailabilities = "\\{\"title\":\"[\\w\\s-]*\",\"description\":\"[\\w\\s-]*\",\"availabilities\":\\[(,?\"[0-9]{4}-[0-9]{2}-[0-9]{2}T00:00:00Z\"){%d}\\],\"owner\":\\{\"name\":\"[\\w\\s-]*\",\"phoneNumber\":\"[0-9]*\",\"email\":\"[\\w\\s@\\.-]*\"\\}\\}";
     public static class ListingsControllerTestSparkApplication implements SparkApplication {
         @Override
         public void init() {
@@ -121,7 +121,8 @@ public class ListingsControllerTest {
         String id = SlashSplittedHeaderLocation[SlashSplittedHeaderLocation.length-1];
 
         HttpResponse httpGetResponse = getSingleListing(id);
-        assertThat(new String(httpGetResponse.body())).matches(jsonListingRegex);
+        String jsonListingWith7Availabilities = String.format(jsonListingRegexFormatWithNumberOfAvailabilities, 7);
+        assertThat(new String(httpGetResponse.body())).matches("^" + jsonListingWith7Availabilities + "$");
     }
 
     @Test
@@ -143,7 +144,8 @@ public class ListingsControllerTest {
         postListing(validListingsPost2);
 
         HttpResponse httpResponse = getAllListings();
-        String expectedResponseBodyRegexp = "^\\{\"listings\":\\[(,?\\{.*\\}){2}\\]\\}$";
-        assertThat(new String(httpResponse.body())).matches(expectedResponseBodyRegexp);
+        String jsonListingWith7Availabilities = String.format(jsonListingRegexFormatWithNumberOfAvailabilities, 7);
+        String expectedResponseBodyRegexp = String.format("\\{\"listings\":\\[(,?%s){2}\\]\\}", jsonListingWith7Availabilities);
+        assertThat(new String(httpResponse.body())).matches("^" + expectedResponseBodyRegexp + "$");
     }
 }
