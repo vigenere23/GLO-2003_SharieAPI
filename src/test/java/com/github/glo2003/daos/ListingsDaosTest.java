@@ -16,7 +16,7 @@ public class ListingsDaosTest {
 
     @Before
     public void setupBefore() {
-        listingsDAO = new ListingsDAO();
+        listingsDAO = new InMemoryListingsDAO();
         validListing = new Listing();
         validListing2 = new Listing();
     }

@@ -1,5 +1,6 @@
 package com.github.glo2003.controllers;
 
+import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.ListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
@@ -18,11 +19,11 @@ import static spark.Spark.post;
 
 public class ListingsController {
 
-    public static ListingsDAO listingsDAO;
+    private static ListingsDAO listingsDAO;
 
     public ListingsController() {
         setupRoutes();
-        listingsDAO = new ListingsDAO();
+        listingsDAO = new InMemoryListingsDAO();
     }
 
     private void setupRoutes() {
