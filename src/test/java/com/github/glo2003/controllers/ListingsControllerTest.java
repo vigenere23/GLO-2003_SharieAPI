@@ -62,11 +62,6 @@ public class ListingsControllerTest {
         return testServer.execute(getListing);
     }
 
-    private HttpResponse getSingleListing(long id) throws HttpClientException {
-        GetMethod getListing = testServer.get("/listings/" + id, false);
-        return testServer.execute(getListing);
-    }
-
     private HttpResponse getAllListings() throws HttpClientException {
         GetMethod getAllListings = testServer.get("/listings", false);
         return testServer.execute(getAllListings);
@@ -110,7 +105,7 @@ public class ListingsControllerTest {
 
     @Test
     public void givenNewServer_GETAnySingleListing_shouldReturnStatus404() throws HttpClientException {
-        HttpResponse httpResponse = getSingleListing(100000);
+        HttpResponse httpResponse = getSingleListing("100000");
         assertThat(httpResponse.code()).isEqualTo(404);
     }
 
