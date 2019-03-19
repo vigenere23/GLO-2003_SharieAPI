@@ -7,11 +7,14 @@ import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.exceptions.JsonDeserializingException;
+import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Bookings;
 import com.github.glo2003.models.Listing;
 import spark.Request;
 import spark.Response;
+
+import java.text.ParseException;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -34,32 +37,26 @@ public class ListingsController {
         post("/listings/:id/book", this::bookListing, ResponseHelper::serializeObjectToJson);
     }
 
-    public Object getListing(Request req, Response res) {
-        String stringId = req.params(":id");
-        long id;
+    private long parseIdFromParam(String stringId) throws ParameterParsingException {
         try {
-            id = Long.parseLong(stringId);
+            return Long.parseLong(stringId);
         }
-        catch (Exception e) {
-            res.status(400);
-            return ResponseHelper.errorAsJson(String.format("Id '%s' should be of type 'long'", stringId));
+        catch (NumberFormatException e) {
+            throw new ParameterParsingException("id", "long");
         }
+    }
 
-        try {
-            Listing listing = listingsDAO.get(id);
-            return new ListingDTO(listing);
-        }
-        catch (ItemNotFoundException e) {
-            res.status(404);
-            return ResponseHelper.errorAsJson(e.getMessage());
-        }
+    public Object getListing(Request req, Response res) throws Exception {
+        Long id = parseIdFromParam(req.params("id"));
+        Listing listing = listingsDAO.get(id);
+        return new ListingDTO(listing);
     }
 
     public Object getAllListings(Request req, Response res) {
         return new ListingDTOList(listingsDAO.getAll());
     }
 
-    public Object addListing(Request req, Response res) throws ItemAlreadyExistsException, JsonDeserializingException {
+    public Object addListing(Request req, Response res) throws Exception {
         Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
         long id = listingsDAO.save(listing);
         res.header("Location", String.format("/listings/%d", id));
@@ -69,30 +66,14 @@ public class ListingsController {
 
     public Object bookListing(Request req, Response res) throws Exception {
 
-        // Get le id et le listing correspondant, possibilité d'utiliser getListing? (Faut prob ajouter qql truc à mth)
-        String stringId = req.params(":id");
-        long id;
-
-        try {
-            id = Long.parseLong(stringId);
-        }
-        catch (Exception e) {
-            res.status(400);
-            return ResponseHelper.errorAsJson(String.format("Id '%s' should be of type 'long'", stringId));
-        }
+        long id = parseIdFromParam(req.params("id"));
 
         Bookings bookings = ResponseHelper.deserializeJsonToObject(req.body(), Bookings.class);
 
-        try {
-            Listing listing = listingsDAO.get(id);
-            listing.book(bookings.getBookings());
+        Listing listing = listingsDAO.get(id);
+        listing.book(bookings.getBookings());
 
-            res.status(204);
-            return ResponseHelper.EMPTY_RESPONSE;
-        }
-        catch (ItemNotFoundException e) {
-            res.status(402);
-            return ResponseHelper.errorAsJson(e.getMessage());
-        }
+        res.status(204);
+        return ResponseHelper.EMPTY_RESPONSE;
     }
 }
