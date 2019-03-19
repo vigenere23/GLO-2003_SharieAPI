@@ -10,8 +10,9 @@ public class ResponseHelper {
 
     public final static String EMPTY_RESPONSE = "";
 
-    public static String errorAsJson(String message) {
-        return "{\"error\":\"" + message + "\"}";
+    public static class Error {
+        public String error;
+        public Error(String message) { error = message; }
     }
 
     public static String serializeObjectToJson(Object object) throws JsonSerializingException {

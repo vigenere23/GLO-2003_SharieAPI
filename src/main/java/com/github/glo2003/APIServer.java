@@ -46,7 +46,16 @@ public class APIServer
                 exception.printStackTrace();
             }
 
-            res.body(ResponseHelper.errorAsJson(exception.getMessage()));
+            try {
+                String error = ResponseHelper.serializeObjectToJson(
+                    new ResponseHelper.Error(exception.getMessage())
+                );
+                res.body(error);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                res.body(e.getMessage());
+            }
         });
     }
 
