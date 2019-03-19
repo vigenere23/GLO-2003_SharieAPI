@@ -123,6 +123,14 @@ public class ListingsControllerTest extends FunctionnalTest {
     }
 
     @Test
+    public void GETlistingWithInvalidId_shouldReturn400WithErrorField() {
+        getListing("abc")
+            .then()
+            .statusCode(400)
+            .body("error", not(isEmptyOrNullString()));
+    }
+
+    @Test
     public void givenNewServer_GETlistingWithAnyId_shouldReturn404WithErrorField() {
         getListing("1000")
         .then()
