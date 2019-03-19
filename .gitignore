@@ -16,6 +16,8 @@ apidoc/
 ### Node ###
 node_modules/
 
+### Elm ###
+elm-stuff/
 
 ### Eclipse ###
 .settings/

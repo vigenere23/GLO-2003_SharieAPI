@@ -4,9 +4,6 @@ import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.ListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
-import com.github.glo2003.exceptions.ItemAlreadyExistsException;
-import com.github.glo2003.exceptions.ItemNotFoundException;
-import com.github.glo2003.exceptions.JsonDeserializingException;
 import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Bookings;
@@ -14,10 +11,7 @@ import com.github.glo2003.models.Listing;
 import spark.Request;
 import spark.Response;
 
-import java.text.ParseException;
-
-import static spark.Spark.get;
-import static spark.Spark.post;
+import static spark.Spark.*;
 
 public class ListingsController {
 
@@ -29,12 +23,15 @@ public class ListingsController {
     }
 
     private void setupRoutes() {
-        get("/listings", this::getAllListings, ResponseHelper::serializeObjectToJson);
-        post("/listings", this::addListing, ResponseHelper::serializeObjectToJson);
-
-        get("/listings/:id", this::getListing, ResponseHelper::serializeObjectToJson);
-
-        post("/listings/:id/book", this::bookListing, ResponseHelper::serializeObjectToJson);
+        path("/listings", () -> {
+            get("", this::getAllListings, ResponseHelper::serializeObjectToJson);
+            post("", this::addListing, ResponseHelper::serializeObjectToJson);
+            path("/:id", () -> {
+                before("", this::validateListing);
+                get("", this::getListing, ResponseHelper::serializeObjectToJson);
+                post("/book", this::bookListing, ResponseHelper::serializeObjectToJson);
+            });
+        });
     }
 
     private long parseIdFromParam(String stringId) throws ParameterParsingException {
@@ -46,9 +43,14 @@ public class ListingsController {
         }
     }
 
-    public Object getListing(Request req, Response res) throws Exception {
+    private void validateListing(Request req, Response res) throws Exception {
         Long id = parseIdFromParam(req.params("id"));
         Listing listing = listingsDAO.get(id);
+        req.attribute("listing", listing);
+    }
+
+    public Object getListing(Request req, Response res) throws Exception {
+        Listing listing = req.attribute("listing");
         return new ListingDTO(listing);
     }
 
@@ -65,12 +67,8 @@ public class ListingsController {
     }
 
     public Object bookListing(Request req, Response res) throws Exception {
-
-        long id = parseIdFromParam(req.params("id"));
-
+        Listing listing = req.attribute("listing");
         Bookings bookings = ResponseHelper.deserializeJsonToObject(req.body(), Bookings.class);
-
-        Listing listing = listingsDAO.get(id);
         listing.book(bookings.getBookings());
 
         res.status(204);

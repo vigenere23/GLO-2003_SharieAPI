@@ -14,12 +14,18 @@ public class APIServer
 
     public static void main(String[] args)
     {
+        disableJettyLogging();
         setupPort();
         enableCORS("*", "*", "*");
         setupExceptionHandling();
 
         new MainController();
         new ListingsController();
+    }
+
+    private static void disableJettyLogging() {
+        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
+        System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
     }
 
     private static void setupPort() {
