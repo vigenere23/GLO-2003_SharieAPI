@@ -49,16 +49,16 @@ public class ListingsController {
         req.attribute("listing", listing);
     }
 
-    public Object getListing(Request req, Response res) throws Exception {
+    private Object getListing(Request req, Response res) throws Exception {
         Listing listing = req.attribute("listing");
         return new ListingDTO(listing);
     }
 
-    public Object getAllListings(Request req, Response res) {
+    private Object getAllListings(Request req, Response res) {
         return new ListingDTOList(listingsDAO.getAll());
     }
 
-    public Object addListing(Request req, Response res) throws Exception {
+    private Object addListing(Request req, Response res) throws Exception {
         Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
         long id = listingsDAO.save(listing);
         res.header("Location", String.format("/listings/%d", id));
@@ -66,7 +66,7 @@ public class ListingsController {
         return ResponseHelper.EMPTY_RESPONSE;
     }
 
-    public Object bookListing(Request req, Response res) throws Exception {
+    private Object bookListing(Request req, Response res) throws Exception {
         Listing listing = req.attribute("listing");
         Bookings bookings = ResponseHelper.deserializeJsonToObject(req.body(), Bookings.class);
         listing.book(bookings.getBookings());
