@@ -1,6 +1,8 @@
 package com.github.glo2003.helpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.glo2003.exceptions.JsonDeserializingException;
+import com.github.glo2003.exceptions.JsonSerializingException;
 import com.github.glo2003.stubs.NestedObject;
 import com.github.glo2003.stubs.SimpleObject;
 import org.junit.Before;
@@ -42,41 +44,41 @@ public class ResponseHelperTest {
     }
 
     @Test
-    public void givenNull_parseToJson_shouldGiveEmptyString() throws JsonProcessingException {
+    public void givenNull_parseToJson_shouldGiveEmptyString() throws JsonSerializingException {
         assertThat(ResponseHelper.serializeObjectToJson(null)).isEqualTo("");
     }
 
     @Test
-    public void givenString_parseToJson_shouldGiveSameString() throws JsonProcessingException {
+    public void givenString_parseToJson_shouldGiveSameString() throws JsonSerializingException {
         assertThat(ResponseHelper.serializeObjectToJson(exampleString)).isEqualTo(exampleString);
     }
 
     @Test
-    public void givenSimpleObject_parseToJsonCorrectly() throws JsonProcessingException {
+    public void givenSimpleObject_parseToJsonCorrectly() throws JsonSerializingException {
         String jsonSimpleObject = ResponseHelper.serializeObjectToJson(simpleObject);
         assertThat(jsonSimpleObject).isEqualTo(validJsonSimpleObject);
     }
 
     @Test
-    public void givenNestedObjects_parseToJsonCorrectly() throws JsonProcessingException {
+    public void givenNestedObjects_parseToJsonCorrectly() throws JsonSerializingException {
         String jsonNestedObject = ResponseHelper.serializeObjectToJson(nestedObject);
         assertThat(jsonNestedObject).isEqualTo(validJsonNestedObject);
     }
 
     @Test
-    public void givenJsonSimpleObject_deserializeToSimpleObjectNotNull() throws IOException {
+    public void givenJsonSimpleObject_deserializeToSimpleObjectNotNull() throws JsonDeserializingException {
         SimpleObject deserializedSimpleObject = ResponseHelper.deserializeJsonToObject(validJsonSimpleObject, SimpleObject.class);
         assertThat(deserializedSimpleObject).isNotNull();
     }
 
     @Test
-    public void givenJsonSimpleObject_deserializeToNestedObjectNotNull() throws IOException {
+    public void givenJsonSimpleObject_deserializeToNestedObjectNotNull() throws JsonDeserializingException {
         NestedObject deserializedNestedObject = ResponseHelper.deserializeJsonToObject(validJsonNestedObject, NestedObject.class);
         assertThat(deserializedNestedObject).isNotNull();
     }
 
     @Test
-    public void givenJsonSimpleObject_deserializeToSimpleObjectWithCorrectParams() throws IOException {
+    public void givenJsonSimpleObject_deserializeToSimpleObjectWithCorrectParams() throws JsonDeserializingException {
         SimpleObject deserializedSimpleObject = ResponseHelper.deserializeJsonToObject(validJsonSimpleObject, SimpleObject.class);
         assertThat(deserializedSimpleObject.getString()).isEqualTo(exampleString);
         assertThat(deserializedSimpleObject.getInteger()).isEqualTo(exampleInteger);
@@ -84,7 +86,7 @@ public class ResponseHelperTest {
     }
 
     @Test
-    public void givenJsonSimpleObject_deserializeToNestedObjectWithCorrectParams() throws IOException {
+    public void givenJsonSimpleObject_deserializeToNestedObjectWithCorrectParams() throws JsonDeserializingException {
         NestedObject deserializedNestedObject = ResponseHelper.deserializeJsonToObject(validJsonNestedObject, NestedObject.class);
         assertThat(deserializedNestedObject.getString()).isEqualTo(exampleString);
         assertThat(deserializedNestedObject.getInteger()).isEqualTo(exampleInteger);
@@ -92,13 +94,13 @@ public class ResponseHelperTest {
     }
 
     @Test
-    public void givenJsonSimpleObject_deserializeToNestedObjectWithNestedObjectNotNull() throws IOException {
+    public void givenJsonSimpleObject_deserializeToNestedObjectWithNestedObjectNotNull() throws JsonDeserializingException {
         NestedObject deserializedNestedObject = ResponseHelper.deserializeJsonToObject(validJsonNestedObject, NestedObject.class);
         assertThat(deserializedNestedObject.getSimpleObject()).isNotNull();
     }
 
     @Test
-    public void givenJsonSimpleObject_deserializeToNestedObjectWithCorrectNestedObjectParams() throws IOException {
+    public void givenJsonSimpleObject_deserializeToNestedObjectWithCorrectNestedObjectParams() throws JsonDeserializingException {
         NestedObject deserializedNestedObject = ResponseHelper.deserializeJsonToObject(validJsonNestedObject, NestedObject.class);
         SimpleObject deserializedSimpleObject = deserializedNestedObject.getSimpleObject();
         assertThat(deserializedSimpleObject.getString()).isEqualTo(exampleString);

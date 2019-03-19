@@ -1,9 +1,8 @@
 package com.github.glo2003.helpers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
+import com.github.glo2003.exceptions.JsonDeserializingException;
+import com.github.glo2003.exceptions.JsonSerializingException;
 
 public class ResponseHelper {
 
@@ -15,13 +14,23 @@ public class ResponseHelper {
         return "{\"error\":\"" + message + "\"}";
     }
 
-    public static String serializeObjectToJson(Object object) throws JsonProcessingException {
-        if (object == null) return "";
-        else if (object instanceof String) return (String)object;
-        else return jsonObjectMapper.writeValueAsString(object);
+    public static String serializeObjectToJson(Object object) throws JsonSerializingException {
+        try {
+            if (object == null) return "";
+            else if (object instanceof String) return (String) object;
+            else return jsonObjectMapper.writeValueAsString(object);
+        }
+        catch (Exception e) {
+            throw new JsonSerializingException(object.getClass().getName());
+        }
     }
 
-    public static <T> T deserializeJsonToObject(String parameters, Class<T> validationObjectType) throws IOException {
-        return jsonObjectMapper.readValue(parameters, validationObjectType);
+    public static <T> T deserializeJsonToObject(String parameters, Class<T> validationObjectType) throws JsonDeserializingException {
+        try {
+            return jsonObjectMapper.readValue(parameters, validationObjectType);
+        }
+        catch (Exception e) {
+            throw new JsonDeserializingException(validationObjectType.getName());
+        }
     }
 }

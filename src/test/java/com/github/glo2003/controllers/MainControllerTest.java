@@ -1,27 +1,24 @@
 package com.github.glo2003.controllers;
 
-import com.despegar.sparkjava.test.SparkServer;
-import org.junit.ClassRule;
-import spark.servlet.SparkApplication;
-/*https://github.com/despegar/spark-test*/
+import com.github.glo2003.FunctionnalTest;
+import org.junit.Test;
 
-public class MainControllerTest {
-    public static class MainControllerTestSparkApplication implements SparkApplication {
-        @Override
-        public void init() {
-            new MainController();
-        }
+import static io.restassured.RestAssured.get;
+import static org.hamcrest.Matchers.equalTo;
+
+public class MainControllerTest extends FunctionnalTest {
+
+    @Test
+    public void GET_index_shouldReturn200() {
+        get().then()
+            .statusCode(200);
     }
 
-    @ClassRule
-    public static SparkServer<MainControllerTestSparkApplication> testServer = new SparkServer<>(MainControllerTestSparkApplication.class, 9090);
-    /*
-    TODO This test can't run along with other Controller's tests (like ListingsController)...
-    TODO throws "com.github.glo2003.controllers.MainControllerTest: This must be done before route mapping has begun"
     @Test
-    public void givenNewServer_GETPing_shouldreturnPong() throws HttpClientException {
-        GetMethod getMethod = testServer.get("/ping", false);
-        HttpResponse httpResponse = testServer.execute(getMethod);
-        com.google.common.truth.Truth.assertThat(new String(httpResponse.body())).isEqualTo("pong");
-    }*/
+    public void GET_ping_shouldReturn200pong() {
+        get("/ping").then()
+            .statusCode(200)
+            .body(equalTo("pong"));
+    }
+
 }

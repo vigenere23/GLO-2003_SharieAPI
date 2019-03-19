@@ -1,6 +1,6 @@
 package com.github.glo2003.models;
 
-import com.github.glo2003.helpers.ItemNotFoundException;
+import com.github.glo2003.exceptions.ItemNotFoundException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
