@@ -1,6 +1,5 @@
 package com.github.glo2003.controllers;
 
-import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.ListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
@@ -17,9 +16,9 @@ public class ListingsController {
 
     static ListingsDAO listingsDAO;
 
-    public ListingsController() {
+    public ListingsController(ListingsDAO listingsDAO) {
         setupRoutes();
-        listingsDAO = new InMemoryListingsDAO();
+        ListingsController.listingsDAO = listingsDAO;
     }
 
     private void setupRoutes() {

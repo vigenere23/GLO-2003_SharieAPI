@@ -2,7 +2,8 @@ package com.github.glo2003;
 
 import com.github.glo2003.controllers.ListingsController;
 import com.github.glo2003.controllers.MainController;
-import com.github.glo2003.exceptions.*;
+import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.exceptions.HttpException;
 import com.github.glo2003.helpers.ResponseHelper;
 import javaslang.control.Try;
 
@@ -10,25 +11,27 @@ import static spark.Spark.*;
 
 public class APIServer
 {
-    public APIServer() {}
+    private ListingsDAO listingsDAO;
 
-    public static void main(String[] args)
-    {
+    public APIServer(ListingsDAO listingsDAO) {
+        this.listingsDAO = listingsDAO;
+    }
+
+    public void run() {
         disableJettyLogging();
         setupPort();
         enableCORS("*", "*", "*");
         setupExceptionHandling();
-
         new MainController();
-        new ListingsController();
+        new ListingsController(listingsDAO);
     }
 
-    private static void disableJettyLogging() {
+    private void disableJettyLogging() {
         System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
         System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
     }
 
-    private static void setupPort() {
+    private void setupPort() {
         Integer portNumber = Try.of(() -> Integer.valueOf(System.getenv("PORT"))).orElseGet((t) -> {
             System.out.println("WARNING: The server port could not be found with 'PORT' env var. Using the default one (9090)");
             return 9090;
@@ -37,7 +40,7 @@ public class APIServer
         port(portNumber);
     }
 
-    private static void setupExceptionHandling() {
+    private void setupExceptionHandling() {
         exception(Exception.class, (exception, req, res) -> {
             if (exception instanceof HttpException)
                 res.status(((HttpException) exception).getHttpStatus());
@@ -59,7 +62,7 @@ public class APIServer
         });
     }
 
-    private static void enableCORS(final String origin, final String methods, final String headers) {
+    private void enableCORS(final String origin, final String methods, final String headers) {
         options("/*", (request, response) -> {
 
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");

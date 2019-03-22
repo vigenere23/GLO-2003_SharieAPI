@@ -10,4 +10,5 @@ public interface ListingsDAO {
     Listing get(long id) throws ItemNotFoundException;
     List<Listing> getAll();
     long save(Listing listing) throws ItemAlreadyExistsException;
+
 }

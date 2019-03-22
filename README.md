@@ -1,4 +1,4 @@
-# Listings API
+# Sharie
 
 Built with [spark](http://sparkjava.com/) framework for simplicity
 
