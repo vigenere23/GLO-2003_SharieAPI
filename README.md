@@ -1,12 +1,6 @@
-<img style="width:100%;" src="/github-banner.png">
-
-# starter-kit-java
-
-Java starter kit for the glo2003 laboratory at Ulaval.
+# Listings API
 
 Built with [spark](http://sparkjava.com/) framework for simplicity
-
-Starting at java is not easy: [better-java](https://github.com/cxxr/better-java) gives you modern best practices.
 
 ## Installation (IntelliJ with Maven on Windows)
 
@@ -37,12 +31,12 @@ and Press Control + Shift before running a program and it'll run as admin
    2. Click on "Enable auto-imports" and wait
    3. Click on Add Configuration
    4. Click on "+" and select "maven"
-   5. Write "exec:java" as the command line
-   6. **You will need to always compile before running, otherwise you won't see your changes.**
+   5. Write "clean install exec:java" as the command line
 8. Test the installation
     1. In IntelliJ use the terminal with the following command : mvn clean install
     2. In the same terminal type : mvn exec:java
     3. The server is started you can now use a web browser with the url localhost:9090 ans see the following: Sharie API
+    4. *You can also simply run the project if you have setup the Maven plugin and configuration*
 9.  User Interface (Optional)
     1. Download Elm from here and install it : https://guide.elm-lang.org/install.html
     2. From UI folder use the following command : elm reactor
@@ -77,3 +71,5 @@ For testing
 
 - [Junit](http://junit.org/)
 - [Truth](https://google.github.io/truth/)
+- [REST-assured](http://rest-assured.io/)
+- [Hamcrest](http://hamcrest.org/JavaHamcrest/javadoc/2.1/)
