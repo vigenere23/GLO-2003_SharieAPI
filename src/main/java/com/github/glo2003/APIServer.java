@@ -2,6 +2,7 @@ package com.github.glo2003;
 
 import com.github.glo2003.controllers.ListingsController;
 import com.github.glo2003.controllers.MainController;
+import com.github.glo2003.exceptions.*;
 import com.github.glo2003.helpers.ResponseHelper;
 import javaslang.control.Try;
 
@@ -9,19 +10,22 @@ import static spark.Spark.*;
 
 public class APIServer
 {
-    private static ListingsController listingsController;
-    private static MainController mainController;
-
     public APIServer() {}
 
     public static void main(String[] args)
     {
+        disableJettyLogging();
         setupPort();
         enableCORS("*", "*", "*");
         setupExceptionHandling();
 
-        mainController = new MainController();
-        listingsController = new ListingsController();
+        new MainController();
+        new ListingsController();
+    }
+
+    private static void disableJettyLogging() {
+        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
+        System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
     }
 
     private static void setupPort() {
@@ -34,10 +38,24 @@ public class APIServer
     }
 
     private static void setupExceptionHandling() {
-        exception(Exception.class, (exception, request, response) -> {
-            response.status(500);
-            response.body(ResponseHelper.errorAsJson(exception.getMessage()));
-            exception.printStackTrace();
+        exception(Exception.class, (exception, req, res) -> {
+            if (exception instanceof HttpException)
+                res.status(((HttpException) exception).getHttpStatus());
+            else {
+                res.status(500);
+                exception.printStackTrace();
+            }
+
+            try {
+                String error = ResponseHelper.serializeObjectToJson(
+                    new ResponseHelper.Error(exception.getMessage())
+                );
+                res.body(error);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                res.body(e.getMessage());
+            }
         });
     }
 

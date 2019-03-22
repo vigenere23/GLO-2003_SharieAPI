@@ -14,6 +14,13 @@ public class ListingDTO {
     public List<String> availabilities;
     public Owner owner;
 
+    public ListingDTO() {
+        title = "";
+        description = "";
+        owner = new Owner();
+        availabilities = new ArrayList<>();
+    }
+
     public ListingDTO(Listing listing) {
         title = listing.getTitle();
         description = listing.getDescription();

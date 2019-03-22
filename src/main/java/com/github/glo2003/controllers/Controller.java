@@ -1,5 +1,5 @@
 package com.github.glo2003.controllers;
 
-public interface IController {
+public interface Controller {
     void setupRoutes();
 }

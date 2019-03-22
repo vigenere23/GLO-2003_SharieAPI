@@ -1,6 +1,6 @@
 package com.github.glo2003.models;
 
-import com.github.glo2003.helpers.ItemNotFoundException;
+import com.github.glo2003.exceptions.ItemNotFoundException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -13,6 +13,8 @@ public class Listing {
   private String description;
   private List<Instant> availabilities;
   private Owner owner;
+
+  //<editor-fold desc="Constructors">
 
   public Listing() {
     setTitle("");
@@ -32,42 +34,7 @@ public class Listing {
     this(title, description, new Owner(ownerName, ownerPhoneNumber, ownerEmail));
   }
 
-  /***** SETTERS ******/
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public void setDescription(String description) { this.description = description; }
-
-  public void initAvailabilities() {
-    availabilities = new ArrayList<>();
-    Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
-
-    for(int i = 0; i < 7; i++) {
-      availabilities.add(today.plus(i, ChronoUnit.DAYS));
-    }
-  }
-
-  public void setOwner(Owner owner) {
-    this.owner = owner;
-  }
-
-  /***** GETTERS ******/
-
-  public String getTitle() {
-    return title;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public List<Instant> getAvailabilities() { return availabilities; }
-
-  public Owner getOwner() { return owner; }
-
-  /***** LOGIC *****/
+  //</editor-fold>
 
   public void book(List<Instant> bookings) throws ItemNotFoundException {
     for(Instant instant : bookings) {
@@ -78,4 +45,40 @@ public class Listing {
       }
     }
   }
+
+  //<editor-fold desc="Getters & Setters">
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) { this.description = description; }
+
+  public List<Instant> getAvailabilities() { return availabilities; }
+
+  public void initAvailabilities() {
+    availabilities = new ArrayList<>();
+    Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
+
+    for(int i = 0; i < 7; i++) {
+      availabilities.add(today.plus(i, ChronoUnit.DAYS));
+    }
+  }
+
+  public Owner getOwner() { return owner; }
+
+  public void setOwner(Owner owner) {
+    this.owner = owner;
+  }
+
+  //</editor-fold>
+
 }

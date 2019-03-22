@@ -1,161 +1,182 @@
 package com.github.glo2003.controllers;
 
-import com.despegar.http.client.GetMethod;
-import com.despegar.http.client.HttpClientException;
-import com.despegar.http.client.HttpResponse;
-import com.despegar.http.client.PostMethod;
-import com.despegar.sparkjava.test.SparkServer;
-import org.junit.AfterClass;
+import com.github.glo2003.FunctionnalTest;
+
+import com.github.glo2003.daos.InMemoryListingsDAO;
+import com.github.glo2003.dtos.ListingDTO;
+import com.github.glo2003.exceptions.JsonSerializingException;
+import com.github.glo2003.helpers.ResponseHelper;
+import com.github.glo2003.stubs.ListingPostDTO;
+import com.github.glo2003.models.Listing;
+import io.restassured.response.Response;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
-import spark.servlet.SparkApplication;
 
-import static com.google.common.truth.Truth.assertThat;
-/*https://github.com/despegar/spark-test*/
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.text.MatchesPattern.matchesPattern;
+import static com.github.glo2003.controllers.ListingsController.listingsDAO;
 
-public class ListingsControllerTest {
+public class ListingsControllerTest extends FunctionnalTest {
 
-    private final String validListingsPost =
-        "{" +
-            "\"title\":\"New listing\"," +
-            "\"description\":\"Just a new listing\"," +
-            "\"owner\":{" +
-                "\"name\":\"John Smith\"," +
-                "\"phoneNumber\":\"8191112222\"," +
-                "\"email\":\"test@test.com\"" +
-            "}" +
-        "}";
-    private final String validListingsPost2 =
-        "{" +
-            "\"title\":\"Another listing\"," +
-            "\"description\":\"Just another listing\"," +
-            "\"owner\":{" +
-                "\"name\":\"Jane Smith\"," +
-                "\"phoneNumber\":\"8192223333\"," +
-                "\"email\":\"name@email.com\"" +
-            "}" +
-        "}";
-    private final String jsonListingRegexFormatWithNumberOfAvailabilities = "\\{\"title\":\"[\\w\\s-]*\",\"description\":\"[\\w\\s-]*\",\"availabilities\":\\[(,?\"[0-9]{4}-[0-9]{2}-[0-9]{2}T00:00:00Z\"){%d}\\],\"owner\":\\{\"name\":\"[\\w\\s-]*\",\"phoneNumber\":\"[0-9]*\",\"email\":\"[\\w\\s@\\.-]*\"\\}\\}";
-    public static class ListingsControllerTestSparkApplication implements SparkApplication {
-        @Override
-        public void init() {
-            new ListingsController();
-        }
-    }
+    private Listing validListing;
+    private Listing validListing2;
 
-    @ClassRule
-    public static SparkServer<ListingsControllerTestSparkApplication> testServer = new SparkServer<>(ListingsControllerTestSparkApplication.class, 9090);
-
-    @AfterClass
-    public static void stopServer() {
-
+    @Before
+    public void setupValidObjects() {
+        validListing = new Listing(
+            "A nice listing",
+            "Splendid offer right here!",
+            "Jane Smith",
+            "8197771111",
+            "jane.smith@gmail.com");
+        validListing2 = new Listing(
+            "Another nice listing",
+            "Yet another splendid offer",
+            "John Smith",
+            "4189990000",
+            "john.smith@gmail.com"
+        );
     }
 
     @Before
-    public void resetListingsDao() {
-        testServer.getApplication().init();
+    public void resetDao() {
+        listingsDAO = new InMemoryListingsDAO();
     }
 
-    private HttpResponse getSingleListing(String id) throws HttpClientException {
-        GetMethod getListing = testServer.get("/listings/" + id, false);
-        return testServer.execute(getListing);
+    private Response postValidListing() {
+        return postListing(new ListingPostDTO(validListing));
     }
 
-    private HttpResponse getSingleListing(long id) throws HttpClientException {
-        GetMethod getListing = testServer.get("/listings/" + id, false);
-        return testServer.execute(getListing);
+    private Response postValidListing2() {
+        return postListing(new ListingPostDTO(validListing2));
     }
 
-    private HttpResponse getAllListings() throws HttpClientException {
-        GetMethod getAllListings = testServer.get("/listings", false);
-        return testServer.execute(getAllListings);
+    private Response postListing(Object body) {
+        return
+            given()
+                .contentType("application/json")
+                .body(body)
+            .when()
+                .post("/listings");
     }
 
-    private HttpResponse postListing(String body) throws HttpClientException {
-        PostMethod postListing = testServer.post("/listings", body, false);
-        return testServer.execute(postListing);
+    private String getIdOfValidPostedListing() {
+        String[] splittedLocationHeader = postValidListing().header("Location").split("/");
+        return splittedLocationHeader[splittedLocationHeader.length - 1];
     }
 
-    @Test
-    public void givenNewServer_POSTValidListing_shouldReturnStatus201() throws HttpClientException {
-        HttpResponse httpResponse = postListing(validListingsPost);
-        assertThat(httpResponse.code()).isEqualTo(201);
+    private String getListingDTOAsJson(Listing listing) throws JsonSerializingException {
+        return ResponseHelper.serializeObjectToJson(new ListingDTO(listing));
     }
 
-    @Test
-    public void givenNewServer_POSTValidListing_shouldReturnEmptyBody() throws HttpClientException {
-        HttpResponse httpResponse = postListing(validListingsPost);
-        assertThat(new String(httpResponse.body())).isEmpty();
+    private Response getAllListings() {
+        return get("/listings");
     }
 
-    @Test
-    public void givenNewServer_POSTListingWithValidBody_shouldReturnCorrectHeaderLocation() throws HttpClientException {
-        HttpResponse httpResponse = postListing(validListingsPost);
-        assertThat(httpResponse.headers()).containsKey("Location");
-        assertThat(httpResponse.headers().get("Location").get(0)).matches("^/listings/[0-9]*$");
+    private Response getListing(String id) {
+        return get("/listings/{id}", id);
     }
 
     @Test
-    public void givenNewServer_POSTListingWithInvalidArguments_shouldReturnStatus400() throws HttpClientException {
-        HttpResponse httpResponse = postListing("");
-        assertThat(httpResponse.code()).isEqualTo(400);
+    public void GET_listings_shouldReturn200() {
+        getAllListings()
+        .then()
+            .statusCode(200);
     }
 
     @Test
-    public void givenNewServer_POSTListingWithInvalidJson_shouldReturnStatus400() throws HttpClientException {
-        HttpResponse httpResponse = postListing("{");
-        assertThat(httpResponse.code()).isEqualTo(400);
+    public void givenValidListing_POSTlistings_shouldReturn201() {
+        postValidListing()
+        .then()
+            .statusCode(201);
     }
 
     @Test
-    public void givenNewServer_GETAnySingleListing_shouldReturnStatus404() throws HttpClientException {
-        HttpResponse httpResponse = getSingleListing(100000);
-        assertThat(httpResponse.code()).isEqualTo(404);
+    public void givenValidListing_POSTlistings_shouldReturnEmptyBody() {
+        postValidListing()
+        .then()
+            .body(isEmptyOrNullString());
     }
 
     @Test
-    public void givenServerWithListing_GETSingleListingWithListingId_shouldReturnStatus200() throws HttpClientException {
-        HttpResponse httpResponse1 = postListing(validListingsPost);
-        String[] SlashSplittedHeaderLocation = httpResponse1.headers().get("Location").get(0).split("/");
-        String id = SlashSplittedHeaderLocation[SlashSplittedHeaderLocation.length-1];
-
-        HttpResponse httpResponse = getSingleListing(id);
-        assertThat(httpResponse.code()).isEqualTo(200);
+    public void givenValidListing_POSTlistings_shouldReturnValidLocationHeader() {
+        postValidListing()
+        .then()
+            .header("Location", matchesPattern("^/listings/[0-9]+$"));
     }
 
     @Test
-    public void givenPostValidListing_GETSingleListing_shouldReturnJsonMatchingRegexp() throws HttpClientException {
-        HttpResponse httpResponse = postListing(validListingsPost);
-        String[] SlashSplittedHeaderLocation = httpResponse.headers().get("Location").get(0).split("/");
-        String id = SlashSplittedHeaderLocation[SlashSplittedHeaderLocation.length-1];
-
-        HttpResponse httpGetResponse = getSingleListing(id);
-        String jsonListingWith7Availabilities = String.format(jsonListingRegexFormatWithNumberOfAvailabilities, 7);
-        assertThat(new String(httpGetResponse.body())).matches("^" + jsonListingWith7Availabilities + "$");
+    public void givenInvalidListing_POSTlistings_shouldReturn400WithErrorField() {
+        postListing("")
+        .then()
+            .statusCode(400)
+            .body("error", not(isEmptyOrNullString()));
     }
 
     @Test
-    public void givenNewServer_GETAllListings_shouldReturnStatus200() throws HttpClientException {
-        HttpResponse httpResponse = getAllListings();
-        assertThat(httpResponse.code()).isEqualTo(200);
+    public void givenInvalidJson_POSTlistings_shouldReturn400WithErrorField() {
+        postListing("{")
+        .then()
+            .statusCode(400)
+            .body("error", not(isEmptyOrNullString()));
     }
 
     @Test
-    public void givenNewServer_GETAllListings_shouldReturnEmptyList() throws HttpClientException {
-        HttpResponse httpResponse = getAllListings();
-        String expectedResponseBody = "{\"listings\":[]}";
-        assertThat(new String(httpResponse.body())).isEqualTo(expectedResponseBody);
+    public void GETlistingWithInvalidId_shouldReturn400WithErrorField() {
+        getListing("abc")
+        .then()
+            .statusCode(400)
+            .body("error", not(isEmptyOrNullString()));
     }
 
     @Test
-    public void givenPOSTTwoValidListings_GETAllListings_shouldReturnListWithTwoListings() throws HttpClientException {
-        postListing(validListingsPost);
-        postListing(validListingsPost2);
-
-        HttpResponse httpResponse = getAllListings();
-        String jsonListingWith7Availabilities = String.format(jsonListingRegexFormatWithNumberOfAvailabilities, 7);
-        String expectedResponseBodyRegexp = String.format("\\{\"listings\":\\[(,?%s){2}\\]\\}", jsonListingWith7Availabilities);
-        assertThat(new String(httpResponse.body())).matches("^" + expectedResponseBodyRegexp + "$");
+    public void givenNewServer_GETlistingWithAnyId_shouldReturn404WithErrorField() {
+        getListing("1000")
+        .then()
+            .statusCode(404)
+            .body("error", not(isEmptyOrNullString()));
     }
+
+    @Test
+    public void givenPostValidListing_GETlistingWithReturnedLocationId_shouldReturn200() {
+        getListing(getIdOfValidPostedListing())
+        .then()
+            .statusCode(200);
+    }
+
+    @Test
+    public void givenPostValidListing_GETlistingWithReturnedLocationId_shouldReturnValidListingDTO() throws JsonSerializingException {
+        String validListingJson = getListingDTOAsJson(validListing);
+        getListing(getIdOfValidPostedListing())
+            .then()
+            .body(equalTo(validListingJson));
+    }
+
+    @Test
+    public void givenNewServer_GETlistings_shouldReturn200() {
+        getAllListings()
+        .then()
+            .statusCode(200);
+    }
+
+    @Test
+    public void givenNewServer_GETlistings_shouldReturnListingsEmpty() {
+        getAllListings()
+            .then()
+            .body("listings", iterableWithSize(0));
+    }
+
+    @Test
+    public void givenPostTwoValidListings_GETlistings_shouldReturnTwoListings() {
+        postValidListing();
+        postValidListing();
+
+        getAllListings()
+        .then()
+            .body("listings", iterableWithSize(2));
+    }
+
+    // TODO test if getAllListings contains the same 2 posted listings
+
 }
