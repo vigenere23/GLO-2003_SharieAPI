@@ -9,7 +9,7 @@ class MorphiaListingsDAO {
   constructor () {
     Morphia morphia = new Morphia()
     morphia.mapPachakge("gloxx.xxxx.models")
-    String host = new ServerAdress("secret url with password from mLab")
+    String host = new MongoCLientURI("secret url with password from mLab")
     MongoClient mongoCLient = new MongoClient(host)
     datastore = morphia.createDatastore(mongoClient, "a nae for the datastore")
   }
