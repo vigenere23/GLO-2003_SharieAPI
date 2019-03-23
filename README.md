@@ -1,5 +1,7 @@
 # Sharie
 
+[![Coverage Status](https://coveralls.io/repos/github/glo2003/glo-2003-h19-equipe-16/badge.svg?branch=master&t=f30cuN)](https://coveralls.io/github/glo2003/glo-2003-h19-equipe-16?branch=master)
+
 Built with [spark](http://sparkjava.com/) framework for simplicity
 
 ## Installation (IntelliJ with Maven on Windows)
