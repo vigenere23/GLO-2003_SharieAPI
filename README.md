@@ -1,6 +1,7 @@
 # Sharie
 
 [![Coverage Status](https://coveralls.io/repos/github/glo2003/glo-2003-h19-equipe-16/badge.svg?branch=master&t=f30cuN)](https://coveralls.io/github/glo2003/glo-2003-h19-equipe-16?branch=master)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=thawing-reef-71512&svg=1)](https://thawing-reef-71512.herokuapp.com/)
 
 Built with [spark](http://sparkjava.com/) framework for simplicity
 
@@ -28,21 +29,26 @@ and Press Control + Shift before running a program and it'll run as admin
     1. Open the cloned project in IntelliJ
     2. In IntelliJ press Ctrl + Shift + Alt + s
     3. In the SDK's menu press the + then +JDK and add the folder named jdk1.6.#_###(use path of step 3 for Java SDK 1.6), then Ok
-7. Install the Maven Plugin from IntelliJ and setup configuration
-   1. Restart the IDE
-   2. Click on "Enable auto-imports" and wait
-   3. Click on Add Configuration
-   4. Click on "+" and select "maven"
-   5. Write "clean install exec:java" as the command line
 8. Test the installation
     1. In IntelliJ use the terminal with the following command : mvn clean install
     2. In the same terminal type : mvn exec:java
     3. The server is started you can now use a web browser with the url localhost:9090 ans see the following: Sharie API
-    4. *You can also simply run the project if you have setup the Maven plugin and configuration*
 9.  User Interface (Optional)
     1. Download Elm from here and install it : https://guide.elm-lang.org/install.html
     2. From UI folder use the following command : elm reactor
     3. The UI is started you can now use a web browser with the url localhost:8000/src/Main.elm ans see the UI for this project.
+
+## Maven Run and Coverage configurations
+
+1. Install IntelliJ Maven plugin
+    1. Go to `File > Settings > Plugins > Installed`, search for `Maven Integration`, check it and restart IntelliJ
+    2. Once IntelliJ has restarted, click on `Enable auto-imports` when the popup appears
+    3. Click on `Add configuration` between the `build` and the `run` icons
+    4. Click on `+ > Maven`
+        1. For the (test and) `Run` configuration, write `clean install exec:java` inside the field `Command line`
+        2. For the (test) `Coverage` configuration, write `clean test jacoco:report coveralls:report` inside the field `Command line`
+
+> Note : test coverage results will be available at https://coveralls.io/github/glo2003/glo-2003-h19-equipe-16
 
 ## Building
 
