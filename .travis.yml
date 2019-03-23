@@ -1,7 +1,7 @@
 language: java
 sudo: false
 after_success:
-- mvn clean cobertura:cobertura coveralls:report
+  - mvn clean test jacoco:report coveralls:report
 deploy:
   provider: heroku
   app: thawing-reef-71512
