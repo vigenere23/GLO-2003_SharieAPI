@@ -4,8 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.glo2003</groupId>
-  <artifactId>starter-kit-java</artifactId>
-  <version>0.0.0</version>
+  <artifactId>SharieAPI</artifactId>
+  <version>0.0.3</version>
 
   <properties>
     <compiler.version>1.8</compiler.version>
@@ -114,6 +114,14 @@
             <format>xml</format>
           </formats>
           <check />
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>4.3.0</version>
+        <configuration>
+          <repoToken>yourcoverallsprojectrepositorytoken</repoToken>
         </configuration>
       </plugin>
     </plugins>

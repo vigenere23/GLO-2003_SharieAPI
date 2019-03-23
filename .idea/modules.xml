@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/starter-kit-java.iml" filepath="$PROJECT_DIR$/starter-kit-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SharieAPI.iml" filepath="$PROJECT_DIR$/SharieAPI.iml" />
     </modules>
   </component>
 </project>
