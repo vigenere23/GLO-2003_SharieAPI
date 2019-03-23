@@ -5,7 +5,7 @@ public class ServerSetup {
 
     public static void launchServer() {
         if (!serverRunning) {
-            SharieApp.main();
+            SharieAPI.main();
             serverRunning = true;
         }
     }

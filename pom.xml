@@ -101,7 +101,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>com.github.glo2003.SharieApp</mainClass>
+          <mainClass>com.github.glo2003.SharieAPI</mainClass>
         </configuration>
       </plugin>
       <plugin>
