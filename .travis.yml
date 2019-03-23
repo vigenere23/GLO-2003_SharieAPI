@@ -1,7 +1,9 @@
 language: java
 sudo: false
-
-script: "mvn cobertura:cobertura"
-
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t ef38029b-2b43-4dde-8f98-e2a044ab20b7
+- mvn clean cobertura:cobertura coveralls:report
+deploy:
+  provider: heroku
+  app: thawing-reef-71512
+  api_key:
+    secure: A0RzTLlFXApScASwPGDXRrVlAHi5B7vjqy5m3fCVi1QMNGTMExsXKYg8Wf4K8Ap3Y5kan+04B+9v2lMiNo6XP/cdn0MmkCM+r7oguMnuv/0BrDIChrNm6yWQgn+wapavjTMeV+KgMr3oM8X6shAAN++OEcxZIrZc3PMMDcqdRJW5CIlpUKD6ZF1puIXO2EiY8o2lHTUmHRI7q9edaUKurzGW4uksqOpXeBKSjH5HBDUjayc9T7kY4P6zKizBnmRgTJLq9XFsBYN7cAuwaANiqHI7sX5QrERo6FlCwESe33iuYAtQQT7Xum8FbDnU+lVuYtNgg8AXedH23kc7Stgu1BOMQ7iSOP0oCOzJWcSUXNquwZkQ6sA1ISf+xOS40lYZmbAGX12TP7GO+E+X3xlL36FnJ7sit9xTvcjLNVsebzUE8NmyTNb/Z+V7p+7kFn7azVDfjJ86yJPaaDdhehVo1Sl3U+5a39kJm9hnSWbC0KGpYxgrv26aRXmuxx2yGRBcggRA1pjAJSBlSS6zQPueqnuy8NVdZdwGnOOUxdslwr58X107Hhe/w7fFrHD5Zdkn3H6TRmdMDHnI9i9OT1rS3ognjgbYornfMdIWhoDsliLmIXQwwlSTDX7o13ejJ4UXY7nnwLD+Dm65ucP3O/sFLtBlWLbiUpRdKJppBsndOUE=
