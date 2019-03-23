@@ -1,1 +1,1 @@
-web: java -jar target/SharieAPI-0.0.3.jar
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* Main
