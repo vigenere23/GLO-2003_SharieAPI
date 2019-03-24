@@ -1,6 +1,7 @@
 package com.github.glo2003.models;
 
 import com.github.glo2003.exceptions.ItemNotFoundException;
+import com.github.glo2003.helpers.DateTimeHelper;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -37,7 +38,7 @@ public class Listing {
   //</editor-fold>
 
   public void book(List<Instant> bookings) throws ItemNotFoundException {
-    for(Instant instant : bookings) {
+    for (Instant instant : bookings) {
       if (availabilities.contains(instant))
         availabilities.remove(instant);
       else {
@@ -66,7 +67,7 @@ public class Listing {
 
   public void initAvailabilities() {
     availabilities = new ArrayList<>();
-    Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
+    Instant today = DateTimeHelper.removeTimeFromInstant(Instant.now());
 
     for(int i = 0; i < 7; i++) {
       availabilities.add(today.plus(i, ChronoUnit.DAYS));

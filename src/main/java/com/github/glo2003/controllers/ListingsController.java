@@ -27,6 +27,7 @@ public class ListingsController {
             post("", this::addListing, ResponseHelper::serializeObjectToJson);
             path("/:id", () -> {
                 before("", this::validateListing);
+                before("/*", this::validateListing);
                 get("", this::getListing, ResponseHelper::serializeObjectToJson);
                 post("/book", this::bookListing, ResponseHelper::serializeObjectToJson);
             });

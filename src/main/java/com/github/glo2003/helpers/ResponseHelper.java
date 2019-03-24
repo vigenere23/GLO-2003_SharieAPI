@@ -26,9 +26,9 @@ public class ResponseHelper {
         }
     }
 
-    public static <T> T deserializeJsonToObject(String parameters, Class<T> validationObjectType) throws JsonDeserializingException {
+    public static <T> T deserializeJsonToObject(String json, Class<T> validationObjectType) throws JsonDeserializingException {
         try {
-            return jsonObjectMapper.readValue(parameters, validationObjectType);
+            return jsonObjectMapper.readValue(json, validationObjectType);
         }
         catch (Exception e) {
             throw new JsonDeserializingException(validationObjectType.getName());

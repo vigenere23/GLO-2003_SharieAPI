@@ -6,21 +6,29 @@ import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.exceptions.JsonSerializingException;
 import com.github.glo2003.helpers.ResponseHelper;
+import com.github.glo2003.stubs.BookingsPostDTO;
 import com.github.glo2003.stubs.ListingPostDTO;
 import com.github.glo2003.models.Listing;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.text.MatchesPattern.matchesPattern;
+import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static com.github.glo2003.controllers.ListingsController.listingsDAO;
 
 public class ListingsControllerTest extends FunctionnalTest {
 
     private Listing validListing;
     private Listing validListing2;
+    private List<Instant> instants;
+    private Instant now;
 
     @Before
     public void setupValidObjects() {
@@ -37,11 +45,21 @@ public class ListingsControllerTest extends FunctionnalTest {
             "4189990000",
             "john.smith@gmail.com"
         );
+        now = Instant.now();
+        instants = new ArrayList<>();
     }
 
     @Before
     public void resetDao() {
         listingsDAO = new InMemoryListingsDAO();
+    }
+
+    private Response getAllListings() {
+        return get("/listings");
+    }
+
+    private Response getListing(String id) {
+        return get("/listings/{id}", id);
     }
 
     private Response postValidListing() {
@@ -61,6 +79,16 @@ public class ListingsControllerTest extends FunctionnalTest {
                 .post("/listings");
     }
 
+    private Response bookListing(String listingId, List<Instant> bookingList) {
+        BookingsPostDTO bookingsPostDTO = new BookingsPostDTO(bookingList);
+        return
+            given()
+                .contentType("application/json")
+                .body(bookingsPostDTO)
+            .when()
+                .post("/listings/" + listingId + "/book");
+    }
+
     private String getIdOfValidPostedListing() {
         String[] splittedLocationHeader = postValidListing().header("Location").split("/");
         return splittedLocationHeader[splittedLocationHeader.length - 1];
@@ -68,14 +96,6 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     private String getListingDTOAsJson(Listing listing) throws JsonSerializingException {
         return ResponseHelper.serializeObjectToJson(new ListingDTO(listing));
-    }
-
-    private Response getAllListings() {
-        return get("/listings");
-    }
-
-    private Response getListing(String id) {
-        return get("/listings/{id}", id);
     }
 
     @Test
@@ -96,7 +116,7 @@ public class ListingsControllerTest extends FunctionnalTest {
     public void givenValidListing_POSTlistings_shouldReturnEmptyBody() {
         postValidListing()
         .then()
-            .body(isEmptyOrNullString());
+            .body(emptyOrNullString());
     }
 
     @Test
@@ -111,7 +131,7 @@ public class ListingsControllerTest extends FunctionnalTest {
         postListing("")
         .then()
             .statusCode(400)
-            .body("error", not(isEmptyOrNullString()));
+            .body("error", not(emptyOrNullString()));
     }
 
     @Test
@@ -119,7 +139,7 @@ public class ListingsControllerTest extends FunctionnalTest {
         postListing("{")
         .then()
             .statusCode(400)
-            .body("error", not(isEmptyOrNullString()));
+            .body("error", not(emptyOrNullString()));
     }
 
     @Test
@@ -127,7 +147,7 @@ public class ListingsControllerTest extends FunctionnalTest {
         getListing("abc")
         .then()
             .statusCode(400)
-            .body("error", not(isEmptyOrNullString()));
+            .body("error", not(emptyOrNullString()));
     }
 
     @Test
@@ -135,7 +155,7 @@ public class ListingsControllerTest extends FunctionnalTest {
         getListing("1000")
         .then()
             .statusCode(404)
-            .body("error", not(isEmptyOrNullString()));
+            .body("error", not(emptyOrNullString()));
     }
 
     @Test
@@ -178,5 +198,49 @@ public class ListingsControllerTest extends FunctionnalTest {
     }
 
     // TODO test if getAllListings contains the same 2 posted listings
+
+    @Test
+    public void givenNonExistingListingId_POSTbook_shouldReturn404WithError() {
+        instants.add(now);
+
+        bookListing("1000", instants)
+        .then()
+            .statusCode(404)
+            .body("error", not(emptyOrNullString()));
+    }
+
+    @Test
+    public void POSTbook_shouldReturn204() throws Exception {
+        String id = getIdOfValidPostedListing();
+        instants.add(now);
+
+        bookListing(id, instants)
+        .then()
+            .statusCode(204)
+            .body(emptyOrNullString());
+    }
+
+    @Test
+    public void POSTbook_shouldRemoveAnAvailabilty() throws Exception {
+        String id = getIdOfValidPostedListing();
+        instants.add(now);
+
+        bookListing(id, instants);
+        getListing(id)
+        .then()
+            .body("availabilities", iterableWithSize(6));
+    }
+
+    @Test
+    public void givenPOSTbook_bookSameAvailabilityAgain_shouldReturn404WithError() {
+        String id = getIdOfValidPostedListing();
+        instants.add(now);
+
+        bookListing(id, instants);
+        bookListing(id, instants)
+        .then()
+            .statusCode(404)
+            .body("error", not(emptyOrNullString()));
+    }
 
 }
