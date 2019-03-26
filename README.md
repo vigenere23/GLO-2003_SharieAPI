@@ -70,7 +70,7 @@ mvn exec:java
 
 ## Dependencies and interesing doc:
 
-- [Jackson](http://wiki.fasterxml.com/JacksonHome)
+- [Jackson](http://wiki.fasterxml.com/JacksonHome) [![Build Status](https://travis-ci.org/FasterXML/jackson-core.svg?branch=master)](https://travis-ci.org/FasterXML/jackson-core)
 - [Jackson-annotations](https://github.com/FasterXML/jackson-annotations) [![Build Status](https://travis-ci.org/FasterXML/jackson-annotations.svg?branch=master)](https://travis-ci.org/FasterXML/jackson-annotations)
 - [SparkJava](http://sparkjava.com) [![Build Status](https://travis-ci.org/perwendel/spark.svg?branch=master)](https://travis-ci.org/perwendel/spark)
 - [Javaslang](http://javaslang.com/) - better java 8 (this is really useful)
