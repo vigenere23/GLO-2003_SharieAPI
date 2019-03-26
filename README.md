@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/glo2003/glo-2003-h19-equipe-16/badge.svg?branch=master&t=f30cuN)](https://coveralls.io/github/glo2003/glo-2003-h19-equipe-16?branch=master)
 //[![Heroku](https://heroku-badge.herokuapp.com/?app=thawing-reef-71512&svg=1)](https://thawing-reef-71512.herokuapp.com/)//
 
-Built with [spark](http://sparkjava.com/) framework for simplicity [![Build Status](https://travis-ci.org/perwendel/spark.svg?branch=master)](https://travis-ci.org/perwendel/spark)
+Built with [spark](http://sparkjava.com/) framework for simplicity
 
 ## Installation (IntelliJ with Maven on Windows)
 
@@ -72,7 +72,7 @@ mvn exec:java
 
 - [Jackson](http://wiki.fasterxml.com/JacksonHome)
 - [Jackson-annotations](https://github.com/FasterXML/jackson-annotations)
-- [SparkJava](http://sparkjava.com)
+- [SparkJava](http://sparkjava.com) [![Build Status](https://travis-ci.org/perwendel/spark.svg?branch=master)](https://travis-ci.org/perwendel/spark)
 - [Javaslang](http://javaslang.com/) - better java 8 (this is really useful)
 
 For testing 
