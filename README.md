@@ -2,12 +2,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/glo2003/glo-2003-h19-equipe-16/badge.svg?branch=master&t=f30cuN)](https://coveralls.io/github/glo2003/glo-2003-h19-equipe-16?branch=master)
 //[![Heroku](https://heroku-badge.herokuapp.com/?app=thawing-reef-71512&svg=1)](https://thawing-reef-71512.herokuapp.com/)//
-[![Build Status](https://travis-ci.org/heroku/heroku.jar.svg?branch=master)](https://travis-ci.org/heroku/heroku.jar)
-[![Build Status](https://travis-ci.org/rest-assured/rest-assured.svg?branch=master)](https://travis-ci.org/rest-assured/rest-assured)
-[![Build Status](https://travis-ci.org/perwendel/spark.svg?branch=master)](https://travis-ci.org/perwendel/spark)
-[![Build Status](https://travis-ci.org/google/truth.svg?branch=master)](https://travis-ci.org/google/truth)
 
-Built with [spark](http://sparkjava.com/) framework for simplicity
+Built with [spark](http://sparkjava.com/) framework for simplicity [![Build Status](https://travis-ci.org/perwendel/spark.svg?branch=master)](https://travis-ci.org/perwendel/spark)
 
 ## Installation (IntelliJ with Maven on Windows)
 
@@ -82,6 +78,6 @@ mvn exec:java
 For testing 
 
 - [Junit](http://junit.org/)
-- [Truth](https://google.github.io/truth/)
-- [REST-assured](http://rest-assured.io/)
+- [Truth](https://google.github.io/truth/) [![Build Status](https://travis-ci.org/google/truth.svg?branch=master)](https://travis-ci.org/google/truth)
+- [REST-assured](http://rest-assured.io/) [![Build Status](https://travis-ci.org/rest-assured/rest-assured.svg?branch=master)](https://travis-ci.org/rest-assured/rest-assured)
 - [Hamcrest](http://hamcrest.org/JavaHamcrest/javadoc/2.1/)
