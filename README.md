@@ -80,4 +80,4 @@ For testing
 - [Junit](http://junit.org/)
 - [Truth](https://google.github.io/truth/) [![Build Status](https://travis-ci.org/google/truth.svg?branch=master)](https://travis-ci.org/google/truth)
 - [REST-assured](http://rest-assured.io/) [![Build Status](https://travis-ci.org/rest-assured/rest-assured.svg?branch=master)](https://travis-ci.org/rest-assured/rest-assured)
-- [Hamcrest](http://hamcrest.org/JavaHamcrest/javadoc/2.1/)
+- [Hamcrest](http://hamcrest.org/JavaHamcrest/javadoc/2.1/) [![Build Status](https://travis-ci.org/hamcrest/JavaHamcrest.svg?branch=master)](https://travis-ci.org/hamcrest/JavaHamcrest)
