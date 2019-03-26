@@ -9,6 +9,4 @@ deploy:
   api_key: f31258e3-e6b5-440e-bde8-bd374fc5531c
 after_success:
   - mvn clean cobertura:cobertura
-  - ls -la ~
-  - ls -la ~/travis
-  - java -jar ~/travis/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/site/cobertura/coverage.xml
+  - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/site/cobertura/coverage.xml
