@@ -11,4 +11,4 @@ after_success:
   - mvn clean cobertura:cobertura
   - ls -la ~
   - ls -la ~/travis
-  - java -jar ~/travis/codacy-coverage-reporter-assembly-lastest.jar report -l Java -r target/site/cobertura/coverage.xml
+  - java -jar ~/travis/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/site/cobertura/coverage.xml
