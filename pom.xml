@@ -144,45 +144,6 @@
           <repoToken>rs3D3CBSTfpe8B1zzDHp9EsQpqPJVkcUe</repoToken>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <format>xml</format>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.gavinmogan</groupId>
-        <artifactId>codacy-maven-plugin</artifactId>
-        <version>1.0.3</version>
-        <configuration>
-          <apiToken>f76c43bb320c4f8b9a41af2a3c5be731</apiToken>
-          <projectToken>f76c43bb320c4f8b9a41af2a3c5be731</projectToken>
-          <coverageReportFile>target/site/cobertura/cobertura.xml</coverageReportFile>
-          <codacyApiBaseUrl>https://api.codacy.com</codacyApiBaseUrl>
-          <failOnMissingReportFile>false</failOnMissingReportFile>
-        </configuration>
-        <executions>
-          <execution>
-            <id>post-test</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>coverage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.7</version>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>
