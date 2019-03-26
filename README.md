@@ -1,7 +1,7 @@
 # SharieAPI
 
 [![Coverage Status](https://coveralls.io/repos/github/glo2003/glo-2003-h19-equipe-16/badge.svg?branch=master&t=f30cuN)](https://coveralls.io/github/glo2003/glo-2003-h19-equipe-16?branch=master)
-//[![Heroku](https://heroku-badge.herokuapp.com/?app=thawing-reef-71512&svg=1)](https://thawing-reef-71512.herokuapp.com/)//
+[![Heroku](https://heroku-badge.herokuapp.com/?app=thawing-reef-71512&svg=1)](https://thawing-reef-71512.herokuapp.com/)
 
 Built with [spark](http://sparkjava.com/) framework for simplicity
 
