@@ -4,6 +4,7 @@ import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.models.Listing;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class MorphiaListingsDAO implements ListingsDAO {
@@ -19,6 +20,11 @@ public class MorphiaListingsDAO implements ListingsDAO {
 
     @Override
     public List<Listing> getAll() {
+        return null;
+    }
+
+    @Override
+    public List<Listing> getAllOfADate(LocalDate date) {
         return null;
     }
 

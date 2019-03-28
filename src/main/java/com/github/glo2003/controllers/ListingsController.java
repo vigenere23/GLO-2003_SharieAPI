@@ -10,6 +10,9 @@ import com.github.glo2003.models.Listing;
 import spark.Request;
 import spark.Response;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import static spark.Spark.*;
 
 public class ListingsController {
@@ -43,6 +46,15 @@ public class ListingsController {
         }
     }
 
+    private LocalDate parseDateFromParam(String stringDate) throws ParameterParsingException {
+        try {
+            return LocalDate.parse(stringDate);
+        }
+        catch (DateTimeParseException e) {
+            throw new ParameterParsingException("date", "LocalDate");
+        }
+    }
+
     private void validateListing(Request req, Response res) throws Exception {
         Long id = parseIdFromParam(req.params("id"));
         Listing listing = listingsDAO.get(id);
@@ -54,8 +66,14 @@ public class ListingsController {
         return new ListingDTO(listing);
     }
 
-    private Object getAllListings(Request req, Response res) {
-        return new ListingDTOList(listingsDAO.getAll());
+    private Object getAllListings(Request req, Response res) throws Exception{
+        String dateString = req.queryParams("date");
+        if(dateString != null){
+            LocalDate date = parseDateFromParam(dateString);
+            return new ListingDTOList(listingsDAO.getAllOfADate(date));
+        }else{
+            return new ListingDTOList(listingsDAO.getAll());
+        }
     }
 
     private Object addListing(Request req, Response res) throws Exception {

@@ -4,7 +4,9 @@ import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.helpers.MathHelper;
 import com.github.glo2003.models.Listing;
-
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,21 @@ public class InMemoryListingsDAO implements ListingsDAO {
     @Override
     public List<Listing> getAll() {
         return new ArrayList<>(listings.values());
+    }
+
+    @Override
+    public List<Listing> getAllOfADate(LocalDate date) {
+        List<Listing> filteredListings = new ArrayList<>();
+        for (Listing listing: listings.values()) {
+            for (Instant availability:listing.getAvailabilities()) {
+                if(availability.atZone(ZoneOffset.UTC).getDayOfYear() == date.getYear()
+                        && availability.atZone(ZoneOffset.UTC).getMonthValue() == date.getMonthValue()
+                        && availability.atZone(ZoneOffset.UTC).getDayOfMonth() == date.getDayOfMonth()){
+                    filteredListings.add(listing);
+                }
+            }
+        }
+        return filteredListings;
     }
 
     @Override
