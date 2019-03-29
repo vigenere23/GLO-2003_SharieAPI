@@ -4,12 +4,14 @@ import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.models.Listing;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ListingsDAO {
     Listing get(long id) throws ItemNotFoundException;
     List<Listing> getAll();
     List<Listing> getAllWithName(String name);
+    List<Listing> getAllSpecificDate(LocalDate date);
     long save(Listing listing) throws ItemAlreadyExistsException;
 
 }

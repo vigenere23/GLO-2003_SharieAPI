@@ -12,8 +12,8 @@ import com.github.glo2003.models.Listing;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +56,10 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     private Response getAllListings() {
         return get("/listings");
+    }
+
+    private Response getAllListingsSpecificDate(String date) {
+        return get("/listings?date={date}", date);
     }
 
     private Response getListing(String id) {
@@ -195,6 +199,34 @@ public class ListingsControllerTest extends FunctionnalTest {
         getAllListings()
         .then()
             .body("listings", iterableWithSize(2));
+    }
+
+    @Test
+    public void givenPostTwoValidListingsAndValidDate_GETlistingsSpecificDate_shouldReturnTwoListings() {
+        postValidListing();
+        postValidListing();
+        getAllListingsSpecificDate(LocalDate.now().toString())
+                .then()
+                .body("listings", iterableWithSize(2));
+    }
+
+    @Test
+    public void givenPostTwoValidListingsAndPastDate_GETlistingsSpecificDate_shouldReturnNoListings() {
+        postValidListing();
+        postValidListing();
+        getAllListingsSpecificDate("1950-01-01")
+                .then()
+                .body("listings", iterableWithSize(0));
+    }
+
+    @Test
+    public void givenInvalidDate_GETlistingsSpecificDate_shouldReturnNoListings() {
+        postValidListing();
+        postValidListing();
+        getAllListingsSpecificDate("")
+                .then()
+                .statusCode(400)
+                .body("error", not(emptyOrNullString()));
     }
 
     // TODO test if getAllListings contains the same 2 posted listings

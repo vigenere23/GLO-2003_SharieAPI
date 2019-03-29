@@ -70,14 +70,14 @@ mvn exec:java
 
 ## Dependencies and interesing doc:
 
-- [Jackson](http://wiki.fasterxml.com/JacksonHome) [![Build Status](https://travis-ci.org/FasterXML/jackson-core.svg?branch=master)](https://travis-ci.org/FasterXML/jackson-core)
-- [Jackson-annotations](https://github.com/FasterXML/jackson-annotations) [![Build Status](https://travis-ci.org/FasterXML/jackson-annotations.svg?branch=master)](https://travis-ci.org/FasterXML/jackson-annotations)
-- [SparkJava](http://sparkjava.com) [![Build Status](https://travis-ci.org/perwendel/spark.svg?branch=master)](https://travis-ci.org/perwendel/spark)
-- [Javaslang](http://javaslang.com/) - better java 8 (this is really useful) (name changed to vavr...?) [![Build Status](https://travis-ci.org/vavr-io/vavr.svg?branch=master)](https://travis-ci.org/vavr-io/vavr)
+- [Jackson](http://wiki.fasterxml.com/JacksonHome)
+- [Jackson-annotations](https://github.com/FasterXML/jackson-annotations)
+- [SparkJava](http://sparkjava.com)
+- [Javaslang](http://javaslang.com/) - better java 8 (this is really useful) (name changed to vavr...?)
 
 For testing 
 
 - [Junit](http://junit.org/)
-- [Truth](https://google.github.io/truth/) [![Build Status](https://travis-ci.org/google/truth.svg?branch=master)](https://travis-ci.org/google/truth) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser/badge.svg)](https://search.maven.org/artifact/com.google.truth/truth)
-- [REST-assured](http://rest-assured.io/) [![Build Status](https://travis-ci.org/rest-assured/rest-assured.svg?branch=master)](https://travis-ci.org/rest-assured/rest-assured) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.rest-assured/rest-assured)
-- [Hamcrest](http://hamcrest.org/JavaHamcrest/javadoc/2.1/) [![Build Status](https://travis-ci.org/hamcrest/JavaHamcrest.svg?branch=master)](https://travis-ci.org/hamcrest/JavaHamcrest)
+- [Truth](https://google.github.io/truth/)
+- [REST-assured](http://rest-assured.io/) 
+- [Hamcrest](http://hamcrest.org/JavaHamcrest/javadoc/2.1/)
