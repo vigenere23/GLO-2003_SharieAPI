@@ -31,7 +31,7 @@ public class InMemoryListingsDAO implements ListingsDAO {
 
     @Override
     public List<Listing> getAllWithName(String name) {
-        ArrayList<Listing> listOfListings = new ArrayList();
+        ArrayList<Listing> listOfListings = new ArrayList<>();
         listings.forEach((k, v) -> {
             if(name.equals(v.getTitle())) {
                 listOfListings.add(listings.get(k));
