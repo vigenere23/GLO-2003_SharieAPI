@@ -30,11 +30,11 @@ public class InMemoryListingsDAO implements ListingsDAO {
     }
 
     @Override
-    public List<Listing> getAllOfADate(LocalDate date) {
+    public List<Listing> getAllSpecificDate(LocalDate date) {
         List<Listing> filteredListings = new ArrayList<>();
         for (Listing listing: listings.values()) {
             for (Instant availability:listing.getAvailabilities()) {
-                if(availability.atZone(ZoneOffset.UTC).getDayOfYear() == date.getYear()
+                if(availability.atZone(ZoneOffset.UTC).getYear() == date.getYear()
                         && availability.atZone(ZoneOffset.UTC).getMonthValue() == date.getMonthValue()
                         && availability.atZone(ZoneOffset.UTC).getDayOfMonth() == date.getDayOfMonth()){
                     filteredListings.add(listing);

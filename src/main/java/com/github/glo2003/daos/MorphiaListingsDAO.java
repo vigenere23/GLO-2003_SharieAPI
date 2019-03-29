@@ -24,7 +24,7 @@ public class MorphiaListingsDAO implements ListingsDAO {
     }
 
     @Override
-    public List<Listing> getAllOfADate(LocalDate date) {
+    public List<Listing> getAllSpecificDate(LocalDate date) {
         return null;
     }
 

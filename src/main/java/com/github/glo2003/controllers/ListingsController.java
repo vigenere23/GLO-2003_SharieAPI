@@ -70,7 +70,7 @@ public class ListingsController {
         String dateString = req.queryParams("date");
         if(dateString != null){
             LocalDate date = parseDateFromParam(dateString);
-            return new ListingDTOList(listingsDAO.getAllOfADate(date));
+            return new ListingDTOList(listingsDAO.getAllSpecificDate(date));
         }else{
             return new ListingDTOList(listingsDAO.getAll());
         }

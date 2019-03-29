@@ -10,7 +10,7 @@ import java.util.List;
 public interface ListingsDAO {
     Listing get(long id) throws ItemNotFoundException;
     List<Listing> getAll();
-    List<Listing> getAllOfADate(LocalDate date);
+    List<Listing> getAllSpecificDate(LocalDate date);
     long save(Listing listing) throws ItemAlreadyExistsException;
 
 }
