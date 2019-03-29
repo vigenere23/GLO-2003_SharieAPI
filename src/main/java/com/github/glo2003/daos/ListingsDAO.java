@@ -9,6 +9,7 @@ import java.util.List;
 public interface ListingsDAO {
     Listing get(long id) throws ItemNotFoundException;
     List<Listing> getAll();
+    List<Listing> getAllWithName(String name);
     long save(Listing listing) throws ItemAlreadyExistsException;
 
 }

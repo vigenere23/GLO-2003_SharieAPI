@@ -58,6 +58,10 @@ public class ListingsController {
         return new ListingDTOList(listingsDAO.getAll());
     }
 
+    private Object getAllListingsByName(Request req, Response res) {
+        return new ListingDTOList(listingsDAO.getAllWithName(req.params("name")));
+    }
+
     private Object addListing(Request req, Response res) throws Exception {
         Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
         long id = listingsDAO.save(listing);

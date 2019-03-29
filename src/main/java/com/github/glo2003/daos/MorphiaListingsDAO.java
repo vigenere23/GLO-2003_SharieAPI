@@ -23,6 +23,9 @@ public class MorphiaListingsDAO implements ListingsDAO {
     }
 
     @Override
+    public List<Listing> getAllWithName(String name) {return null;}
+
+    @Override
     public long save(Listing listing) throws ItemAlreadyExistsException {
         return 0;
     }

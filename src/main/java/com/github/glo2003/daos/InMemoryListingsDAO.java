@@ -28,6 +28,17 @@ public class InMemoryListingsDAO implements ListingsDAO {
     }
 
     @Override
+    public List<Listing> getAllWithName(String name) {
+        ArrayList<Listing> listOfListings = new ArrayList();
+        listings.forEach((k, v) -> {
+            if(name.equals(v.getTitle())) {
+                listOfListings.add(listings.get(k));
+            }
+        });
+        return listOfListings;
+    }
+
+    @Override
     public long save(Listing listing) throws ItemAlreadyExistsException {
         if (listings.containsValue(listing)) {
             throw new ItemAlreadyExistsException("The listing already exists");
