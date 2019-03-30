@@ -1,6 +1,8 @@
 package com.github.glo2003.controllers;
 
+import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ParameterParsingException;
@@ -15,7 +17,7 @@ import java.time.format.DateTimeParseException;
 
 import static spark.Spark.*;
 
-public class ListingsController {
+public class ListingsController implements Controller{
 
     static ListingsDAO listingsDAO;
 
@@ -24,7 +26,7 @@ public class ListingsController {
         ListingsController.listingsDAO = listingsDAO;
     }
 
-    private void setupRoutes() {
+    public void setupRoutes() {
         path("/listings", () -> {
             get("", this::getAllListings, ResponseHelper::serializeObjectToJson);
             post("", this::addListing, ResponseHelper::serializeObjectToJson);
@@ -92,4 +94,5 @@ public class ListingsController {
         res.status(204);
         return ResponseHelper.EMPTY_RESPONSE;
     }
+
 }
