@@ -27,6 +27,7 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     private Listing validListing;
     private Listing validListing2;
+    private Listing validListing3;
     private List<Instant> instants;
     private Instant now;
 
@@ -43,8 +44,14 @@ public class ListingsControllerTest extends FunctionnalTest {
             "Yet another splendid offer",
             "John Smith",
             "4189990000",
-            "john.smith@gmail.com"
-        );
+            "john.smith@gmail.com");
+        validListing3 = new Listing(
+            "Another nice listing",
+            "More of the same",
+            "Tulipe Jaune",
+            "4189991111",
+            "flower.p0wer@hotmail.ca");
+
         now = Instant.now();
         instants = new ArrayList<>();
     }
@@ -62,6 +69,8 @@ public class ListingsControllerTest extends FunctionnalTest {
         return get("/listings?date={date}", date);
     }
 
+    private Response getAllListingsSpecificTitle(String title) { return get("/listings?title={title}", title); }
+
     private Response getListing(String id) {
         return get("/listings/{id}", id);
     }
@@ -72,6 +81,10 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     private Response postValidListing2() {
         return postListing(new ListingPostDTO(validListing2));
+    }
+
+    private Response postValidListing3() {
+        return postListing(new ListingPostDTO(validListing3));
     }
 
     private Response postListing(Object body) {
@@ -230,6 +243,35 @@ public class ListingsControllerTest extends FunctionnalTest {
     }
 
     // TODO test if getAllListings contains the same 2 posted listings
+
+    @Test
+    public void givenPostTwoValidListingsAndValidTitles_GETAllListingsSpecificTitle_shouldReturnOneListings() {
+        postValidListing();
+        postValidListing2();
+        getAllListingsSpecificTitle("A nice listing")
+                .then()
+                .body("listings", iterableWithSize(1));
+    }
+
+    @Test
+    public void givenPostThreeValidListingsAndValidTitles_GETAllListingsSpecificTitle_shouldReturnTwoListings() {
+        postValidListing();
+        postValidListing2();
+        postValidListing3();
+        getAllListingsSpecificTitle("Another nice listing")
+                .then()
+                .body("listings", iterableWithSize(2));
+    }
+
+    @Test
+    public void givenPostThreeValidListingsAndValidTitles_GETAllListingsSpecificTitle_shouldReturnNoListings() {
+        postValidListing();
+        postValidListing2();
+        postValidListing3();
+        getAllListingsSpecificTitle("This title doesn't exist")
+                .then()
+                .body("listings", iterableWithSize(0));
+    }
 
     @Test
     public void givenNonExistingListingId_POSTbook_shouldReturn404WithError() {
