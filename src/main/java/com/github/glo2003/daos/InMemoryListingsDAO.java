@@ -34,9 +34,9 @@ public class InMemoryListingsDAO implements ListingsDAO {
         List<Listing> filteredListings = new ArrayList<>();
         for (Listing listing: listings.values()) {
             for (Instant availability:listing.getAvailabilities()) {
-                if(availability.atZone(ZoneOffset.UTC).getYear() == date.getYear()
-                        && availability.atZone(ZoneOffset.UTC).getMonthValue() == date.getMonthValue()
-                        && availability.atZone(ZoneOffset.UTC).getDayOfMonth() == date.getDayOfMonth()){
+                if(availability.atZone(ZoneOffset.systemDefault()).getYear() == date.getYear()
+                        && availability.atZone(ZoneOffset.systemDefault()).getMonthValue() == date.getMonthValue()
+                        && availability.atZone(ZoneOffset.systemDefault()).getDayOfMonth() == date.getDayOfMonth()){
                     filteredListings.add(listing);
                 }
             }
