@@ -130,29 +130,17 @@
         <configuration>
           <formats>
             <format>xml</format>
+            <format>html</format>
           </formats>
         </configuration>
       </plugin>
       <plugin>
-        <groupId>com.gavinmogan</groupId>
-        <artifactId>codacy-maven-plugin</artifactId>
-        <version>1.0.3</version>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>4.3.0</version>
         <configuration>
-          <apiToken>f76c43bb320c4f8b9a41af2a3c5be731</apiToken>
-          <projectToken>f76c43bb320c4f8b9a41af2a3c5be731</projectToken>
-          <coverageReportFile>target/site/cobertura/coverage.xml</coverageReportFile>
-          <codacyApiBaseUrl>https://api.codacy.com</codacyApiBaseUrl>
-          <failOnMissingReportFile>false</failOnMissingReportFile>
+            <repoToken>rs3D3CBSTfpe8B1zzDHp9EsQpqPJVkcUe</repoToken>
         </configuration>
-        <executions>
-          <execution>
-            <id>post-test</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>coverage</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
