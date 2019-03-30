@@ -68,16 +68,17 @@ public class ListingsController {
 
     private Object getAllListings(Request req, Response res) throws Exception{
         String dateString = req.queryParams("date");
+        String titleString = req.queryParams("title");
         if(dateString != null){
             LocalDate date = parseDateFromParam(dateString);
             return new ListingDTOList(listingsDAO.getAllSpecificDate(date));
-        }else{
+        }
+        else if(titleString != null) {
+            return new ListingDTOList(listingsDAO.getAllWithName(titleString));
+        }
+        else {
             return new ListingDTOList(listingsDAO.getAll());
         }
-    }
-
-    private Object getAllListingsByName(Request req, Response res) {
-        return new ListingDTOList(listingsDAO.getAllWithName(req.params("name")));
     }
 
     private Object addListing(Request req, Response res) throws Exception {
