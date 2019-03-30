@@ -130,7 +130,13 @@
         <configuration>
           <formats>
             <format>xml</format>
+            <format>html</format>
           </formats>
+          <instrumentation>
+            <excludes>
+              <exclude>**/APIDocumentation.class</exclude>
+            </excludes>
+          </instrumentation>
         </configuration>
       </plugin>
       <plugin>
