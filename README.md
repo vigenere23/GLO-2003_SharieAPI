@@ -73,7 +73,6 @@ mvn exec:java
 - [Jackson](http://wiki.fasterxml.com/JacksonHome)
 - [Jackson-annotations](https://github.com/FasterXML/jackson-annotations)
 - [SparkJava](http://sparkjava.com)
-- [Javaslang](http://javaslang.com/) - better java 8 (this is really useful) (name changed to vavr...?)
 
 For testing 
 
