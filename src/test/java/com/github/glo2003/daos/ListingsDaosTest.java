@@ -25,11 +25,12 @@ public class ListingsDaosTest {
             listingsDAO = new InMemoryListingsDAO();
         }else if(profile.equals("test")){
             listingsDAO = new MorphiaListingsDAO();
-            listingsDAO.reset();
         }
         else{
             throw new IllegalArgumentException("Unknown profile");
         }
+
+        listingsDAO.reset();
 
         validListing = new Listing();
         validListing2 = new Listing();

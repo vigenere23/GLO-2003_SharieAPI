@@ -58,12 +58,14 @@ public class ListingsControllerTest extends FunctionnalTest {
 
         if(profile.equals("dev")){
             listingsDAO = new InMemoryListingsDAO();
-        }else if(profile.equals("prod") || profile.equals("test")){
+        }else if(profile.equals("test")){
             listingsDAO = new MorphiaListingsDAO();
         }
         else{
             throw new IllegalArgumentException("Unknown profile");
         }
+
+        listingsDAO.reset();
     }
 
     private Response getAllListings() {
