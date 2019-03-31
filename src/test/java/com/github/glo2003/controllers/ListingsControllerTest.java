@@ -243,8 +243,6 @@ public class ListingsControllerTest extends FunctionnalTest {
                 .body("error", not(emptyOrNullString()));
     }
 
-    // TODO test if getAllListings contains the same 2 posted listings
-
     @Test
     public void givenNonExistingListingId_POSTbook_shouldReturn404WithError() {
         instants.add(now);
