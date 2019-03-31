@@ -1,9 +1,11 @@
-# SharieAPI
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bedf5368ce8d460ba51e3aedd7f2a222)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=glo2003/glo-2003-h19-equipe-16&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/bedf5368ce8d460ba51e3aedd7f2a222)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=glo2003/glo-2003-h19-equipe-16&utm_campaign=Badge_Coverage)
+[![Codacy Quality](https://api.codacy.com/project/badge/Grade/09636400336b4257bf58d2e1434f114e)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=glo2003/glo-2003-h19-equipe-16&amp;utm_campaign=Badge_Grade)
+[![Codacy Coverage](https://api.codacy.com/project/badge/Coverage/09636400336b4257bf58d2e1434f114e)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=glo2003/glo-2003-h19-equipe-16&utm_campaign=Badge_Coverage)
 [![Build Status](https://travis-ci.com/glo2003/glo-2003-h19-equipe-16.svg?token=rtBRz4eqbmPRnM1jJcqS&branch=master)](https://travis-ci.com/glo2003/glo-2003-h19-equipe-16)
 [![Heroku](https://heroku-badge.herokuapp.com/?app=thawing-reef-71512&svg=1)](https://thawing-reef-71512.herokuapp.com/)
+
+> *If Codacy's badges are not showing up, please take a look at their [status page](https://status.codacy.com/)*
+
+# SharieAPI
 
 Built with [spark](http://sparkjava.com/) framework for simplicity
 
@@ -38,6 +40,41 @@ Built with [spark](http://sparkjava.com/) framework for simplicity
     2. From UI folder use the following command : elm reactor
     3. The UI is started you can now use a web browser with the url <localhost:8000/src/Main.elm> ans see the UI for this project.
 
+## Ajout de configurations
+
+Le projet peut fonctionner avec une mémoire locale ou bien une base de donnée Mongo dans le cloud. Voici des configurations sur intelliJ pour exécuter le projet et les tests sur les deux types de sauvegarde.
+
+1. Ajouter une configuration Application et entrer les données suivantes:
+    1. Name: SharieApp DEV
+    2. Main class: com.github.glo2003.SharieAPI
+    3. Environment variables: 
+        1. SHARIE_PROFILE : dev
+        
+2. Ajouter une configuration Application et entrer les données suivantes:
+    1. Name: SharieApp PROD
+    2. Main class: com.github.glo2003.SharieAPI
+    3. Environment variables: 
+        1. SHARIE_PROFILE : prod
+        2. SHARIE_DATABASE_URL : mongodb://glo2003:mdp1234!@cluster0-shard-00-00-mawao.mongodb.net:27017,cluster0-shard-00-01-mawao.mongodb.net:27017,cluster0-shard-00-02-mawao.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
+        3. SHARIE_DATABASE_NAME : prodglo2003
+        
+3. Ajouter une configuration JUnit et entrer les données suivantes:
+    1. Name: devTesting
+    2. Test kind: Class
+    3. Class: com.github.glo2003.controllers.ListingsControllerTest
+    4. Environment variables: 
+        1. SHARIE_PROFILE : dev
+        
+4. Ajouter une configuration JUnit et entrer les données suivantes:
+    1. Name: onlineTesting
+    2. Test kind: Class
+    3. Class: com.github.glo2003.controllers.ListingsControllerTest
+    4. Environment variables: 
+        1. SHARIE_PROFILE : test
+        2. SHARIE_DATABASE_URL : mongodb://glo2003:mdp1234!@cluster0-shard-00-00-jvq3c.mongodb.net:27017,cluster0-shard-00-01-jvq3c.mongodb.net:27017,cluster0-shard-00-02-jvq3c.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
+        3. SHARIE_DATABASE_NAME : testglo2003
+
+
 ## Maven Run and Coverage configurations
 
 1. Install IntelliJ Maven plugin
@@ -49,6 +86,14 @@ Built with [spark](http://sparkjava.com/) framework for simplicity
         2. For the (test) `Coverage` configuration, write `clean test jacoco:report coveralls:report` inside the field `Command line`
 
 > Note : test coverage results will be available at <https://app.codacy.com>
+
+## Code checkstyle avec IntelliJ
+
+1. Dans IntelliJ aller dans File > Close project
+2. Vous êtes maintenant sur la page d'accueil, appuyer sur Configure > Plugins 
+3. Dans recherche entrer CheckStyle-IDEA, insataller le plugin et redémarrer IntelliJ
+4. Dans votre projet sur IntelliJ appuyer sur File > Settings > Checkstyle
+5. Ajouter un configuration File du nom de votre choix et choisissez le fichier modifiedGoogleCheckStyle.xml, puis apply et Ok.
 
 ## Building
 

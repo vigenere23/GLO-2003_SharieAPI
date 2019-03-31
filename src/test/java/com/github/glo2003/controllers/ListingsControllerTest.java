@@ -3,6 +3,8 @@ package com.github.glo2003.controllers;
 import com.github.glo2003.FunctionnalTest;
 
 import com.github.glo2003.daos.InMemoryListingsDAO;
+import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.exceptions.JsonSerializingException;
 import com.github.glo2003.helpers.ResponseHelper;
@@ -16,6 +18,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -58,7 +61,18 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Before
     public void resetDao() {
-        listingsDAO = new InMemoryListingsDAO();
+        String profile = Optional.ofNullable(System.getenv("SHARIE_PROFILE")).orElse("dev");
+
+        if(profile.equals("dev")){
+            listingsDAO = new InMemoryListingsDAO();
+        }else if(profile.equals("test")){
+            listingsDAO = new MorphiaListingsDAO();
+        }
+        else{
+            throw new IllegalArgumentException("Unknown profile");
+        }
+
+        listingsDAO.reset();
     }
 
     private Response getAllListings() {
@@ -241,8 +255,6 @@ public class ListingsControllerTest extends FunctionnalTest {
                 .statusCode(400)
                 .body("error", not(emptyOrNullString()));
     }
-
-    // TODO test if getAllListings contains the same 2 posted listings
 
     @Test
     public void givenPostTwoValidListingsAndValidTitles_GETAllListingsSpecificTitle_shouldReturnOneListings() {

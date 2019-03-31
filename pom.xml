@@ -81,6 +81,21 @@
       <version>3.3.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>dev.morphia.morphia</groupId>
+      <artifactId>core</artifactId>
+      <version>1.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>3.10.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>bson</artifactId>
+      <version>3.10.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -132,7 +147,34 @@
             <format>xml</format>
             <format>html</format>
           </formats>
+          <check/>
+          <instrumentation>
+            <excludes>
+              <exclude>**/APIDocumentation.class</exclude>
+            </excludes>
+          </instrumentation>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.gavinmogan</groupId>
+        <artifactId>codacy-maven-plugin</artifactId>
+        <version>1.0.3</version>
+        <configuration>
+          <apiToken>4a45a7d121b34c50927060dec386cf0d</apiToken>
+          <projectToken>4a45a7d121b34c50927060dec386cf0d</projectToken>
+          <coverageReportFile>target/site/cobertura/coverage.xml</coverageReportFile>
+          <codacyApiBaseUrl>https://api.codacy.com</codacyApiBaseUrl>
+          <failOnMissingReportFile>false</failOnMissingReportFile>
+        </configuration>
+        <executions>
+          <execution>
+            <id>post-test</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>coverage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.eluder.coveralls</groupId>

@@ -9,8 +9,7 @@ import javaslang.control.Try;
 
 import static spark.Spark.*;
 
-public class APIServer
-{
+public class APIServer {
     private ListingsDAO listingsDAO;
 
     public APIServer(ListingsDAO listingsDAO) {
@@ -42,9 +41,9 @@ public class APIServer
 
     private void setupExceptionHandling() {
         exception(Exception.class, (exception, req, res) -> {
-            if (exception instanceof HttpException)
+            if (exception instanceof HttpException) {
                 res.status(((HttpException) exception).getHttpStatus());
-            else {
+            } else {
                 res.status(500);
                 exception.printStackTrace();
             }
@@ -54,8 +53,7 @@ public class APIServer
                     new ResponseHelper.Error(exception.getMessage())
                 );
                 res.body(error);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 res.body(e.getMessage());
             }

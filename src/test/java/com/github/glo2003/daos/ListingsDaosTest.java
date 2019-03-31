@@ -6,6 +6,8 @@ import com.github.glo2003.models.Listing;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static com.google.common.truth.Truth.assertThat;
 
 public class ListingsDaosTest {
@@ -16,7 +18,20 @@ public class ListingsDaosTest {
 
     @Before
     public void setupBefore() {
-        listingsDAO = new InMemoryListingsDAO();
+        String profile = Optional.ofNullable(System.getenv("SHARIE_PROFILE")).orElse("dev");
+        ListingsDAO listingsDAO;
+
+        if(profile.equals("dev")){
+            listingsDAO = new InMemoryListingsDAO();
+        }else if(profile.equals("test")){
+            listingsDAO = new MorphiaListingsDAO();
+        }
+        else{
+            throw new IllegalArgumentException("Unknown profile");
+        }
+
+        listingsDAO.reset();
+
         validListing = new Listing();
         validListing2 = new Listing();
     }
@@ -47,7 +62,7 @@ public class ListingsDaosTest {
 
     @Test(expected = ItemNotFoundException.class)
     public void givenNewListingsDao_getAnyListing_shouldThrowItemNotFoundException() throws ItemNotFoundException {
-        listingsDAO.get(0);
+        listingsDAO.get("TEsting");
     }
 
     @Test
@@ -57,13 +72,13 @@ public class ListingsDaosTest {
 
     @Test
     public void givenAddedOneListing_getListing_shouldReturnNotNull() throws ItemNotFoundException, ItemAlreadyExistsException {
-        long id = listingsDAO.save(validListing);
+        String id = listingsDAO.save(validListing);
         assertThat(listingsDAO.get(id)).isNotNull();
     }
 
     @Test
     public void givenAddedOneListing_getListing_shouldReturnSameListing() throws ItemNotFoundException, ItemAlreadyExistsException {
-        long id = listingsDAO.save(validListing);
+        String id = listingsDAO.save(validListing);
         assertThat(listingsDAO.get(id)).isEqualTo(validListing);
     }
 }

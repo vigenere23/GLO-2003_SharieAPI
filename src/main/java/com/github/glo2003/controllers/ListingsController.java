@@ -7,15 +7,14 @@ import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Bookings;
 import com.github.glo2003.models.Listing;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import spark.Request;
 import spark.Response;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-
 import static spark.Spark.*;
 
-public class ListingsController {
+public class ListingsController implements Controller{
 
     static ListingsDAO listingsDAO;
 
@@ -24,7 +23,7 @@ public class ListingsController {
         ListingsController.listingsDAO = listingsDAO;
     }
 
-    private void setupRoutes() {
+    public void setupRoutes() {
         path("/listings", () -> {
             get("", this::getAllListings, ResponseHelper::serializeObjectToJson);
             post("", this::addListing, ResponseHelper::serializeObjectToJson);
@@ -40,8 +39,7 @@ public class ListingsController {
     private long parseIdFromParam(String stringId) throws ParameterParsingException {
         try {
             return Long.parseLong(stringId);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new ParameterParsingException("id", "long");
         }
     }
@@ -49,14 +47,13 @@ public class ListingsController {
     private LocalDate parseDateFromParam(String stringDate) throws ParameterParsingException {
         try {
             return LocalDate.parse(stringDate);
-        }
-        catch (DateTimeParseException e) {
+        } catch (DateTimeParseException e) {
             throw new ParameterParsingException("date", "LocalDate");
         }
     }
 
     private void validateListing(Request req, Response res) throws Exception {
-        Long id = parseIdFromParam(req.params("id"));
+        String id = req.params("id");
         Listing listing = listingsDAO.get(id);
         req.attribute("listing", listing);
     }
@@ -83,8 +80,8 @@ public class ListingsController {
 
     private Object addListing(Request req, Response res) throws Exception {
         Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
-        long id = listingsDAO.save(listing);
-        res.header("Location", String.format("/listings/%d", id));
+        String id = listingsDAO.save(listing);
+        res.header("Location", String.format("/listings/%s", id));
         res.status(201);
         return ResponseHelper.EMPTY_RESPONSE;
     }
@@ -97,4 +94,5 @@ public class ListingsController {
         res.status(204);
         return ResponseHelper.EMPTY_RESPONSE;
     }
+
 }

@@ -1,26 +1,53 @@
 package com.github.glo2003.daos;
 
-import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.models.Listing;
-
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import dev.morphia.Datastore;
+import dev.morphia.Key;
+import dev.morphia.Morphia;
+import dev.morphia.query.Query;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import org.bson.types.ObjectId;
+
 
 public class MorphiaListingsDAO implements ListingsDAO {
 
-    public MorphiaListingsDAO(String url) {
-        //TODO connect to database
+    private Datastore datastore;
+
+    public MorphiaListingsDAO() {
+        Morphia morphia = new Morphia();
+        morphia.mapPackage("com.github.glo2003.models");
+        String databaseUrl = Optional.ofNullable(System.getenv("SHARIE_DATABASE_URL")).orElse("localhost:9090");
+        String databaseName = Optional.ofNullable(System.getenv("SHARIE_DATABASE_NAME")).orElse("localDB");
+
+        MongoClientURI host = new MongoClientURI(databaseUrl);
+        MongoClient mongoClient = new MongoClient(host);
+        datastore = morphia.createDatastore(mongoClient, databaseName);
+
     }
 
     @Override
-    public Listing get(long id) throws ItemNotFoundException {
-        return null;
+    public Listing get(String id) throws ItemNotFoundException {
+        //Revoir comment faire un get plus efficace
+        Listing listing = datastore.get(Listing.class, new ObjectId(id));
+        if (listing == null) {
+            throw new ItemNotFoundException(String.format("No listing with id '%d' was found", id));
+        }
+
+        return listing;
     }
 
     @Override
     public List<Listing> getAll() {
-        return null;
+        Query<Listing> query = datastore.createQuery(Listing.class);
+        return query.asList();
     }
 
     @Override
@@ -28,11 +55,28 @@ public class MorphiaListingsDAO implements ListingsDAO {
     
     @Override
     public List<Listing> getAllSpecificDate(LocalDate date) {
-        return null;
+        List<Listing> filteredListings = new ArrayList<>();
+        for (Listing listing: getAll()) {
+            for (Instant availability:listing.getAvailabilities()) {
+                if(availability.atZone(ZoneOffset.UTC).getYear() == date.getYear()
+                        && availability.atZone(ZoneOffset.UTC).getMonthValue() == date.getMonthValue()
+                        && availability.atZone(ZoneOffset.UTC).getDayOfMonth() == date.getDayOfMonth()){
+                    filteredListings.add(listing);
+                }
+            }
+        }
+        return filteredListings;
     }
 
     @Override
-    public long save(Listing listing) throws ItemAlreadyExistsException {
-        return 0;
+    public String save(Listing listing){
+        Key<Listing> result = datastore.save(listing);
+        return result.getId().toString();
+    }
+
+    @Override
+    public void reset() {
+        Query<Listing> query = datastore.createQuery(Listing.class);
+        datastore.delete(query);
     }
 }
