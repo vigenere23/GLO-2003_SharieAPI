@@ -87,6 +87,14 @@ Le projet peut fonctionner avec une mémoire locale ou bien une base de donnée 
 
 > Note : test coverage results will be available at <https://app.codacy.com>
 
+## Code checkstyle avec IntelliJ
+
+1. Dans IntelliJ aller dans File > Close project
+2. Vous être maintenant sur la page d'accuiel, appuyer sur Configure > Plugins 
+3. Dans recherche entrer CheckStyle-IDEA, insataller le plugin et redémarrer IntelliJ
+4. Dans IntelliJ appuyer sur File > Settings > Checkstyle
+5. Ajouter un configuration File du nom de votre choix et choisissez le fichier modifiedGoogleCheckStyle.xml, puis apply et Ok.
+
 ## Building
 
 ```bash
