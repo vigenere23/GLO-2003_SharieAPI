@@ -9,9 +9,13 @@ import java.util.List;
 
 public interface ListingsDAO {
     Listing get(String id) throws ItemNotFoundException;
+
     List<Listing> getAll();
+
     List<Listing> getAllSpecificDate(LocalDate date);
+
     String save(Listing listing) throws ItemAlreadyExistsException;
+
     void reset();
 
 }

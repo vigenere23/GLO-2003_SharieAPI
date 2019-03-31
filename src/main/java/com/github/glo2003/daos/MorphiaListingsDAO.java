@@ -1,6 +1,5 @@
 package com.github.glo2003.daos;
 
-import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.models.Listing;
 import com.mongodb.MongoClient;
@@ -9,14 +8,14 @@ import dev.morphia.Datastore;
 import dev.morphia.Key;
 import dev.morphia.Morphia;
 import dev.morphia.query.Query;
-import org.bson.types.ObjectId;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.bson.types.ObjectId;
+
 
 public class MorphiaListingsDAO implements ListingsDAO {
 

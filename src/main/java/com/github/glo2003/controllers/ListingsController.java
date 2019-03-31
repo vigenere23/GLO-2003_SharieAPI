@@ -1,19 +1,16 @@
 package com.github.glo2003.controllers;
 
-import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.ListingsDAO;
-import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Bookings;
 import com.github.glo2003.models.Listing;
-import spark.Request;
-import spark.Response;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import spark.Request;
+import spark.Response;
 
 import static spark.Spark.*;
 
@@ -42,8 +39,7 @@ public class ListingsController implements Controller{
     private long parseIdFromParam(String stringId) throws ParameterParsingException {
         try {
             return Long.parseLong(stringId);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new ParameterParsingException("id", "long");
         }
     }
@@ -51,8 +47,7 @@ public class ListingsController implements Controller{
     private LocalDate parseDateFromParam(String stringDate) throws ParameterParsingException {
         try {
             return LocalDate.parse(stringDate);
-        }
-        catch (DateTimeParseException e) {
+        } catch (DateTimeParseException e) {
             throw new ParameterParsingException("date", "LocalDate");
         }
     }

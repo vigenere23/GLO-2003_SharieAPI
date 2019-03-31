@@ -13,7 +13,9 @@ public class Bookings {
         bookings = new ArrayList<>();
     }
 
-    public List<Instant> getBookings() { return bookings; }
+    public List<Instant> getBookings() {
+        return bookings;
+    }
 
     public void setBookings(List<String> bookings) {
         for (String booking : bookings) {
