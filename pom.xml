@@ -82,9 +82,19 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.mongodb.morphia</groupId>
-      <artifactId>morphia</artifactId>
-      <version>0.107</version>
+      <groupId>dev.morphia.morphia</groupId>
+      <artifactId>core</artifactId>
+      <version>1.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>3.10.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>bson</artifactId>
+      <version>3.10.1</version>
     </dependency>
   </dependencies>
 

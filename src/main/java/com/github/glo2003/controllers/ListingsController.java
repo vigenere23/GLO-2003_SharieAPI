@@ -58,7 +58,7 @@ public class ListingsController implements Controller{
     }
 
     private void validateListing(Request req, Response res) throws Exception {
-        Long id = parseIdFromParam(req.params("id"));
+        String id = req.params("id");
         Listing listing = listingsDAO.get(id);
         req.attribute("listing", listing);
     }
@@ -80,8 +80,8 @@ public class ListingsController implements Controller{
 
     private Object addListing(Request req, Response res) throws Exception {
         Listing listing = ResponseHelper.deserializeJsonToObject(req.body(), Listing.class);
-        long id = listingsDAO.save(listing);
-        res.header("Location", String.format("/listings/%d", id));
+        String id = listingsDAO.save(listing);
+        res.header("Location", String.format("/listings/%s", id));
         res.status(201);
         return ResponseHelper.EMPTY_RESPONSE;
     }

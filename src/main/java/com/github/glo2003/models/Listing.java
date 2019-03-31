@@ -2,6 +2,8 @@ package com.github.glo2003.models;
 
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.helpers.DateTimeHelper;
+import dev.morphia.annotations.Id;
+import org.bson.types.ObjectId;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -10,6 +12,8 @@ import java.util.List;
 
 public class Listing {
 
+  @Id
+  protected ObjectId id;
   private String title;
   private String description;
   private List<Instant> availabilities;
@@ -48,6 +52,10 @@ public class Listing {
   }
 
   //<editor-fold desc="Getters & Setters">
+
+  public ObjectId getId() {
+    return id;
+  }
 
   public String getTitle() {
     return title;

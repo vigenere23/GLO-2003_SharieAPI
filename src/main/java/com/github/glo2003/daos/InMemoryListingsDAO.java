@@ -7,16 +7,13 @@ import com.github.glo2003.models.Listing;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryListingsDAO implements ListingsDAO {
-    private Map<Long, Listing> listings = new HashMap<>();
+    private Map<String, Listing> listings = new HashMap<>();
 
     @Override
-    public Listing get(long id) throws ItemNotFoundException {
+    public Listing get(String id) throws ItemNotFoundException {
         Listing listing = listings.get(id);
         if (listing == null) {
             throw new ItemNotFoundException(String.format("No listing with id '%d' was found", id));
@@ -45,16 +42,21 @@ public class InMemoryListingsDAO implements ListingsDAO {
     }
 
     @Override
-    public long save(Listing listing) throws ItemAlreadyExistsException {
+    public String save(Listing listing) throws ItemAlreadyExistsException {
         if (listings.containsValue(listing)) {
             throw new ItemAlreadyExistsException("The listing already exists");
         }
 
-        long id = MathHelper.randomLong();
+        String id = UUID.randomUUID().toString();
         while (listings.containsKey(id)) {
-            id = MathHelper.randomLong();
+            id = UUID.randomUUID().toString();
         }
         listings.put(id, listing);
         return id;
+    }
+
+    @Override
+    public void reset() {
+        listings.clear();
     }
 }

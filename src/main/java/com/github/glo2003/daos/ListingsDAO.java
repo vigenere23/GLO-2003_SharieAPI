@@ -8,9 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ListingsDAO {
-    Listing get(long id) throws ItemNotFoundException;
+    Listing get(String id) throws ItemNotFoundException;
     List<Listing> getAll();
     List<Listing> getAllSpecificDate(LocalDate date);
-    long save(Listing listing) throws ItemAlreadyExistsException;
+    String save(Listing listing) throws ItemAlreadyExistsException;
+    void reset();
 
 }
