@@ -10,6 +10,7 @@ import com.github.glo2003.models.Listing;
 import com.github.glo2003.stubs.BookingsPostDTO;
 import com.github.glo2003.stubs.ListingPostDTO;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +34,21 @@ public class ListingsControllerTest extends FunctionnalTest {
     private List<Instant> instants;
     private Instant now;
 
-    private final String UUID_REGEX = "[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}";
+    private String ID_REGEX;
+
+    public ListingsControllerTest() {
+        String profile = Optional.ofNullable(System.getenv("SHARIE_PROFILE")).orElse("dev");
+
+        if (profile.equals("dev")) {
+            ID_REGEX = "[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}";
+            listingsDAO = new InMemoryListingsDAO();
+        } else if (profile.equals("test")) {
+            ID_REGEX = "[0-9a-f]{24}";
+            listingsDAO = new MorphiaListingsDAO();
+        } else {
+            throw new IllegalArgumentException("Unknown profile");
+        }
+    }
 
     @Before
     public void setupValidObjects() {
@@ -55,42 +70,32 @@ public class ListingsControllerTest extends FunctionnalTest {
     }
 
     @Before
+    @After
     public void resetDao() {
-        String profile = Optional.ofNullable(System.getenv("SHARIE_PROFILE")).orElse("dev");
-
-        if(profile.equals("dev")){
-            listingsDAO = new InMemoryListingsDAO();
-        }else if(profile.equals("test")){
-            listingsDAO = new MorphiaListingsDAO();
-        }
-        else{
-            throw new IllegalArgumentException("Unknown profile");
-        }
-
         listingsDAO.reset();
     }
 
-    private Response getAllListings() {
+    protected Response getAllListings() {
         return get("/listings");
     }
 
-    private Response getAllListingsSpecificDate(String date) {
+    protected Response getAllListingsSpecificDate(String date) {
         return get("/listings?date={date}", date);
     }
 
-    private Response getListing(String id) {
+    protected Response getListing(String id) {
         return get("/listings/{id}", id);
     }
 
-    private Response postValidListing() {
+    protected Response postValidListing() {
         return postListing(new ListingPostDTO(validListing));
     }
 
-    private Response postValidListing2() {
+    protected Response postValidListing2() {
         return postListing(new ListingPostDTO(validListing2));
     }
 
-    private Response postListing(Object body) {
+    protected Response postListing(Object body) {
         return
             given()
                 .contentType("application/json")
@@ -99,7 +104,7 @@ public class ListingsControllerTest extends FunctionnalTest {
                 .post("/listings");
     }
 
-    private Response bookListing(String listingId, List<Instant> bookingList) {
+    protected Response bookListing(String listingId, List<Instant> bookingList) {
         BookingsPostDTO bookingsPostDTO = new BookingsPostDTO(bookingList);
         return
             given()
@@ -109,12 +114,12 @@ public class ListingsControllerTest extends FunctionnalTest {
                 .post("/listings/" + listingId + "/book");
     }
 
-    private String getIdOfValidPostedListing() {
+    protected String getIdOfValidPostedListing() {
         String[] splittedLocationHeader = postValidListing().header("Location").split("/");
         return splittedLocationHeader[splittedLocationHeader.length - 1];
     }
 
-    private String getListingDTOAsJson(Listing listing) throws JsonSerializingException {
+    protected String getListingDTOAsJson(Listing listing) throws JsonSerializingException {
         return ResponseHelper.serializeObjectToJson(new ListingDTO(listing));
     }
 
@@ -143,7 +148,7 @@ public class ListingsControllerTest extends FunctionnalTest {
     public void givenValidListing_POSTlistings_shouldReturnValidLocationHeader() {
         postValidListing()
         .then()
-            .header("Location", matchesPattern("^/listings/" + UUID_REGEX + "$"));
+            .header("Location", matchesPattern("^/listings/" + ID_REGEX + "$"));
     }
 
     @Test
