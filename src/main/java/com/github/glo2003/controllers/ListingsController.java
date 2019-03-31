@@ -1,8 +1,6 @@
 package com.github.glo2003.controllers;
 
-import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.ListingsDAO;
-import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ParameterParsingException;
@@ -37,15 +35,6 @@ public class ListingsController implements Controller{
                 post("/book", this::bookListing, ResponseHelper::serializeObjectToJson);
             });
         });
-    }
-
-    private long parseIdFromParam(String stringId) throws ParameterParsingException {
-        try {
-            return Long.parseLong(stringId);
-        }
-        catch (NumberFormatException e) {
-            throw new ParameterParsingException("id", "long");
-        }
     }
 
     private LocalDate parseDateFromParam(String stringDate) throws ParameterParsingException {

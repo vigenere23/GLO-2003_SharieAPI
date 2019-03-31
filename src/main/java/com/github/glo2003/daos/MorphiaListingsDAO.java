@@ -1,6 +1,5 @@
 package com.github.glo2003.daos;
 
-import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.models.Listing;
 import com.mongodb.MongoClient;
