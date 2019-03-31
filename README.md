@@ -47,13 +47,13 @@ Le projet peut fonctionner avec une mémoire locale ou bien une base de donnée 
 1. Ajouter une configuration Application et entrer les données suivantes:
     1. Name: SharieApp DEV
     2. Main class: com.github.glo2003.SharieAPI
-    3. Environnment variables: 
+    3. Environment variables: 
         1. SHARIE_PROFILE : dev
         
 2. Ajouter une configuration Application et entrer les données suivantes:
     1. Name: SharieApp PROD
     2. Main class: com.github.glo2003.SharieAPI
-    3. Environnment variables: 
+    3. Environment variables: 
         1. SHARIE_PROFILE : prod
         2. SHARIE_DATABASE_URL : mongodb://glo2003:mdp1234!@cluster0-shard-00-00-mawao.mongodb.net:27017,cluster0-shard-00-01-mawao.mongodb.net:27017,cluster0-shard-00-02-mawao.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
         3. SHARIE_DATABASE_NAME : prodglo2003
@@ -62,14 +62,14 @@ Le projet peut fonctionner avec une mémoire locale ou bien une base de donnée 
     1. Name: devTesting
     2. Test kind: Class
     3. Class: com.github.glo2003.controllers.ListingsControllerTest
-    4. Environnment variables: 
+    4. Environment variables: 
         1. SHARIE_PROFILE : dev
         
 4. Ajouter une configuration JUnit et entrer les données suivantes:
     1. Name: onlineTesting
     2. Test kind: Class
     3. Class: com.github.glo2003.controllers.ListingsControllerTest
-    4. Environnment variables: 
+    4. Environment variables: 
         1. SHARIE_PROFILE : test
         2. SHARIE_DATABASE_URL : mongodb://glo2003:mdp1234!@cluster0-shard-00-00-jvq3c.mongodb.net:27017,cluster0-shard-00-01-jvq3c.mongodb.net:27017,cluster0-shard-00-02-jvq3c.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
         3. SHARIE_DATABASE_NAME : testglo2003
