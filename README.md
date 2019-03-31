@@ -40,6 +40,41 @@ Built with [spark](http://sparkjava.com/) framework for simplicity
     2. From UI folder use the following command : elm reactor
     3. The UI is started you can now use a web browser with the url <localhost:8000/src/Main.elm> ans see the UI for this project.
 
+## Ajout de configurations
+
+Le projet peut fonctionner avec une mémoire locale ou bien une base de donnée Mongo dans le cloud. Voici des configurations sur intelliJ pour exécuter le projet et les tests sur les deux types de sauvegarde.
+
+1. Ajouter une configuration Application et entrer les données suivantes:
+    1. Name: SharieApp DEV
+    2. Main class: com.github.glo2003.SharieAPI
+    3. Environnment variables: 
+        1. SHARIE_PROFILE : dev
+        
+2. Ajouter une configuration Application et entrer les données suivantes:
+    1. Name: SharieApp PROD
+    2. Main class: com.github.glo2003.SharieAPI
+    3. Environnment variables: 
+        1. SHARIE_PROFILE : prod
+        2. SHARIE_DATABASE_URL : mongodb://glo2003:mdp1234!@cluster0-shard-00-00-mawao.mongodb.net:27017,cluster0-shard-00-01-mawao.mongodb.net:27017,cluster0-shard-00-02-mawao.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
+        3. SHARIE_DATABASE_NAME : prodglo2003
+        
+3. Ajouter une configuration JUnit et entrer les données suivantes:
+    1. Name: devTesting
+    2. Test kind: Class
+    3. Class: com.github.glo2003.controllers.ListingsControllerTest
+    4. Environnment variables: 
+        1. SHARIE_PROFILE : dev
+        
+4. Ajouter une configuration JUnit et entrer les données suivantes:
+    1. Name: onlineTesting
+    2. Test kind: Class
+    3. Class: com.github.glo2003.controllers.ListingsControllerTest
+    4. Environnment variables: 
+        1. SHARIE_PROFILE : test
+        2. SHARIE_DATABASE_URL : mongodb://glo2003:mdp1234!@cluster0-shard-00-00-jvq3c.mongodb.net:27017,cluster0-shard-00-01-jvq3c.mongodb.net:27017,cluster0-shard-00-02-jvq3c.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true
+        3. SHARIE_DATABASE_NAME : testglo2003
+
+
 ## Maven Run and Coverage configurations
 
 1. Install IntelliJ Maven plugin
