@@ -6,5 +6,7 @@ public class ItemAlreadyExistsException extends Exception implements HttpExcepti
     }
 
     @Override
-    public int getHttpStatus() { return 400; }
+    public int getHttpStatus() {
+        return 400;
+    }
 }

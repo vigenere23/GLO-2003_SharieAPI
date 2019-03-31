@@ -2,11 +2,11 @@ package com.github.glo2003.dtos;
 
 import com.github.glo2003.models.Listing;
 import com.github.glo2003.models.Owner;
-import org.bson.types.ObjectId;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.types.ObjectId;
+
 
 public class ListingDTO {
 

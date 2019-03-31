@@ -15,8 +15,7 @@ public class SharieAPI {
             listingsDAO = new InMemoryListingsDAO();
         }else if(profile.equals("prod") || profile.equals("test")){
             listingsDAO = new MorphiaListingsDAO();
-        }
-        else{
+        }else{
             throw new IllegalArgumentException("Unknown profile");
         }
 
