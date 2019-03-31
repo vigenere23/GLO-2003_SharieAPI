@@ -8,13 +8,14 @@ import dev.morphia.Datastore;
 import dev.morphia.Key;
 import dev.morphia.Morphia;
 import dev.morphia.query.Query;
+import org.bson.types.ObjectId;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.bson.types.ObjectId;
 
 
 public class MorphiaListingsDAO implements ListingsDAO {
@@ -51,7 +52,18 @@ public class MorphiaListingsDAO implements ListingsDAO {
     }
 
     @Override
-    public List<Listing> getAllWithName(String name) {return null;}
+    public List<Listing> getAllWithTitle(String title) {
+        /*
+        ArrayList<Listing> listOfListings = new ArrayList<>();
+        for (Listing listing: getAll()) {
+            for (String listingTitle: listing.getTitle()) {
+
+            }
+        }
+        return listOfListings;
+        */
+        return null;
+    }
     
     @Override
     public List<Listing> getAllSpecificDate(LocalDate date) {

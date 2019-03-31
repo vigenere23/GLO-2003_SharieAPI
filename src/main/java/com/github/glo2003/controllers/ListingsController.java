@@ -7,10 +7,11 @@ import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Bookings;
 import com.github.glo2003.models.Listing;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import spark.Request;
 import spark.Response;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import static spark.Spark.*;
 
@@ -71,7 +72,7 @@ public class ListingsController implements Controller{
             return new ListingDTOList(listingsDAO.getAllSpecificDate(date));
         }
         else if(titleString != null) {
-            return new ListingDTOList(listingsDAO.getAllWithName(titleString));
+            return new ListingDTOList(listingsDAO.getAllWithTitle(titleString));
         }
         else {
             return new ListingDTOList(listingsDAO.getAll());

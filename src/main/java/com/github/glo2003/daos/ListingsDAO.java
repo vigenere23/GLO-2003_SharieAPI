@@ -12,7 +12,7 @@ public interface ListingsDAO {
 
     List<Listing> getAll();
 
-    List<Listing> getAllWithName(String name);
+    List<Listing> getAllWithTitle(String title);
 
     List<Listing> getAllSpecificDate(LocalDate date);
 

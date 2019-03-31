@@ -2,8 +2,8 @@ package com.github.glo2003.daos;
 
 import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
-import com.github.glo2003.helpers.MathHelper;
 import com.github.glo2003.models.Listing;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -27,10 +27,10 @@ public class InMemoryListingsDAO implements ListingsDAO {
     }
 
     @Override
-    public List<Listing> getAllWithName(String name) {
+    public List<Listing> getAllWithTitle(String title) {
         ArrayList<Listing> listOfListings = new ArrayList<>();
         listings.forEach((k, v) -> {
-            if(name.equals(v.getTitle())) {
+            if(title.equals(v.getTitle())) {
                 listOfListings.add(listings.get(k));
             }
         });
