@@ -1,30 +1,30 @@
 package com.github.glo2003.controllers;
 
 import com.github.glo2003.FunctionnalTest;
-
 import com.github.glo2003.daos.InMemoryListingsDAO;
-import com.github.glo2003.daos.ListingsDAO;
 import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.exceptions.JsonSerializingException;
 import com.github.glo2003.helpers.ResponseHelper;
+import com.github.glo2003.models.Listing;
 import com.github.glo2003.stubs.BookingsPostDTO;
 import com.github.glo2003.stubs.ListingPostDTO;
-import com.github.glo2003.models.Listing;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static io.restassured.RestAssured.*;
+import static com.github.glo2003.controllers.ListingsController.listingsDAO;
+import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static com.github.glo2003.controllers.ListingsController.listingsDAO;
 
 public class ListingsControllerTest extends FunctionnalTest {
 
@@ -32,6 +32,8 @@ public class ListingsControllerTest extends FunctionnalTest {
     private Listing validListing2;
     private List<Instant> instants;
     private Instant now;
+
+    private final String UUID_REGEX = "[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}";
 
     @Before
     public void setupValidObjects() {
@@ -141,7 +143,7 @@ public class ListingsControllerTest extends FunctionnalTest {
     public void givenValidListing_POSTlistings_shouldReturnValidLocationHeader() {
         postValidListing()
         .then()
-            .header("Location", matchesPattern("^/listings/[0-9]+$"));
+            .header("Location", matchesPattern("^/listings/" + UUID_REGEX + "$"));
     }
 
     @Test
@@ -155,14 +157,6 @@ public class ListingsControllerTest extends FunctionnalTest {
     @Test
     public void givenInvalidJson_POSTlistings_shouldReturn400WithErrorField() {
         postListing("{")
-        .then()
-            .statusCode(400)
-            .body("error", not(emptyOrNullString()));
-    }
-
-    @Test
-    public void GETlistingWithInvalidId_shouldReturn400WithErrorField() {
-        getListing("abc")
         .then()
             .statusCode(400)
             .body("error", not(emptyOrNullString()));
