@@ -2,8 +2,8 @@ package com.github.glo2003.daos;
 
 import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
-import com.github.glo2003.helpers.MathHelper;
 import com.github.glo2003.models.Listing;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -16,7 +16,7 @@ public class InMemoryListingsDAO implements ListingsDAO {
     public Listing get(String id) throws ItemNotFoundException {
         Listing listing = listings.get(id);
         if (listing == null) {
-            throw new ItemNotFoundException(String.format("No listing with id '%d' was found", id));
+            throw new ItemNotFoundException(String.format("No listing with id '%s' was found", id));
         }
         return listing;
     }

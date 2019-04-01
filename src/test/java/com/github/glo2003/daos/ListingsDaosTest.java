@@ -3,6 +3,7 @@ package com.github.glo2003.daos;
 import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.models.Listing;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,24 +17,38 @@ public class ListingsDaosTest {
     private Listing validListing;
     private Listing validListing2;
 
-    @Before
-    public void setupBefore() {
+    public ListingsDaosTest() {
         String profile = Optional.ofNullable(System.getenv("SHARIE_PROFILE")).orElse("dev");
-        ListingsDAO listingsDAO;
-
-        if(profile.equals("dev")){
+        if (profile.equals("dev")) {
             listingsDAO = new InMemoryListingsDAO();
-        }else if(profile.equals("test")){
+        } else if (profile.equals("test")) {
             listingsDAO = new MorphiaListingsDAO();
-        }
-        else{
+        } else {
             throw new IllegalArgumentException("Unknown profile");
         }
+    }
 
+    @Before
+    public void setupValidListings() {
+        validListing = new Listing(
+                "A nice listing",
+                "Splendid offer right here!",
+                "Jane Smith",
+                "8197771111",
+                "jane.smith@gmail.com");
+        validListing2 = new Listing(
+                "Another nice listing",
+                "Yet another splendid offer",
+                "John Smith",
+                "4189990000",
+                "john.smith@gmail.com"
+        );
+    }
+
+    @Before
+    @After
+    public void resetDao() {
         listingsDAO.reset();
-
-        validListing = new Listing();
-        validListing2 = new Listing();
     }
 
     @Test
