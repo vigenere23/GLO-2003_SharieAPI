@@ -31,18 +31,22 @@ public class MorphiaListingsDAO implements ListingsDAO {
         MongoClientURI host = new MongoClientURI(databaseUrl);
         MongoClient mongoClient = new MongoClient(host);
         datastore = morphia.createDatastore(mongoClient, databaseName);
-
     }
 
     @Override
     public Listing get(String id) throws ItemNotFoundException {
-        //Revoir comment faire un get plus efficace
-        Listing listing = datastore.get(Listing.class, new ObjectId(id));
-        if (listing == null) {
-            throw new ItemNotFoundException(String.format("No listing with id '%d' was found", id));
-        }
+        // TODO Revoir comment faire un get plus efficace
+        try {
+            Listing listing = datastore.get(Listing.class, new ObjectId(id));
+            if (listing == null) {
+                throw new ItemNotFoundException(String.format("No listing with id '%s' was found", id));
+            }
 
-        return listing;
+            return listing;
+        }
+        catch (Exception e) {
+            throw new ItemNotFoundException(String.format("No listing with id '%s' was found", id));
+        }
     }
 
     @Override

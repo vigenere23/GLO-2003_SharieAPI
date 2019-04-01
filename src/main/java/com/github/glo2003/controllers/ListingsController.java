@@ -37,14 +37,6 @@ public class ListingsController implements Controller{
         });
     }
 
-    private long parseIdFromParam(String stringId) throws ParameterParsingException {
-        try {
-            return Long.parseLong(stringId);
-        } catch (NumberFormatException e) {
-            throw new ParameterParsingException("id", "long");
-        }
-    }
-
     private LocalDate parseDateFromParam(String stringDate) throws ParameterParsingException {
         try {
             return LocalDate.parse(stringDate);

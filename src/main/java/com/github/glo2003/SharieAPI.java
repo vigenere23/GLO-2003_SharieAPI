@@ -11,11 +11,11 @@ public class SharieAPI {
         String profile = Optional.ofNullable(System.getenv("SHARIE_PROFILE")).orElse("dev");
         ListingsDAO listingsDAO;
 
-        if(profile.equals("dev")){
+        if (profile.equals("dev")) {
             listingsDAO = new InMemoryListingsDAO();
-        }else if(profile.equals("prod") || profile.equals("test")){
+        } else if (profile.equals("prod") || profile.equals("test")) {
             listingsDAO = new MorphiaListingsDAO();
-        }else{
+        } else {
             throw new IllegalArgumentException("Unknown profile");
         }
 

@@ -184,6 +184,18 @@
             <repoToken>rs3D3CBSTfpe8B1zzDHp9EsQpqPJVkcUe</repoToken>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>5.0.0-M2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
