@@ -40,7 +40,7 @@ Built with [spark](http://sparkjava.com/) framework for simplicity
     2. From UI folder use the following command : elm reactor
     3. The UI is started you can now use a web browser with the url <localhost:8000/src/Main.elm> ans see the UI for this project.
 
-## Ajout de configurations
+## Ajout de configurations IntelliJ
 
 Le projet peut fonctionner avec une mémoire locale ou bien une base de donnée Mongo dans le cloud. Voici des configurations sur intelliJ pour exécuter le projet et les tests sur les deux types de sauvegarde.
 
@@ -75,15 +75,17 @@ Le projet peut fonctionner avec une mémoire locale ou bien une base de donnée 
         3. SHARIE_DATABASE_NAME : testglo2003
 
 
-## Maven Run and Coverage configurations
+## Add IntelliJ configurations for Maven
 
 1. Install IntelliJ Maven plugin
     1. Go to `File > Settings > Plugins > Installed`, search for `Maven Integration`, check it and restart IntelliJ
     2. Once IntelliJ has restarted, click on `Enable auto-imports` when the popup appears
     3. Click on `Add configuration` between the `build` and the `run` icons
     4. Click on `+ > Maven`
-        1. For the (test and) `Run` configuration, write `clean install exec:java` inside the field `Command line`
-        2. For the (test) `Coverage` configuration, write `clean test jacoco:report coveralls:report` inside the field `Command line`
+        1. For the `Run` configuration, write `clean install exec:java` inside the field `Command line`
+        2. For the `Test` configuration, write `clean install test`
+        3. For the `Dependencies check` configuration, write `clean install dependency-check:check`
+        4. For the `Coverage` configuration, write `clean test cobertura:cobertura codacy:coverage` inside the field `Command line`
 
 > Note : test coverage results will be available at <https://app.codacy.com>
 
