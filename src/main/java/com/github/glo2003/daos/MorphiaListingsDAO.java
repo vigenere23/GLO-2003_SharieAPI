@@ -57,16 +57,13 @@ public class MorphiaListingsDAO implements ListingsDAO {
 
     @Override
     public List<Listing> getAllWithTitle(String title) {
-        /*
         ArrayList<Listing> listOfListings = new ArrayList<>();
         for (Listing listing: getAll()) {
-            for (String listingTitle: listing.getTitle()) {
-
+            if(title == listing.getTitle()) {
+                listOfListings.add(listing);
             }
         }
         return listOfListings;
-        */
-        return null;
     }
     
     @Override
