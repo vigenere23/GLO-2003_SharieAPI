@@ -4,6 +4,7 @@ import com.github.glo2003.daos.ListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ParameterParsingException;
+import com.github.glo2003.filters.ListingsFilter;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Bookings;
 import com.github.glo2003.models.Listing;
@@ -12,10 +13,11 @@ import spark.Response;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 import static spark.Spark.*;
 
-public class ListingsController implements Controller{
+public class ListingsController implements Controller {
 
     static ListingsDAO listingsDAO;
 
@@ -58,17 +60,20 @@ public class ListingsController implements Controller{
 
     private Object getAllListings(Request req, Response res) throws Exception{
         String dateString = req.queryParams("date");
-        String titleString = req.queryParams("title");
-        if(dateString != null){
+        String title = req.queryParams("title");
+
+        List<Listing> listings = listingsDAO.getAll();
+
+        if (dateString != null) {
             LocalDate date = parseDateFromParam(dateString);
-            return new ListingDTOList(listingsDAO.getAllSpecificDate(date));
+            listings = ListingsFilter.filterByDate(listings, date);
         }
-        else if(titleString != null) {
-            return new ListingDTOList(listingsDAO.getAllWithTitle(titleString));
+        
+        if (title != null) {
+            listings = ListingsFilter.filterByTitle(listings, title);
         }
-        else {
-            return new ListingDTOList(listingsDAO.getAll());
-        }
+
+        return new ListingDTOList(listings);
     }
 
     private Object addListing(Request req, Response res) throws Exception {

@@ -10,10 +10,6 @@ import dev.morphia.Morphia;
 import dev.morphia.query.Query;
 import org.bson.types.ObjectId;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +31,6 @@ public class MorphiaListingsDAO implements ListingsDAO {
 
     @Override
     public Listing get(String id) throws ItemNotFoundException {
-        // TODO Revoir comment faire un get plus efficace
         try {
             Listing listing = datastore.get(Listing.class, new ObjectId(id));
             if (listing == null) {
@@ -53,32 +48,6 @@ public class MorphiaListingsDAO implements ListingsDAO {
     public List<Listing> getAll() {
         Query<Listing> query = datastore.createQuery(Listing.class);
         return query.asList();
-    }
-
-    @Override
-    public List<Listing> getAllWithTitle(String title) {
-        ArrayList<Listing> listOfListings = new ArrayList<>();
-        for (Listing listing: getAll()) {
-            if(title == listing.getTitle()) {
-                listOfListings.add(listing);
-            }
-        }
-        return listOfListings;
-    }
-    
-    @Override
-    public List<Listing> getAllSpecificDate(LocalDate date) {
-        List<Listing> filteredListings = new ArrayList<>();
-        for (Listing listing: getAll()) {
-            for (Instant availability:listing.getAvailabilities()) {
-                if(availability.atZone(ZoneOffset.UTC).getYear() == date.getYear()
-                        && availability.atZone(ZoneOffset.UTC).getMonthValue() == date.getMonthValue()
-                        && availability.atZone(ZoneOffset.UTC).getDayOfMonth() == date.getDayOfMonth()){
-                    filteredListings.add(listing);
-                }
-            }
-        }
-        return filteredListings;
     }
 
     @Override
