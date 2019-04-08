@@ -122,7 +122,7 @@ public class APIDocumentation {
      * @apiParam {String} id Listing's ID
      * @apiParam {score} A score from 0 to 5 to rate the listing.
      * @apiParamExample Request
-     * GET /listings/:id/rate/{score}
+     * GET /listings/:id/rate/:score
      *
      * @apiSuccessExample Response
      * 204 HTTP NO CONTENT
