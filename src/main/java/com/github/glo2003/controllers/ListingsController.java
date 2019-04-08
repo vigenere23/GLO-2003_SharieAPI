@@ -5,14 +5,14 @@ import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.filters.ListingsFilter;
+import com.github.glo2003.helpers.DateTimeHelper;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Bookings;
 import com.github.glo2003.models.Listing;
 import spark.Request;
 import spark.Response;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.time.Instant;
 import java.util.List;
 
 import static spark.Spark.*;
@@ -38,12 +38,20 @@ public class ListingsController implements Controller {
             });
         });
     }
-
+/*
     private LocalDate parseDateFromParam(String stringDate) throws ParameterParsingException {
         try {
             return LocalDate.parse(stringDate);
         } catch (DateTimeParseException e) {
             throw new ParameterParsingException("date", "LocalDate");
+        }
+    }
+*/
+    private Instant parseDateFromParam(String stringDate) throws ParameterParsingException {
+        try {
+            return Instant.parse(stringDate + "T00:00:00Z");
+        } catch (Exception e) {
+            throw new ParameterParsingException("date", "Instant");
         }
     }
 
@@ -65,8 +73,8 @@ public class ListingsController implements Controller {
         List<Listing> listings = listingsDAO.getAll();
 
         if (dateString != null) {
-            LocalDate date = parseDateFromParam(dateString);
-            listings = ListingsFilter.filterByDate(listings, date);
+            Instant date = parseDateFromParam(dateString);
+            listings = ListingsFilter.filterByDate(listings, DateTimeHelper.removeTimeFromInstant(date));
         }
         
         if (title != null) {

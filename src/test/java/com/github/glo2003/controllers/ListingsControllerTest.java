@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,6 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     private Listing validListing;
     private Listing validListing2;
-    private Listing validListing3;
     private List<Instant> instants;
     private Instant now;
 
@@ -203,7 +201,7 @@ public class ListingsControllerTest extends FunctionnalTest {
     @Test
     public void givenNewServer_GETlistings_shouldReturnListingsEmpty() {
         getAllListings()
-            .then()
+        .then()
             .body("listings", iterableWithSize(0));
     }
 
@@ -218,12 +216,13 @@ public class ListingsControllerTest extends FunctionnalTest {
     }
 
     @Test
-    public void givenPostTwoValidListingsAndValidDate_GETlistingsSpecificDate_shouldReturnTwoListings() {
+    public void givenPostSameValidListingTwice_GETlistingsSpecificDateWithin7Days_shouldReturnThoseTwoListings() {
         postValidListing();
         postValidListing();
-        getAllListingsSpecificDate(LocalDate.now().toString())
-                .then()
-                .body("listings", iterableWithSize(2));
+        
+        getAllListingsSpecificDate(now.toString().split("T")[0])
+        .then()
+            .body("listings", iterableWithSize(2));
     }
 
     @Test
@@ -239,19 +238,21 @@ public class ListingsControllerTest extends FunctionnalTest {
     public void givenInvalidDate_GETlistingsSpecificDate_shouldReturnNoListings() {
         postValidListing();
         postValidListing();
+        
         getAllListingsSpecificDate("")
-                .then()
-                .statusCode(400)
-                .body("error", not(emptyOrNullString()));
+        .then()
+            .statusCode(400)
+            .body("error", not(emptyOrNullString()));
     }
 
     @Test
     public void givenPostTwoValidListingsWithDifferentTitle_GETAllListingsSpecificTitle_shouldReturnListOfSize1() {
         postValidListing();
         postValidListing2();
+
         getAllListingsSpecificTitle(validListing.getTitle())
-                .then()
-                .body("listings", iterableWithSize(1));
+        .then()
+            .body("listings", iterableWithSize(1));
     }
 
     @Test
@@ -259,9 +260,10 @@ public class ListingsControllerTest extends FunctionnalTest {
         postValidListing();
         postValidListing2();
         postValidListing2();
+
         getAllListingsSpecificTitle(validListing2.getTitle())
-                .then()
-                .body("listings", iterableWithSize(2));
+        .then()
+            .body("listings", iterableWithSize(2));
     }
 
     @Test
@@ -269,9 +271,10 @@ public class ListingsControllerTest extends FunctionnalTest {
         postValidListing();
         postValidListing2();
         postValidListing2();
+
         getAllListingsSpecificTitle("This title doesn't exist")
-                .then()
-                .body("listings", iterableWithSize(0));
+        .then()
+            .body("listings", iterableWithSize(0));
     }
 
     @Test
