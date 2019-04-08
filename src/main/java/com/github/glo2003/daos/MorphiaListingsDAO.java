@@ -38,8 +38,7 @@ public class MorphiaListingsDAO implements ListingsDAO {
             }
 
             return listing;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ItemNotFoundException(String.format("No listing with id '%s' was found", id));
         }
     }

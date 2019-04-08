@@ -83,4 +83,10 @@ public class ListingTest {
         emptyListing.book(bookings);
         emptyListing.book(bookings);
     }
+
+    @Test
+    public void givenNewListing_addRating_shouldReturnRatingListWithOneValue() {
+        List<Rating> ratings = emptyListing.getRatings();
+        assertThat(ratings.size()).isEqualTo(0);
+    }
 }

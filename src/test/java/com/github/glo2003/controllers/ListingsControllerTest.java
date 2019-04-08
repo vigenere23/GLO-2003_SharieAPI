@@ -86,6 +86,10 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     private Response getAllListingsSpecificTitle(String title) { return get("/listings?title={title}", title); }
 
+    protected Response addRating(String id, Integer score) {
+        return get("/listings/{id}/rate/{score}", id, score);
+    }
+
     protected Response getListing(String id) {
         return get("/listings/{id}", id);
     }
@@ -183,6 +187,14 @@ public class ListingsControllerTest extends FunctionnalTest {
         getListing(getIdOfValidPostedListing())
         .then()
             .statusCode(200);
+    }
+
+    @Test
+    public void givenaddRating_shouldReturn204() {
+        String id = getIdOfValidPostedListing();
+        addRating(id,4)
+                .then()
+                .statusCode(204);
     }
 
     @Test

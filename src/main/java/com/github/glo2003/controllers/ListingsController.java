@@ -1,6 +1,7 @@
 package com.github.glo2003.controllers;
 
 import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ParameterParsingException;
@@ -35,6 +36,7 @@ public class ListingsController implements Controller {
                 before("/*", this::validateListing);
                 get("", this::getListing, ResponseHelper::serializeObjectToJson);
                 post("/book", this::bookListing, ResponseHelper::serializeObjectToJson);
+                get("/rate/:score", this::addRating, ResponseHelper::serializeObjectToJson);
             });
         });
     }
@@ -94,6 +96,19 @@ public class ListingsController implements Controller {
         Bookings bookings = ResponseHelper.deserializeJsonToObject(req.body(), Bookings.class);
         listing.book(bookings.getBookings());
 
+        res.status(204);
+        return ResponseHelper.EMPTY_RESPONSE;
+    }
+
+    private Object addRating(Request req, Response res) throws Exception {
+        String listingId = req.params("id");
+        Integer rating = Integer.parseInt(req.params("score"));
+        Listing listing = listingsDAO.get(listingId);
+        listing.addRating(rating);
+
+        if(MorphiaListingsDAO.class.isInstance(listingsDAO)){
+            listingsDAO.save(listing);
+        }
         res.status(204);
         return ResponseHelper.EMPTY_RESPONSE;
     }

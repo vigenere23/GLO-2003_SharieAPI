@@ -6,6 +6,8 @@ import com.github.glo2003.models.Owner;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.github.glo2003.models.Rating;
 import org.bson.types.ObjectId;
 
 
@@ -16,6 +18,7 @@ public class ListingDTO {
     public String description;
     public String category;
     public List<String> availabilities;
+    public List<Rating> ratings;
     public Owner owner;
 
     public ListingDTO() {
@@ -25,6 +28,7 @@ public class ListingDTO {
         category = "";
         owner = new Owner();
         availabilities = new ArrayList<>();
+        ratings = new ArrayList<Rating>();
     }
 
     public ListingDTO(Listing listing) {
@@ -34,6 +38,7 @@ public class ListingDTO {
         owner = listing.getOwner();
         initCategory(listing.getCategory());
         initAvailabilities(listing.getAvailabilities());
+        ratings = listing.getRatings();
     }
 
     public void initCategory(ListingCategory category) {

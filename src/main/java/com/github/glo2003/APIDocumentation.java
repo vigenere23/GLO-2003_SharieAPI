@@ -111,4 +111,20 @@ public class APIDocumentation {
      * @apiSuccessExample Response
      * 204 HTTP NO CONTENT
      */
+
+    /**
+     * @api {get} /listings/:id/rate/{score} rate a Listing
+     * @apiName rate
+     * @apiGroup Listings
+     *
+     * @apiDescription No body is returned.
+     *
+     * @apiParam {String} id Listing's ID
+     * @apiParam {score} A score from 0 to 5 to rate the listing.
+     * @apiParamExample Request
+     * GET /listings/:id/rate/:score
+     *
+     * @apiSuccessExample Response
+     * 204 HTTP NO CONTENT
+     */
 }
