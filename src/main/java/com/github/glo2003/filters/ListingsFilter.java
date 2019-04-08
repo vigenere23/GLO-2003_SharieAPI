@@ -25,29 +25,29 @@ public class ListingsFilter {
     public static List<Listing> filterByTitle(List<Listing> listings, String title) {
         List<Listing> filteredListings = new ArrayList<>();
 
-        String[] searchTerms = title.split(" ");
-
         for (Listing listing : listings) {
-            Boolean listingMatches = true;
-
-            for (String searchTerm : searchTerms) {
-                Boolean searchTermMatches = false;
-                for (String word : listing.getTitle().split(" ")) {
-                    if (word.toLowerCase().contains(searchTerm.toLowerCase())) {
-                        searchTermMatches = true;
-                        break;
-                    }
-                }
-                if (!searchTermMatches) {
-                    listingMatches = false;
-                    break;
-                }
+            if (searchMatchesText(title, listing.getTitle())) {
+                filteredListings.add(listing);
             }
-
-            if (listingMatches) filteredListings.add(listing);
         }
 
         return filteredListings;
+    }
+
+    private static Boolean searchMatchesText(String search, String text) {
+        for (String searchTerm : search.split(" ")) {
+            Boolean searchTermMatches = false;
+            for (String word : text.split(" ")) {
+                if (word.toLowerCase().contains(searchTerm.toLowerCase())) {
+                    searchTermMatches = true;
+                    break;
+                }
+            }
+            if (!searchTermMatches) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
