@@ -54,12 +54,14 @@ public class ListingsControllerTest extends FunctionnalTest {
         validListing = new Listing(
             "Such a nice listing",
             "Splendid offer right here!",
+            "Outdoors",
             "Jane Smith",
             "8197771111",
             "jane.smith@gmail.com");
         validListing2 = new Listing(
             "Yet another nice listing",
             "Yet another splendid offer",
+            "Kitchen",
             "John Smith",
             "4189990000",
             "john.smith@gmail.com");

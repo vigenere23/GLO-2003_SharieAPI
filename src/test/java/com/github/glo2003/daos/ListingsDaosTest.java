@@ -33,12 +33,14 @@ public class ListingsDaosTest {
         validListing = new Listing(
                 "A nice listing",
                 "Splendid offer right here!",
+                "Outdoors",
                 "Jane Smith",
                 "8197771111",
                 "jane.smith@gmail.com");
         validListing2 = new Listing(
                 "Another nice listing",
                 "Yet another splendid offer",
+                "Kitchen",
                 "John Smith",
                 "4189990000",
                 "john.smith@gmail.com"

@@ -1,5 +1,6 @@
 package com.github.glo2003.dtos;
 
+import com.github.glo2003.enums.ListingCategory;
 import com.github.glo2003.models.Listing;
 import com.github.glo2003.models.Owner;
 import java.time.Instant;
@@ -13,6 +14,7 @@ public class ListingDTO {
     protected ObjectId id;
     public String title;
     public String description;
+    public String category;
     public List<String> availabilities;
     public Owner owner;
 
@@ -20,6 +22,7 @@ public class ListingDTO {
         id = new ObjectId("");
         title = "";
         description = "";
+        category = "";
         owner = new Owner();
         availabilities = new ArrayList<>();
     }
@@ -29,7 +32,12 @@ public class ListingDTO {
         title = listing.getTitle();
         description = listing.getDescription();
         owner = listing.getOwner();
+        initCategory(listing.getCategory());
         initAvailabilities(listing.getAvailabilities());
+    }
+
+    public void initCategory(ListingCategory category) {
+        this.category = category.name().toLowerCase();
     }
 
     public void initAvailabilities(List<Instant> instants) {
