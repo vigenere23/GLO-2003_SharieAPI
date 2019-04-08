@@ -33,6 +33,7 @@ public class ListingsController implements Controller{
                 before("/*", this::validateListing);
                 get("", this::getListing, ResponseHelper::serializeObjectToJson);
                 post("/book", this::bookListing, ResponseHelper::serializeObjectToJson);
+                get("/rate/:score", this::addRating, ResponseHelper::serializeObjectToJson);
             });
         });
     }
@@ -62,11 +63,9 @@ public class ListingsController implements Controller{
         if(dateString != null){
             LocalDate date = parseDateFromParam(dateString);
             return new ListingDTOList(listingsDAO.getAllSpecificDate(date));
-        }
-        else if(titleString != null) {
+        } else if(titleString != null) {
             return new ListingDTOList(listingsDAO.getAllWithTitle(titleString));
-        }
-        else {
+        } else {
             return new ListingDTOList(listingsDAO.getAll());
         }
     }
@@ -84,6 +83,16 @@ public class ListingsController implements Controller{
         Bookings bookings = ResponseHelper.deserializeJsonToObject(req.body(), Bookings.class);
         listing.book(bookings.getBookings());
 
+        res.status(204);
+        return ResponseHelper.EMPTY_RESPONSE;
+    }
+
+    private Object addRating(Request req, Response res) throws Exception {
+        String listingId = req.params("id");
+        Integer rating = Integer.parseInt(req.params("score"));
+        Listing listing = listingsDAO.get(listingId);
+        listing.addRating(rating);
+        listingsDAO.save(listing);
         res.status(204);
         return ResponseHelper.EMPTY_RESPONSE;
     }

@@ -1,12 +1,15 @@
 package com.github.glo2003.models;
 
 import com.github.glo2003.exceptions.ItemNotFoundException;
+import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.helpers.DateTimeHelper;
 import dev.morphia.annotations.Id;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+
 import org.bson.types.ObjectId;
 
 
@@ -18,6 +21,7 @@ public class Listing {
     private String description;
     private List<Instant> availabilities;
     private Owner owner;
+    private List<Rating> ratings;
 
     //<editor-fold desc="Constructors">
 
@@ -26,6 +30,7 @@ public class Listing {
         setDescription("");
         initAvailabilities();
         setOwner(new Owner());
+        ratings = new ArrayList<Rating>();
     }
 
     public Listing(String title, String description, Owner owner) {
@@ -33,6 +38,7 @@ public class Listing {
         setDescription(description);
         initAvailabilities();
         setOwner(owner);
+        ratings = new ArrayList<Rating>();
     }
 
     public Listing(String title, String description, String ownerName, String ownerPhoneNumber, String ownerEmail) {
@@ -92,6 +98,14 @@ public class Listing {
 
     public void setOwner(Owner owner) {
         this.owner = owner;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void addRating(Integer score) throws ParameterParsingException {
+        ratings.add(new Rating(score));
     }
 
     //</editor-fold>
