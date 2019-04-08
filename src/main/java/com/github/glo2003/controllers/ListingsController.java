@@ -38,15 +38,7 @@ public class ListingsController implements Controller {
             });
         });
     }
-/*
-    private LocalDate parseDateFromParam(String stringDate) throws ParameterParsingException {
-        try {
-            return LocalDate.parse(stringDate);
-        } catch (DateTimeParseException e) {
-            throw new ParameterParsingException("date", "LocalDate");
-        }
-    }
-*/
+
     private Instant parseDateFromParam(String stringDate) throws ParameterParsingException {
         try {
             return Instant.parse(stringDate + "T00:00:00Z");
@@ -69,6 +61,7 @@ public class ListingsController implements Controller {
     private Object getAllListings(Request req, Response res) throws Exception{
         String dateString = req.queryParams("date");
         String title = req.queryParams("title");
+        String category = req.queryParams("category");
 
         List<Listing> listings = listingsDAO.getAll();
 
@@ -79,6 +72,10 @@ public class ListingsController implements Controller {
         
         if (title != null) {
             listings = ListingsFilter.filterByTitle(listings, title);
+        }
+
+        if (category != null) {
+            listings = ListingsFilter.filterByCategory(listings, category);
         }
 
         return new ListingDTOList(listings);
