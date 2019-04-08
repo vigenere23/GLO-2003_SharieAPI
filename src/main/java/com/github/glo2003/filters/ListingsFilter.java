@@ -31,10 +31,26 @@ public class ListingsFilter {
     public static List<Listing> filterByTitle(List<Listing> listings, String title) {
         List<Listing> filteredListings = new ArrayList<>();
 
+        String[] searchTerms = title.split(" ");
+
         for (Listing listing : listings) {
-            if (listing.getTitle().equals(title)) {
-                filteredListings.add(listing);
+            Boolean listingMatches = true;
+
+            for (String searchTerm : searchTerms) {
+                Boolean searchTermMatches = false;
+                for (String word : listing.getTitle().split(" ")) {
+                    if (word.toLowerCase().contains(searchTerm.toLowerCase())) {
+                        searchTermMatches = true;
+                        break;
+                    }
+                }
+                if (!searchTermMatches) {
+                    listingMatches = false;
+                    break;
+                }
             }
+
+            if (listingMatches) filteredListings.add(listing);
         }
 
         return filteredListings;

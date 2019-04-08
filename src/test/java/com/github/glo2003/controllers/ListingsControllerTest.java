@@ -54,23 +54,17 @@ public class ListingsControllerTest extends FunctionnalTest {
     @Before
     public void setupValidObjects() {
         validListing = new Listing(
-            "A nice listing",
+            "Such a nice listing",
             "Splendid offer right here!",
             "Jane Smith",
             "8197771111",
             "jane.smith@gmail.com");
         validListing2 = new Listing(
-            "Another nice listing",
+            "Yet another nice listing",
             "Yet another splendid offer",
             "John Smith",
             "4189990000",
             "john.smith@gmail.com");
-        validListing3 = new Listing(
-            "Another nice listing",
-            "More of the same",
-            "Tulipe Jaune",
-            "4189991111",
-            "flower.p0wer@hotmail.ca");
 
         now = Instant.now();
         instants = new ArrayList<>();
@@ -102,10 +96,6 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     protected Response postValidListing2() {
         return postListing(new ListingPostDTO(validListing2));
-    }
-
-    protected Response postValidListing3() {
-        return postListing(new ListingPostDTO(validListing3));
     }
 
     protected Response postListing(Object body) {
@@ -256,29 +246,29 @@ public class ListingsControllerTest extends FunctionnalTest {
     }
 
     @Test
-    public void givenPostTwoValidListingsAndValidTitles_GETAllListingsSpecificTitle_shouldReturnOneListings() {
+    public void givenPostTwoValidListingsWithDifferentTitle_GETAllListingsSpecificTitle_shouldReturnListOfSize1() {
         postValidListing();
         postValidListing2();
-        getAllListingsSpecificTitle("A nice listing")
+        getAllListingsSpecificTitle(validListing.getTitle())
                 .then()
                 .body("listings", iterableWithSize(1));
     }
 
     @Test
-    public void givenPostThreeValidListingsAndValidTitles_GETAllListingsSpecificTitle_shouldReturnTwoListings() {
+    public void givenPostTwoValidListingsWithSameTitleAndOneOther_GETAllListingsSpecificTitle_shouldReturnListOfSize2() {
         postValidListing();
         postValidListing2();
-        postValidListing3();
-        getAllListingsSpecificTitle("Another nice listing")
+        postValidListing2();
+        getAllListingsSpecificTitle(validListing2.getTitle())
                 .then()
                 .body("listings", iterableWithSize(2));
     }
 
     @Test
-    public void givenPostThreeValidListingsAndValidTitles_GETAllListingsSpecificTitle_shouldReturnNoListings() {
+    public void givenPostThreeValidListings_GETAllListingsWithNonExistantTitle_shouldReturnEmptyList() {
         postValidListing();
         postValidListing2();
-        postValidListing3();
+        postValidListing2();
         getAllListingsSpecificTitle("This title doesn't exist")
                 .then()
                 .body("listings", iterableWithSize(0));
