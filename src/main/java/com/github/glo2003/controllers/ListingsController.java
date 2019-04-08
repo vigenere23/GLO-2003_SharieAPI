@@ -1,6 +1,8 @@
 package com.github.glo2003.controllers;
 
+import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.ListingsDAO;
+import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ParameterParsingException;
@@ -92,7 +94,10 @@ public class ListingsController implements Controller{
         Integer rating = Integer.parseInt(req.params("score"));
         Listing listing = listingsDAO.get(listingId);
         listing.addRating(rating);
-        listingsDAO.save(listing);
+
+        if(MorphiaListingsDAO.class.isInstance(listingsDAO)){
+            listingsDAO.save(listing);
+        }
         res.status(204);
         return ResponseHelper.EMPTY_RESPONSE;
     }
