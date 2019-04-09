@@ -1,7 +1,6 @@
 package com.github.glo2003.controllers;
 
 import com.github.glo2003.daos.ListingsDAO;
-import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.dtos.ListingDTOList;
 import com.github.glo2003.exceptions.ParameterParsingException;
