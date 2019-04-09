@@ -6,7 +6,7 @@ import com.github.glo2003.exceptions.JsonSerializingException;
 
 public class ResponseHelper {
 
-    private static ObjectMapper jsonObjectMapper = new ObjectMapper();
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
     public static final String EMPTY_RESPONSE = "";
 
@@ -25,7 +25,7 @@ public class ResponseHelper {
             } else if (object instanceof String) {
                 return (String) object;
             } else {
-                return jsonObjectMapper.writeValueAsString(object);
+                return objectMapper.writeValueAsString(object);
             }
         } catch (Exception e) {
             throw new JsonSerializingException(object.getClass().getName());
@@ -34,7 +34,7 @@ public class ResponseHelper {
 
     public static <T> T deserializeJsonToObject(String json, Class<T> validationObjectType) throws JsonDeserializingException {
         try {
-            return jsonObjectMapper.readValue(json, validationObjectType);
+            return objectMapper.readValue(json, validationObjectType);
         } catch (Exception e) {
             throw new JsonDeserializingException(validationObjectType.getName());
         }

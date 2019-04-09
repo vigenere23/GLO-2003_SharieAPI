@@ -14,6 +14,7 @@ import spark.Request;
 import spark.Response;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import static spark.Spark.*;
@@ -43,9 +44,9 @@ public class ListingsController implements Controller {
 
     private Instant parseDateFromParam(String stringDate) throws ParameterParsingException {
         try {
-            return Instant.parse(stringDate + "T00:00:00Z");
-        } catch (Exception e) {
-            throw new ParameterParsingException("date", "Instant");
+            return DateTimeHelper.fromDateStringToInstant(stringDate);
+        } catch (DateTimeParseException e) {
+            throw new ParameterParsingException("date", "YYYY-MM-DD");
         }
     }
 

@@ -5,10 +5,13 @@ import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.MorphiaListingsDAO;
 import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.exceptions.JsonSerializingException;
+import com.github.glo2003.helpers.DateTimeHelper;
 import com.github.glo2003.helpers.ResponseHelper;
 import com.github.glo2003.models.Listing;
 import com.github.glo2003.stubs.BookingsPostDTO;
 import com.github.glo2003.stubs.ListingPostDTO;
+import com.github.glo2003.stubs.SimpleObject;
+
 import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
@@ -80,11 +83,17 @@ public class ListingsControllerTest extends FunctionnalTest {
         return get("/listings");
     }
 
-    protected Response getAllListingsSpecificDate(String date) {
+    protected Response getAllListingsWithSpecificDate(String date) {
         return get("/listings?date={date}", date);
     }
 
-    private Response getAllListingsSpecificTitle(String title) { return get("/listings?title={title}", title); }
+    private Response getAllListingsWithSpecificTitle(String title) {
+        return get("/listings?title={title}", title);
+    }
+
+    private Response getAllListingsWithSpecificCategory(String category) {
+        return get("/listings?category={category}", category);
+    }
 
     protected Response addRating(String id, Integer score) {
         return get("/listings/{id}/rate/{score}", id, score);
@@ -135,6 +144,15 @@ public class ListingsControllerTest extends FunctionnalTest {
         getAllListings()
         .then()
             .statusCode(200);
+    }
+
+    @Test
+    public void givenInvalidListing_PostListing_shouldReturn400WithError() throws Exception {
+        SimpleObject invalidListing = new SimpleObject();
+        postListing(invalidListing)
+        .then()
+            .statusCode(400)
+            .body("error", not(emptyOrNullString()));
     }
 
     @Test
@@ -234,7 +252,7 @@ public class ListingsControllerTest extends FunctionnalTest {
         postValidListing();
         postValidListing();
         
-        getAllListingsSpecificDate(now.toString().split("T")[0])
+        getAllListingsWithSpecificDate(now.toString().split("T")[0])
         .then()
             .body("listings", iterableWithSize(2));
     }
@@ -243,7 +261,7 @@ public class ListingsControllerTest extends FunctionnalTest {
     public void givenPostTwoValidListingsAndPastDate_GETlistingsSpecificDate_shouldReturnNoListings() {
         postValidListing();
         postValidListing();
-        getAllListingsSpecificDate("1950-01-01")
+        getAllListingsWithSpecificDate("1950-01-01")
                 .then()
                 .body("listings", iterableWithSize(0));
     }
@@ -253,7 +271,7 @@ public class ListingsControllerTest extends FunctionnalTest {
         postValidListing();
         postValidListing();
         
-        getAllListingsSpecificDate("")
+        getAllListingsWithSpecificDate("")
         .then()
             .statusCode(400)
             .body("error", not(emptyOrNullString()));
@@ -264,7 +282,7 @@ public class ListingsControllerTest extends FunctionnalTest {
         postValidListing();
         postValidListing2();
 
-        getAllListingsSpecificTitle(validListing.getTitle())
+        getAllListingsWithSpecificTitle(validListing.getTitle())
         .then()
             .body("listings", iterableWithSize(1));
     }
@@ -275,7 +293,7 @@ public class ListingsControllerTest extends FunctionnalTest {
         postValidListing2();
         postValidListing2();
 
-        getAllListingsSpecificTitle(validListing2.getTitle())
+        getAllListingsWithSpecificTitle(validListing2.getTitle())
         .then()
             .body("listings", iterableWithSize(2));
     }
@@ -286,9 +304,38 @@ public class ListingsControllerTest extends FunctionnalTest {
         postValidListing2();
         postValidListing2();
 
-        getAllListingsSpecificTitle("This title doesn't exist")
+        getAllListingsWithSpecificTitle("This title doesn't exist")
         .then()
             .body("listings", iterableWithSize(0));
+    }
+    
+    @Test
+    public void givenPostValidListings_GETAllListingWithNonExistentCategory_shouldReturnEmptyList() {
+        postValidListing();
+
+        getAllListingsWithSpecificCategory("a-random-category")
+        .then()
+            .body("listings", iterableWithSize(0));
+    }
+
+    @Test
+    public void givenPostTwoValidListingsWithDifferentCategories_GETAllListingWithOneCategory_shouldReturnListOfSize1() {
+        postValidListing();
+        postValidListing2();
+
+        getAllListingsWithSpecificCategory(validListing.getCategory().name())
+        .then()
+            .body("listings", iterableWithSize(1));
+    }
+
+    @Test
+    public void givenPostSameTwoValidListings_GETAllListingWithPostedCategory_shouldReturnListOfSize2() {
+        postValidListing();
+        postValidListing();
+
+        getAllListingsWithSpecificCategory(validListing.getCategory().name())
+        .then()
+            .body("listings", iterableWithSize(2));
     }
 
     @Test
@@ -333,6 +380,20 @@ public class ListingsControllerTest extends FunctionnalTest {
         .then()
             .statusCode(404)
             .body("error", not(emptyOrNullString()));
+    }
+
+    @Test
+    public void givenPOSTValidListing_getAllListingsWithSpecificTitleCategoryDate_shouldReturnListOfSize1() {
+        postValidListing();
+
+        get(
+            "listings?title={title}&category={category}&date={date}",
+            validListing.getTitle(),
+            validListing.getCategory().name(),
+            DateTimeHelper.fromInstantToDateString(now)
+        )
+        .then()
+            .body("listings", iterableWithSize(1));
     }
 
 }
