@@ -10,6 +10,10 @@ public class Rating {
     private Integer score;
 
 
+    public Rating(){
+
+    }
+
     public Rating(Integer _score) throws ParameterParsingException {
         setScore(_score);
         date = new Date();

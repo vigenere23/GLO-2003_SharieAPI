@@ -92,12 +92,8 @@ public class ListingsController implements Controller{
     private Object addRating(Request req, Response res) throws Exception {
         String listingId = req.params("id");
         Integer rating = Integer.parseInt(req.params("score"));
-        Listing listing = listingsDAO.get(listingId);
-        listing.addRating(rating);
+        listingsDAO.addRating(listingId, rating);
 
-        if(MorphiaListingsDAO.class.isInstance(listingsDAO)){
-            listingsDAO.save(listing);
-        }
         res.status(204);
         return ResponseHelper.EMPTY_RESPONSE;
     }

@@ -2,6 +2,7 @@ package com.github.glo2003.daos;
 
 import com.github.glo2003.exceptions.ItemAlreadyExistsException;
 import com.github.glo2003.exceptions.ItemNotFoundException;
+import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.models.Listing;
 
 import java.time.Instant;
@@ -68,5 +69,11 @@ public class InMemoryListingsDAO implements ListingsDAO {
     @Override
     public void reset() {
         listings.clear();
+    }
+
+    @Override
+    public void addRating(String listingId, Integer rating) throws ParameterParsingException {
+        Listing listing = listings.get(listingId);
+        listing.addRating(rating);
     }
 }

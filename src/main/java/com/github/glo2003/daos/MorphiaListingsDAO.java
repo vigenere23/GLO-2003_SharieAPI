@@ -1,6 +1,7 @@
 package com.github.glo2003.daos;
 
 import com.github.glo2003.exceptions.ItemNotFoundException;
+import com.github.glo2003.exceptions.ParameterParsingException;
 import com.github.glo2003.models.Listing;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -89,5 +90,13 @@ public class MorphiaListingsDAO implements ListingsDAO {
     public void reset() {
         Query<Listing> query = datastore.createQuery(Listing.class);
         datastore.delete(query);
+    }
+
+    @Override
+    public void addRating(String listingId, Integer rating) throws ParameterParsingException, ItemNotFoundException {
+        Listing listing = get(listingId);
+        listing.addRating(rating);
+
+        save(listing);
     }
 }
