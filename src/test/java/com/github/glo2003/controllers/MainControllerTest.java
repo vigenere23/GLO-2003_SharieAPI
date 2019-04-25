@@ -1,6 +1,6 @@
 package com.github.glo2003.controllers;
 
-import com.github.glo2003.FunctionnalTest;
+import com.github.glo2003.functional.FunctionnalTest;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.get;

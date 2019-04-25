@@ -1,4 +1,4 @@
-package com.github.glo2003;
+package com.github.glo2003.functional;
 
 import io.restassured.RestAssured;
 import org.junit.BeforeClass;

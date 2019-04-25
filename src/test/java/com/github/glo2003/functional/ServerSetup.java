@@ -1,4 +1,6 @@
-package com.github.glo2003;
+package com.github.glo2003.functional;
+
+import com.github.glo2003.SharieAPI;
 
 public class ServerSetup {
     private static boolean serverRunning = false;
