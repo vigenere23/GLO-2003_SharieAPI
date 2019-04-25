@@ -3,16 +3,10 @@ package com.github.glo2003.functional.listings;
 import com.github.glo2003.functional.FunctionnalTest;
 import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.MorphiaListingsDAO;
-import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.exceptions.JsonSerializingException;
 import com.github.glo2003.helpers.DateTimeHelper;
-import com.github.glo2003.helpers.ResponseHelper;
-import com.github.glo2003.models.Listing;
-import com.github.glo2003.stubs.BookingsPostDTO;
-import com.github.glo2003.stubs.ListingPostDTO;
 import com.github.glo2003.stubs.SimpleObject;
 
-import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +18,6 @@ import java.util.Optional;
 
 import static com.github.glo2003.controllers.ListingsController.listingsDAO;
 import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -304,14 +297,14 @@ public class ListingsFunctionalTest extends FunctionnalTest {
     }
 
     @Test
-    public void givenPOSTbook_bookSameAvailabilityAgain_shouldReturn404WithError() {
+    public void givenPOSTbook_bookSameAvailabilityAgain_shouldReturn400WithError() {
         String id = ListingsFunctionalHelper.getIdOfValidPostedListing();
         instants.add(now);
 
         ListingsFunctionalHelper.bookListing(id, instants);
         ListingsFunctionalHelper.bookListing(id, instants)
         .then()
-            .statusCode(404)
+            .statusCode(400)
             .body("error", not(emptyOrNullString()));
     }
 

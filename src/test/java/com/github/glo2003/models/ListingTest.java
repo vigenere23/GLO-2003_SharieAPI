@@ -1,6 +1,6 @@
 package com.github.glo2003.models;
 
-import com.github.glo2003.exceptions.ItemNotFoundException;
+import com.github.glo2003.exceptions.InvalidParameterException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class ListingTest {
     }
 
     @Test
-    public void givenNewListing_bookSingleDate_shouldRemoveThatDate() throws ItemNotFoundException {
+    public void givenNewListing_bookSingleDate_shouldRemoveThatDate() throws InvalidParameterException {
         Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
         List<Instant> bookings = new ArrayList<>();
         bookings.add(today);
@@ -46,7 +46,7 @@ public class ListingTest {
     }
 
     @Test
-    public void givenNewListing_bookMultipleDates_shouldRemoveAllThoseDates() throws ItemNotFoundException {
+    public void givenNewListing_bookMultipleDates_shouldRemoveAllThoseDates() throws InvalidParameterException {
         Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
         Instant tomorrow = today.plus(1, ChronoUnit.DAYS);
         List<Instant> bookings = new ArrayList<>();
@@ -56,8 +56,8 @@ public class ListingTest {
         assertThat(emptyListing.getAvailabilities()).containsNoneOf(today, tomorrow);
     }
 
-    @Test(expected = ItemNotFoundException.class)
-    public void givenNewListing_bookSingleListingNotAvailable_shouldThrowItemNotFoundException() throws ItemNotFoundException {
+    @Test(expected = InvalidParameterException.class)
+    public void givenNewListing_bookSingleListingNotAvailable_shouldThrowInvalidParameterException() throws InvalidParameterException {
         Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
         Instant yesterday = today.minus(1, ChronoUnit.DAYS);
         List<Instant> bookings = new ArrayList<>();
@@ -65,8 +65,8 @@ public class ListingTest {
         emptyListing.book(bookings);
     }
 
-    @Test(expected = ItemNotFoundException.class)
-    public void givenNewListing_bookMultipleListingWhichOneIsNotAvailable_shouldThrowItemNotFoundException() throws ItemNotFoundException {
+    @Test(expected = InvalidParameterException.class)
+    public void givenNewListing_bookMultipleListingWhichOneIsNotAvailable_shouldThrowInvalidParameterException() throws InvalidParameterException {
         Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
         Instant yesterday = today.minus(1, ChronoUnit.DAYS);
         List<Instant> bookings = new ArrayList<>();
@@ -75,8 +75,8 @@ public class ListingTest {
         emptyListing.book(bookings);
     }
 
-    @Test(expected = ItemNotFoundException.class)
-    public void givenNewListing_bookSameListingTwice_shouldThrowItemNotFoundException() throws ItemNotFoundException {
+    @Test(expected = InvalidParameterException.class)
+    public void givenNewListing_bookSameListingTwice_shouldThrowInvalidParameterException() throws InvalidParameterException {
         Instant today = Instant.now().truncatedTo(ChronoUnit.DAYS);
         List<Instant> bookings = new ArrayList<>();
         bookings.add(today);
