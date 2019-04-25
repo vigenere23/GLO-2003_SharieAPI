@@ -12,7 +12,6 @@ import com.github.glo2003.functional.acceptance.AcceptanceTest;
 import com.github.glo2003.functional.listings.ListingsFunctionalHelper;
 import com.github.glo2003.helpers.DateTimeHelper;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -48,12 +47,19 @@ public class BookingAListing extends AcceptanceTest {
         return ListingsFunctionalHelper.bookListing(lastPostedListingId, instants);
     }
 
-    @Given("There's a booking existing with a specific ID and with the next 7 days \\\\(including today) available to book")
+    @Given("I post a new listing")
     public void postValidListing() {
         lastPostedListingId = ListingsFunctionalHelper.getIdOfValidPostedListing();
     }
 
-    @When("I book that listing {int} day\\(s) from now, which is in the range of the next 7 days \\\\(including today)")
+    @Given("That listing has the next {int} day\\(s) \\\\(including today) available for booking")
+    public void checkLastListingAvailabilities(Integer nbOfDaysAvailable) {
+        ListingsFunctionalHelper.getListing(lastPostedListingId)
+        .then()
+            .body("availabilities", iterableWithSize(nbOfDaysAvailable));
+    }
+
+    @When("I book that listing {int} day\\(s) from now, which is supposed to be available")
     public void BookingExistingListingAtAvailableTime(Integer nbOfDaysFromNow) {
         lastResponse = bookListingAtNbOfDaysFromNow(nbOfDaysFromNow);
     }
@@ -76,7 +82,7 @@ public class BookingAListing extends AcceptanceTest {
     public void it_should_remove_day_from_that_listing_s_availabilities(Integer nbOfDaysRemoved) {
         ListingsFunctionalHelper.getListing(lastPostedListingId)
         .then()
-            .body("availabilities", iterableWithSize( 7 - nbOfDaysRemoved));
+            .body("availabilities", iterableWithSize(7 - nbOfDaysRemoved));
     }
 
     @Then("The removed day should be the one booked")
@@ -87,7 +93,7 @@ public class BookingAListing extends AcceptanceTest {
             .body("availabilities", not(contains(trimedLastBookedTime.toString())));
     }
 
-    @When("I book that listing {int} day\\(s) from now, which is NOT in the range of the next 7 days \\\\(including today)")
+    @When("I book that listing {int} day\\(s) from now, which is NOT supposed to be available")
     public void BookingExistingListingAtUnavailableTime(Integer nbOfDaysFromNow) {
         lastResponse = bookListingAtNbOfDaysFromNow(nbOfDaysFromNow);    
     }
@@ -99,7 +105,7 @@ public class BookingAListing extends AcceptanceTest {
             .body("error", not(emptyOrNullString()));
     }
 
-    @Then("The error should say {string}")
+    @Then("The response error should say {string}")
     public void the_error_should_say(String errorMessage) {
         lastResponse
         .then()
@@ -111,15 +117,9 @@ public class BookingAListing extends AcceptanceTest {
         listingsDAO.reset();
     }
 
-    @When("I try to book any listing by any ID \\\\(0) at any time")
-    public void BookingNonExistingListing() {
-        lastResponse = ListingsFunctionalHelper.bookListing("0", new ArrayList<>());
-    }
-
-    @Then("The error should tell me that the listing does not exist")
-    public void the_error_should_tell_me_that_the_listing_does_not_exist() {
-        // TODO
-        throw new cucumber.api.PendingException();
+    @When("I try to book a non-existing listing \\\\(with id {string})")
+    public void BookingNonExistingListing(String id) {
+        lastResponse = ListingsFunctionalHelper.bookListing(id, new ArrayList<>());
     }
 
 }
