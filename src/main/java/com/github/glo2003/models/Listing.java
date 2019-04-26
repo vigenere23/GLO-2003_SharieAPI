@@ -1,8 +1,8 @@
 package com.github.glo2003.models;
 
 import com.github.glo2003.enums.ListingCategory;
-import com.github.glo2003.exceptions.ItemNotFoundException;
 import com.github.glo2003.exceptions.ParameterParsingException;
+import com.github.glo2003.exceptions.InvalidParameterException;
 import com.github.glo2003.helpers.DateTimeHelper;
 import dev.morphia.annotations.Id;
 import java.time.Instant;
@@ -52,12 +52,12 @@ public class Listing {
         setCategory(category);
     }
 
-    public void book(List<Instant> bookings) throws ItemNotFoundException{
+    public void book(List<Instant> bookings) throws InvalidParameterException{
         for (Instant instant : bookings){
             if (availabilities.contains(instant)) {
                 availabilities.remove(instant);
             } else {
-                throw new ItemNotFoundException("One of the date is not available");
+                throw new InvalidParameterException("One of the date is not available");
             }
         }
     }

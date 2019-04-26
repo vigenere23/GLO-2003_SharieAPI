@@ -20,7 +20,7 @@ import static spark.Spark.*;
 
 public class ListingsController implements Controller {
 
-    static ListingsDAO listingsDAO;
+    public static ListingsDAO listingsDAO;
 
     public ListingsController(ListingsDAO listingsDAO) {
         setupRoutes();

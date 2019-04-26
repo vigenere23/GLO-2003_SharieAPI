@@ -1,18 +1,12 @@
-package com.github.glo2003.controllers;
+package com.github.glo2003.functional.listings;
 
-import com.github.glo2003.FunctionnalTest;
+import com.github.glo2003.functional.FunctionnalTest;
 import com.github.glo2003.daos.InMemoryListingsDAO;
 import com.github.glo2003.daos.MorphiaListingsDAO;
-import com.github.glo2003.dtos.ListingDTO;
 import com.github.glo2003.exceptions.JsonSerializingException;
 import com.github.glo2003.helpers.DateTimeHelper;
-import com.github.glo2003.helpers.ResponseHelper;
-import com.github.glo2003.models.Listing;
-import com.github.glo2003.stubs.BookingsPostDTO;
-import com.github.glo2003.stubs.ListingPostDTO;
 import com.github.glo2003.stubs.SimpleObject;
 
-import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,21 +18,18 @@ import java.util.Optional;
 
 import static com.github.glo2003.controllers.ListingsController.listingsDAO;
 import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class ListingsControllerTest extends FunctionnalTest {
+public class ListingsFunctionalTest extends FunctionnalTest {
 
-    private Listing validListing;
-    private Listing validListing2;
     private List<Instant> instants;
     private Instant now;
 
     private String ID_REGEX;
 
-    public ListingsControllerTest() {
+    public ListingsFunctionalTest() {
         String profile = Optional.ofNullable(System.getenv("SHARIE_PROFILE")).orElse("dev");
 
         if (profile.equals("dev")) {
@@ -54,21 +45,6 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Before
     public void setupValidObjects() {
-        validListing = new Listing(
-            "Such a nice listing",
-            "Splendid offer right here!",
-            "Outdoors",
-            "Jane Smith",
-            "8197771111",
-            "jane.smith@gmail.com");
-        validListing2 = new Listing(
-            "Yet another nice listing",
-            "Yet another splendid offer",
-            "Kitchen",
-            "John Smith",
-            "4189990000",
-            "john.smith@gmail.com");
-
         now = Instant.now();
         instants = new ArrayList<>();
     }
@@ -79,69 +55,9 @@ public class ListingsControllerTest extends FunctionnalTest {
         listingsDAO.reset();
     }
 
-    protected Response getAllListings() {
-        return get("/listings");
-    }
-
-    protected Response getAllListingsWithSpecificDate(String date) {
-        return get("/listings?date={date}", date);
-    }
-
-    private Response getAllListingsWithSpecificTitle(String title) {
-        return get("/listings?title={title}", title);
-    }
-
-    private Response getAllListingsWithSpecificCategory(String category) {
-        return get("/listings?category={category}", category);
-    }
-
-    protected Response addRating(String id, Integer score) {
-        return get("/listings/{id}/rate/{score}", id, score);
-    }
-
-    protected Response getListing(String id) {
-        return get("/listings/{id}", id);
-    }
-
-    protected Response postValidListing() {
-        return postListing(new ListingPostDTO(validListing));
-    }
-
-    protected Response postValidListing2() {
-        return postListing(new ListingPostDTO(validListing2));
-    }
-
-    protected Response postListing(Object body) {
-        return
-            given()
-                .contentType("application/json")
-                .body(body)
-            .when()
-                .post("/listings");
-    }
-
-    protected Response bookListing(String listingId, List<Instant> bookingList) {
-        BookingsPostDTO bookingsPostDTO = new BookingsPostDTO(bookingList);
-        return
-            given()
-                .contentType("application/json")
-                .body(bookingsPostDTO)
-            .when()
-                .post("/listings/" + listingId + "/book");
-    }
-
-    protected String getIdOfValidPostedListing() {
-        String[] splittedLocationHeader = postValidListing().header("Location").split("/");
-        return splittedLocationHeader[splittedLocationHeader.length - 1];
-    }
-
-    protected String getListingDTOAsJson(Listing listing) throws JsonSerializingException {
-        return ResponseHelper.serializeObjectToJson(new ListingDTO(listing));
-    }
-
     @Test
     public void GET_listings_shouldReturn200() {
-        getAllListings()
+        ListingsFunctionalHelper.getAllListings()
         .then()
             .statusCode(200);
     }
@@ -149,7 +65,7 @@ public class ListingsControllerTest extends FunctionnalTest {
     @Test
     public void givenInvalidListing_PostListing_shouldReturn400WithError() throws Exception {
         SimpleObject invalidListing = new SimpleObject();
-        postListing(invalidListing)
+        ListingsFunctionalHelper.postListing(invalidListing)
         .then()
             .statusCode(400)
             .body("error", not(emptyOrNullString()));
@@ -157,28 +73,28 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Test
     public void givenValidListing_POSTlistings_shouldReturn201() {
-        postValidListing()
+        ListingsFunctionalHelper.postValidListing()
         .then()
             .statusCode(201);
     }
 
     @Test
     public void givenValidListing_POSTlistings_shouldReturnEmptyBody() {
-        postValidListing()
+        ListingsFunctionalHelper.postValidListing()
         .then()
             .body(emptyOrNullString());
     }
 
     @Test
     public void givenValidListing_POSTlistings_shouldReturnValidLocationHeader() {
-        postValidListing()
+        ListingsFunctionalHelper.postValidListing()
         .then()
             .header("Location", matchesPattern("^/listings/" + ID_REGEX + "$"));
     }
 
     @Test
     public void givenInvalidListing_POSTlistings_shouldReturn400WithErrorField() {
-        postListing("")
+        ListingsFunctionalHelper.postListing("")
         .then()
             .statusCode(400)
             .body("error", not(emptyOrNullString()));
@@ -186,7 +102,7 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Test
     public void givenInvalidJson_POSTlistings_shouldReturn400WithErrorField() {
-        postListing("{")
+        ListingsFunctionalHelper.postListing("{")
         .then()
             .statusCode(400)
             .body("error", not(emptyOrNullString()));
@@ -194,7 +110,7 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Test
     public void givenNewServer_GETlistingWithAnyId_shouldReturn404WithErrorField() {
-        getListing("1000")
+        ListingsFunctionalHelper.getListing("1000")
         .then()
             .statusCode(404)
             .body("error", not(emptyOrNullString()));
@@ -202,76 +118,78 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Test
     public void givenPostValidListing_GETlistingWithReturnedLocationId_shouldReturn200() {
-        getListing(getIdOfValidPostedListing())
+        String id = ListingsFunctionalHelper.getIdOfValidPostedListing();
+        ListingsFunctionalHelper.getListing(id)
         .then()
             .statusCode(200);
     }
 
     @Test
     public void givenaddRating_shouldReturn204() {
-        String id = getIdOfValidPostedListing();
-        addRating(id,4)
+        String id = ListingsFunctionalHelper.getIdOfValidPostedListing();
+        ListingsFunctionalHelper.addRating(id,4)
                 .then()
                 .statusCode(204);
     }
 
     @Test
     public void givenPostValidListing_GETlistingWithReturnedLocationId_shouldReturnValidListingDTO() throws JsonSerializingException {
-        String validListingJson = getListingDTOAsJson(validListing);
-        getListing(getIdOfValidPostedListing())
+        String validListingJson = ListingsFunctionalHelper.getListingDTOAsJson(ListingsFunctionalHelper.validListing);
+        String id = ListingsFunctionalHelper.getIdOfValidPostedListing();        
+        ListingsFunctionalHelper.getListing(id)
             .then()
             .body(equalTo(validListingJson));
     }
 
     @Test
     public void givenNewServer_GETlistings_shouldReturn200() {
-        getAllListings()
+        ListingsFunctionalHelper.getAllListings()
         .then()
             .statusCode(200);
     }
 
     @Test
     public void givenNewServer_GETlistings_shouldReturnListingsEmpty() {
-        getAllListings()
+        ListingsFunctionalHelper.getAllListings()
         .then()
             .body("listings", iterableWithSize(0));
     }
 
     @Test
     public void givenPostTwoValidListings_GETlistings_shouldReturnTwoListings() {
-        postValidListing();
-        postValidListing();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing();
 
-        getAllListings()
+        ListingsFunctionalHelper.getAllListings()
         .then()
             .body("listings", iterableWithSize(2));
     }
 
     @Test
     public void givenPostSameValidListingTwice_GETlistingsSpecificDateWithin7Days_shouldReturnThoseTwoListings() {
-        postValidListing();
-        postValidListing();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing();
         
-        getAllListingsWithSpecificDate(now.toString().split("T")[0])
+        ListingsFunctionalHelper.getAllListingsWithSpecificDate(now.toString().split("T")[0])
         .then()
             .body("listings", iterableWithSize(2));
     }
 
     @Test
     public void givenPostTwoValidListingsAndPastDate_GETlistingsSpecificDate_shouldReturnNoListings() {
-        postValidListing();
-        postValidListing();
-        getAllListingsWithSpecificDate("1950-01-01")
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.getAllListingsWithSpecificDate("1950-01-01")
                 .then()
                 .body("listings", iterableWithSize(0));
     }
 
     @Test
     public void givenInvalidDate_GETlistingsSpecificDate_shouldReturnNoListings() {
-        postValidListing();
-        postValidListing();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing();
         
-        getAllListingsWithSpecificDate("")
+        ListingsFunctionalHelper.getAllListingsWithSpecificDate("")
         .then()
             .statusCode(400)
             .body("error", not(emptyOrNullString()));
@@ -279,61 +197,69 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Test
     public void givenPostTwoValidListingsWithDifferentTitle_GETAllListingsSpecificTitle_shouldReturnListOfSize1() {
-        postValidListing();
-        postValidListing2();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing2();
 
-        getAllListingsWithSpecificTitle(validListing.getTitle())
+        String title = ListingsFunctionalHelper.validListing.getTitle();
+
+        ListingsFunctionalHelper.getAllListingsWithSpecificTitle(title)
         .then()
             .body("listings", iterableWithSize(1));
     }
 
     @Test
     public void givenPostTwoValidListingsWithSameTitleAndOneOther_GETAllListingsSpecificTitle_shouldReturnListOfSize2() {
-        postValidListing();
-        postValidListing2();
-        postValidListing2();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing2();
+        ListingsFunctionalHelper.postValidListing2();
 
-        getAllListingsWithSpecificTitle(validListing2.getTitle())
+        String title = ListingsFunctionalHelper.validListing2.getTitle();
+
+        ListingsFunctionalHelper.getAllListingsWithSpecificTitle(title)
         .then()
             .body("listings", iterableWithSize(2));
     }
 
     @Test
     public void givenPostThreeValidListings_GETAllListingsWithNonExistantTitle_shouldReturnEmptyList() {
-        postValidListing();
-        postValidListing2();
-        postValidListing2();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing2();
+        ListingsFunctionalHelper.postValidListing2();
 
-        getAllListingsWithSpecificTitle("This title doesn't exist")
+        ListingsFunctionalHelper.getAllListingsWithSpecificTitle("This title doesn't exist")
         .then()
             .body("listings", iterableWithSize(0));
     }
     
     @Test
     public void givenPostValidListings_GETAllListingWithNonExistentCategory_shouldReturnEmptyList() {
-        postValidListing();
+        ListingsFunctionalHelper.postValidListing();
 
-        getAllListingsWithSpecificCategory("a-random-category")
+        ListingsFunctionalHelper.getAllListingsWithSpecificCategory("a-random-category")
         .then()
             .body("listings", iterableWithSize(0));
     }
 
     @Test
     public void givenPostTwoValidListingsWithDifferentCategories_GETAllListingWithOneCategory_shouldReturnListOfSize1() {
-        postValidListing();
-        postValidListing2();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing2();
 
-        getAllListingsWithSpecificCategory(validListing.getCategory().name())
+        String category = ListingsFunctionalHelper.validListing.getCategory().name();
+
+        ListingsFunctionalHelper.getAllListingsWithSpecificCategory(category)
         .then()
             .body("listings", iterableWithSize(1));
     }
 
     @Test
     public void givenPostSameTwoValidListings_GETAllListingWithPostedCategory_shouldReturnListOfSize2() {
-        postValidListing();
-        postValidListing();
+        ListingsFunctionalHelper.postValidListing();
+        ListingsFunctionalHelper.postValidListing();
 
-        getAllListingsWithSpecificCategory(validListing.getCategory().name())
+        String category = ListingsFunctionalHelper.validListing.getCategory().name();
+
+        ListingsFunctionalHelper.getAllListingsWithSpecificCategory(category)
         .then()
             .body("listings", iterableWithSize(2));
     }
@@ -342,7 +268,7 @@ public class ListingsControllerTest extends FunctionnalTest {
     public void givenNonExistingListingId_POSTbook_shouldReturn404WithError() {
         instants.add(now);
 
-        bookListing("1000", instants)
+        ListingsFunctionalHelper.bookListing("1000", instants)
         .then()
             .statusCode(404)
             .body("error", not(emptyOrNullString()));
@@ -350,10 +276,10 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Test
     public void POSTbook_shouldReturn204() throws Exception {
-        String id = getIdOfValidPostedListing();
+        String id = ListingsFunctionalHelper.getIdOfValidPostedListing();
         instants.add(now);
 
-        bookListing(id, instants)
+        ListingsFunctionalHelper.bookListing(id, instants)
         .then()
             .statusCode(204)
             .body(emptyOrNullString());
@@ -361,35 +287,35 @@ public class ListingsControllerTest extends FunctionnalTest {
 
     @Test
     public void POSTbook_shouldRemoveAnAvailabilty() throws Exception {
-        String id = getIdOfValidPostedListing();
+        String id = ListingsFunctionalHelper.getIdOfValidPostedListing();
         instants.add(now);
 
-        bookListing(id, instants);
-        getListing(id)
+        ListingsFunctionalHelper.bookListing(id, instants);
+        ListingsFunctionalHelper.getListing(id)
         .then()
             .body("availabilities", iterableWithSize(6));
     }
 
     @Test
-    public void givenPOSTbook_bookSameAvailabilityAgain_shouldReturn404WithError() {
-        String id = getIdOfValidPostedListing();
+    public void givenPOSTbook_bookSameAvailabilityAgain_shouldReturn400WithError() {
+        String id = ListingsFunctionalHelper.getIdOfValidPostedListing();
         instants.add(now);
 
-        bookListing(id, instants);
-        bookListing(id, instants)
+        ListingsFunctionalHelper.bookListing(id, instants);
+        ListingsFunctionalHelper.bookListing(id, instants)
         .then()
-            .statusCode(404)
+            .statusCode(400)
             .body("error", not(emptyOrNullString()));
     }
 
     @Test
     public void givenPOSTValidListing_getAllListingsWithSpecificTitleCategoryDate_shouldReturnListOfSize1() {
-        postValidListing();
+        ListingsFunctionalHelper.postValidListing();
 
         get(
             "listings?title={title}&category={category}&date={date}",
-            validListing.getTitle(),
-            validListing.getCategory().name(),
+            ListingsFunctionalHelper.validListing.getTitle(),
+            ListingsFunctionalHelper.validListing.getCategory().name(),
             DateTimeHelper.fromInstantToDateString(now)
         )
         .then()
