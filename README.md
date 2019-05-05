@@ -127,3 +127,10 @@ For testing
 - [Truth](https://google.github.io/truth/)
 - [REST-assured](http://rest-assured.io/) 
 - [Hamcrest](http://hamcrest.org/JavaHamcrest/javadoc/2.1/)
+
+## Team members
+
+* Gabriel St-Pierre (me)
+* Philippe Jones
+* Frédérick Bonnelly
+* Francis Verreault
