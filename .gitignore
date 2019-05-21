@@ -10,6 +10,8 @@ bin/
 
 !gradle/**/*.jar
 
+.coveralls.yml
+
 ### APIDOC ###
 apidoc/
 

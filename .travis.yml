@@ -1,12 +1,13 @@
 language: java
 sudo: false
 before_install:
-  - sudo wget -O ~/codacy-coverage-reporter-assembly-latest.jar https://github.com/codacy/codacy-coverage-reporter/releases/download/6.0.0/codacy-coverage-reporter-6.0.0-assembly.jar
+- sudo wget -O ~/codacy-coverage-reporter-assembly-latest.jar https://github.com/codacy/codacy-coverage-reporter/releases/download/6.0.0/codacy-coverage-reporter-6.0.0-assembly.jar
 script:
-  - mvn clean install cobertura:cobertura
+- mvn clean install cobertura:cobertura
 deploy:
   provider: heroku
-  app: thawing-reef-71512
-  api_key: f31258e3-e6b5-440e-bde8-bd374fc5531c
+  app: peaceful-coast-46180
+  api_key:
+    secure: ADgOLvk/5EFKcnAeXsvvUpogyDr0wa687W8btdmYZSzBcuhXekjcUIIt2C9bl0JSh7H09gECgWINhvGu9pCzfbMqbWNh1PJvvKsLX8HARrCUJAP5EG25vQvobqSz02fQBvD5Uo5zpYhQcAiNVxZK3nlT0VUoGyuV3Ds7e80gy4tllA9HPQDuNNk/nwwVazTE32f2Tw1sTaYW+UqWUmQd2R9s8AiigDvLTjc3dcFnhjWsUd4xXcugwm+rrXLo6A55zHE1HBC5spjJOaKVHK+to4DnXRHWeDRfi5f0CYotq/GZgEmMYuOwcI7Qy97mUPX9uY44ovrPmNCY8uRJuN0CwbQ7SVkkDUU2cH7Q29pNAV/lJrVS0kpk7tBLGYdP5GMI0Kl6XIuvmBeZFDTNeh+mwjmnic99lqNf5dd+dapuTFfJmFiFeGVtruqOzgC2DtsVPzX5VpMIUPVqYQtXwmfDSLRQPS9GtygtyqvQMtK7/FRTWIc4vF+xWOGHjq3E8WL8VW0LQuZmDS1bU/eS22f3dBnli0hy0cnieIvrlsKcKD7OYpZ5gRb4VGN+0hYQoLpZkKuZECCVJVETA1xIYuL9CfCOmUJ/PR9yPFWXLPVT2pSvF8a9ILD1Rg8Cas3AIZgqznqZap41YieuGeWKDCwsSaM4UFGhsZ8L4PB3YXlgRbU=
 after_success:
-  - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/site/cobertura/coverage.xml
+- java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/site/cobertura/coverage.xml

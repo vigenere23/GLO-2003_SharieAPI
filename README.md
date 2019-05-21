@@ -1,7 +1,7 @@
-[![Codacy Quality](https://api.codacy.com/project/badge/Grade/09636400336b4257bf58d2e1434f114e)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=glo2003/glo-2003-h19-equipe-16&amp;utm_campaign=Badge_Grade)
-[![Codacy Coverage](https://api.codacy.com/project/badge/Coverage/09636400336b4257bf58d2e1434f114e)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=glo2003/glo-2003-h19-equipe-16&utm_campaign=Badge_Coverage)
-[![Build Status](https://travis-ci.com/glo2003/glo-2003-h19-equipe-16.svg?token=rtBRz4eqbmPRnM1jJcqS&branch=master)](https://travis-ci.com/glo2003/glo-2003-h19-equipe-16)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=thawing-reef-71512&svg=1)](https://thawing-reef-71512.herokuapp.com/)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7789362eeb1e44ab9c637f8a15492462)](https://www.codacy.com/app/vigenere23/GLO-2003_SharieAPI?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vigenere23/GLO-2003_SharieAPI&amp;utm_campaign=Badge_Grade)
+[![Codacy Coverage](https://api.codacy.com/project/badge/Coverage/7789362eeb1e44ab9c637f8a15492462)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=vigenere23/GLO-2003_SharieAPI&utm_campaign=Badge_Coverage)
+[![Build Status](https://travis-ci.com/vigenere23/GLO-2003_SharieAPI.svg?branch=master)](https://travis-ci.com/vigenere23/GLO-2003_SharieAPI)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=peaceful-coast-46180&svg=1)](https://peaceful-coast-46180.herokuapp.com/)
 
 > *If Codacy's badges are not showing up, please take a look at their [status page](https://status.codacy.com/)*
 
