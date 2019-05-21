@@ -171,8 +171,8 @@
         <artifactId>codacy-maven-plugin</artifactId>
         <version>1.0.3</version>
         <configuration>
-          <apiToken>${env.CODACY_API_TOKEN}</apiToken>
-          <projectToken>${env.CODACY_PROJECT_TOKEN}</projectToken>
+          <apiToken>N0KQvRCQzPqWuT5INSBM</apiToken>
+          <projectToken>26a798d0b08a417fab4c2f50e8d4baae</projectToken>
           <coverageReportFile>target/site/cobertura/coverage.xml</coverageReportFile>
           <codacyApiBaseUrl>https://api.codacy.com</codacyApiBaseUrl>
           <failOnMissingReportFile>false</failOnMissingReportFile>
